@@ -1,0 +1,59 @@
+<%- include('partials/header', { title: 'Onboard Services & Concierge | Oneness Luxury Yachts Dubai', activeNav: 'amenities' }) %>
+
+<!-- SERVICES HERO -->
+<section class="fleet-hero-header">
+  <div class="container">
+    <div class="eyebrow">Excellence & Craftsmanship</div>
+    <h1 class="editorial-title editorial-title-lg" style="margin-bottom: 16px;">
+      SERVICES.
+    </h1>
+    <p class="editorial-subhead">
+      Every detail considered. From Michelin-calibre private culinary art to high-octane water sports and discreet maritime security.
+    </p>
+  </div>
+</section>
+
+<!-- SERVICES EDITORIAL GRID -->
+<section class="section section-spacious" style="background-color: var(--bg-void);">
+  <div class="container">
+    <div class="services-architectural-grid">
+      <% services.forEach((srv, index) => { %>
+        <article class="service-card-clean">
+          <div style="height: 220px; overflow: hidden; margin: -40px -40px 30px -40px; position: relative; border-bottom: 1px solid var(--border-subtle);">
+            <img src="<%= srv.image %>" alt="<%= srv.title %>" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(4,9,20,0.85) 100%);"></div>
+            <span style="position: absolute; top: 16px; left: 16px; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-champagne); background: rgba(2,5,11,0.75); padding: 4px 10px; border: 1px solid var(--border-hairline);">
+              Service 0<%= index + 1 %>
+            </span>
+          </div>
+
+          <h2 class="service-title"><%= srv.title %></h2>
+          <p class="service-desc"><%= srv.description %></p>
+
+          <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <a href="https://wa.me/971585441134?text=Hello%20Oneness%20Yachts,%20I%20would%20like%20to%20request%20<%= encodeURIComponent(srv.title) %>." target="_blank" class="btn-text-arrow">
+              <span>Reserve With Charter</span>
+              <span class="arrow">&rarr;</span>
+            </a>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- MARITIME SAFETY & PROTOCOL -->
+<section class="section section-spacious" style="background-color: var(--bg-primary); border-top: 1px solid var(--border-subtle);">
+  <div class="container container-narrow" style="text-align: center;">
+    <div class="eyebrow" style="justify-content: center;">Maritime Protocol</div>
+    <h2 class="editorial-title" style="margin-bottom: 24px;">Uncompromising Safety & Privacy</h2>
+    <p class="editorial-subhead" style="margin: 0 auto 40px;">
+      All vessels maintain strict classification compliance. Water sports are conducted under the continuous oversight of certified marine safety officers, accompanied by premium life safety equipment for all age groups.
+    </p>
+    <a href="/contact" class="btn-secondary">
+      Speak With Our Operations Director &rarr;
+    </a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

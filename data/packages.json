@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "corporate-yacht-charter-in-dubai",
+    "title": "Corporate Yacht Charter in Dubai",
+    "description": "Set sail on a voyage of sophistication and exclusivity with Oneness, Dubai’s premier luxury yacht provider for corporate events. Elevate executive meetings against Dubai's skyline.",
+    "image": "/assets/images/dubai-packages/corporate.jpg"
+  },
+  {
+    "slug": "sunset-cruise",
+    "title": "Sunset Cruise Dubai Marina",
+    "description": "Witness the golden Arabian sunset reflect across Dubai Marina, Ain Dubai, and Burj Al Arab with gourmet refreshments and chilled beverages.",
+    "image": "/assets/images/dubai-packages/sunset.jpg"
+  },
+  {
+    "slug": "romantic-private-dinner",
+    "title": "Romantic Private Dinner Cruise",
+    "description": "Indulge in an enchanting starlit dinner for two, complete with candlelight decor, fresh roses, live private chef courses, and fine champagne.",
+    "image": "/assets/images/dubai-packages/dinner.jpg"
+  },
+  {
+    "slug": "birthday-party",
+    "title": "VIP Birthday Party Celebration",
+    "description": "Celebrate in unmatched style with custom yacht party decorations, resident DJ sound system, celebratory live BBQ, and bespoke birthday cake.",
+    "image": "/assets/images/dubai-packages/birthday.jpg"
+  },
+  {
+    "slug": "wedding-on-yacht",
+    "title": "Luxury Yacht Wedding & Vows",
+    "description": "Exchange vows surrounded by the turquoise waters of the Arabian Gulf. Includes red carpet boarding, floral archways, champagne toast, and lavish banquet.",
+    "image": "/assets/images/dubai-packages/wedding.jpg"
+  },
+  {
+    "slug": "anniversary-celebrations",
+    "title": "Anniversary Celebrations",
+    "description": "Commemorate your love story with bespoke floral styling, personal photographer, starlit dinner, and an unforgettable cruise past Atlantis The Palm.",
+    "image": "/assets/images/dubai-packages/wedding anniversary.jpg"
+  },
+  {
+    "slug": "honeymoon-on-yacht",
+    "title": "Honeymoon on Yacht",
+    "description": "An intimate, private sanctuary on the calm seas of Dubai. Luxury master suites, private sun deck loungers, and five-star breakfast at sea.",
+    "image": "/assets/images/dubai-packages/honeymoon.jpg"
+  },
+  {
+    "slug": "private-fishing-experience",
+    "title": "Deep Sea Fishing Adventure",
+    "description": "Head into deep waters equipped with high-tech sonars, state-of-the-art fishing rods, and experienced trawling crew targeting kingfish and barracuda.",
+    "image": "/assets/images/home/fishing-adventure.jpg"
+  },
+  {
+    "slug": "valentines-day-yacht",
+    "title": "Valentine's Day Yacht Charter",
+    "description": "Surprise your loved one with Dubai’s most romantic Valentine's experience. Includes red rose bouquets, handcrafted chocolates, and private violinist.",
+    "image": "/assets/images/dubai-packages/valentine.jpg"
+  },
+  {
+    "slug": "sail-into-romance-adventure",
+    "title": "Sail into Romance & Adventure",
+    "description": "The ultimate couples experience blending thrilling jet ski rides with relaxing sunset cruising and private flybridge dinner.",
+    "image": "/assets/images/home/Couple-Dinner-Cruise.png"
+  }
+]

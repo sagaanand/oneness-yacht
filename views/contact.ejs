@@ -1,0 +1,115 @@
+<%- include('partials/header', { title: 'Private Concierge & Inquiries | Oneness Luxury Yachts Dubai', activeNav: 'contact' }) %>
+
+<!-- CONTACT HERO -->
+<section class="fleet-hero-header">
+  <div class="container">
+    <div class="eyebrow">Private Inquiries &middot; Dubai Concierge</div>
+    <h1 class="editorial-title editorial-title-lg" style="margin-bottom: 16px;">
+      CONTACT.
+    </h1>
+    <p class="editorial-subhead">
+      Our private charter team is available 24 hours a day to orchestrate your voyage, prepare custom fleet proposals, or arrange private yacht viewings in Dubai Marina.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT CONTENT & FORM -->
+<section class="section section-spacious" style="background-color: var(--bg-void);">
+  <div class="container">
+    <div class="brochure-content-split">
+      <!-- Left: Concierge Desks -->
+      <div>
+        <div class="eyebrow">Direct Communications</div>
+        <h2 class="editorial-title" style="font-size: 2.2rem; margin-bottom: 30px;">
+          The Concierge Desk
+        </h2>
+
+        <div style="display: flex; flex-direction: column; gap: 32px; margin-bottom: 50px;">
+          <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+            <span class="eyebrow" style="margin-bottom: 6px;">Direct Line</span>
+            <div style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--text-primary);">
+              <a href="tel:+971585441134">+971 58 544 1134</a>
+            </div>
+            <div style="font-size: 0.84rem; color: var(--text-tertiary); margin-top: 4px;">Direct call to senior charter specialist</div>
+          </div>
+
+          <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+            <span class="eyebrow" style="margin-bottom: 6px;">Instant Messaging</span>
+            <div style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--accent-champagne);">
+              <a href="https://wa.me/971585441134?text=Hello%20Oneness%20Yachts,%20I%20would%20like%20to%20inquire%20about%20a%20private%20charter." target="_blank">
+                WhatsApp Concierge &rarr;
+              </a>
+            </div>
+            <div style="font-size: 0.84rem; color: var(--text-tertiary); margin-top: 4px;">Average response time &lt; 5 minutes</div>
+          </div>
+
+          <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+            <span class="eyebrow" style="margin-bottom: 6px;">Written Correspondence</span>
+            <div style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-primary);">
+              <a href="mailto:charters@oneness.com">charters@oneness.com</a>
+            </div>
+            <div style="font-size: 0.84rem; color: var(--text-tertiary); margin-top: 4px;">Formal proposals & corporate agreements</div>
+          </div>
+
+          <div>
+            <span class="eyebrow" style="margin-bottom: 6px;">Marina Location</span>
+            <div style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-primary); line-height: 1.5;">
+              Dubai Marina Yacht Club<br>
+              Marina Promenade, Dubai, United Arab Emirates
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Private Charter Inquiry Form -->
+      <div class="charter-form-wrapper" style="padding: 48px; max-width: 100%;">
+        <div class="eyebrow" style="margin-bottom: 8px;">Private Request</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--text-primary); margin-bottom: 24px;">
+          Plan Your Charter
+        </h3>
+
+        <form class="inquiry-form" id="contactInquiryForm">
+          <div class="form-alert-box"></div>
+
+          <div class="form-grid-two">
+            <div class="form-field">
+              <label class="form-label" for="cntName">Full Name *</label>
+              <input type="text" id="cntName" name="name" class="form-input" placeholder="Your Name" required>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cntPhone">Phone Number *</label>
+              <input type="tel" id="cntPhone" name="phone" class="form-input" placeholder="+971 50 000 0000" required>
+            </div>
+          </div>
+
+          <div class="form-grid-two">
+            <div class="form-field">
+              <label class="form-label" for="cntEmail">Email Address</label>
+              <input type="email" id="cntEmail" name="email" class="form-input" placeholder="name@domain.com">
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cntDate">Charter Date</label>
+              <input type="date" id="cntDate" name="date" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="cntGuests">Guests & Preferred Vessel</label>
+            <input type="text" id="cntGuests" name="guests" class="form-input" placeholder="e.g. 12 Guests aboard Santorini 115 FT">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="cntNotes">Private Notes & Occasion</label>
+            <textarea id="cntNotes" name="notes" class="form-textarea" placeholder="Describe the occasion, preferred cruising routes, culinary requests, or entertainment needs..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%;">
+            Request Confidential Proposal &rarr;
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

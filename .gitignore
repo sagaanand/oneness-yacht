@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Logs & Runtime
+*.log
+inquiries.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & Secrets
+.env
+.env.*
+*.local
+Files/form-core/common/email.php
+Files/form-core/twilio/Send-form.php
+Files/form-core/twilio/verify.php
+Files/form-core/google-sheet/
+
+# Large Meeting Recordings & Session Dumps
+Files/2025-06-10*
+Files/2025-06-11*
+Files/*.html
+Files/cPanel*
+*.mp4
+*.m4a
+
+# OS Files
+.DS_Store
+Thumbs.db
