@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: yacht.title + ' (' + yacht.lengthFt + ' FT) | Oneness Luxury Yachts ' + (yacht.location === 'Miami' ? 'Miami' : 'Dubai'), activeNav: 'fleet' }) %>
+<%- include('partials/header', { title: yacht.title + ' (' + yacht.lengthFt + ' FT) | Oneness Luxury Yachts ' + (yacht.location === 'Miami' ? 'Miami' : 'Dubai'), activeNav: 'fleet', bodyClass: 'has-sticky-bar' }) %>
 
 <!-- MASSIVE FULL-WIDTH BROCHURE HERO -->
 <section class="brochure-hero">
@@ -71,7 +71,7 @@
             Technical Specifications
           </h3>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.95rem;">
+          <div class="yacht-tech-specs-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.95rem;">
             <% Object.entries(yacht.specs).forEach(([key, val]) => { %>
               <% if (val && !key.toLowerCase().includes('capacity') && !key.toLowerCase().includes('size')) { %>
                 <div style="padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle);">
@@ -85,7 +85,7 @@
       </div>
 
       <!-- Right: Direct Charter Request Drawer -->
-      <div style="background-color: var(--bg-surface); border: 1px solid var(--border-hairline); padding: 40px; position: sticky; top: 120px;">
+      <div class="yacht-detail-inquiry-box" style="background-color: var(--bg-surface); border: 1px solid var(--border-hairline); padding: 40px; position: sticky; top: 120px;">
         <div class="eyebrow" style="margin-bottom: 8px;">Private Booking</div>
         <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--text-primary); margin-bottom: 16px;">
           Charter This Vessel
@@ -138,7 +138,7 @@
       <div class="eyebrow">Visual Journey</div>
       <h2 class="editorial-title" style="margin-bottom: 40px;">Vessel Gallery</h2>
 
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+      <div class="yacht-gallery-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
         <% (yacht.images && yacht.images.length > 0 ? yacht.images : [yacht.primaryImage]).forEach((img, idx) => { %>
           <div class="gallery-photo-card" style="position: relative; height: 320px; overflow: hidden; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); cursor: pointer;" onclick="openLightbox('<%= img %>')">
             <img src="<%= img %>" alt="<%= yacht.title %> photography <%= idx + 1 %>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-cinematic);" loading="lazy" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
@@ -161,7 +161,7 @@
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 16px;">
+    <div class="sticky-bar-actions" style="display: flex; align-items: center; gap: 16px;">
       <a href="#yachtDetailInquiryForm" class="btn-primary" style="padding: 12px 28px; font-size: 0.75rem;">
         Request This Yacht &rarr;
       </a>

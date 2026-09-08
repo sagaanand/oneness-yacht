@@ -16,10 +16,10 @@
   <!-- Superyacht Design System Stylesheet -->
   <link rel="stylesheet" href="/css/luxury-theme.css">
 </head>
-<body>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
 
   <!-- Floating Cinematic Header -->
-  <header class="site-header" id="siteHeader">
+  <header class="site-header <%= typeof bodyClass !== 'undefined' && bodyClass.includes('fleet-white-page') ? 'header-light' : '' %>" id="siteHeader">
     <div class="container">
       <div class="header-inner">
         <!-- Logo -->

@@ -18,15 +18,15 @@
   <div class="container">
     <div style="display: flex; flex-direction: column; gap: 80px;">
       <% packages.forEach((pkg, index) => { %>
-        <article style="display: grid; grid-template-columns: <%= index % 2 === 0 ? '1.2fr 1fr' : '1fr 1.2fr' %>; gap: 60px; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 80px;">
+        <article class="package-editorial-row" style="display: grid; grid-template-columns: <%= index % 2 === 0 ? '1.2fr 1fr' : '1fr 1.2fr' %>; gap: 60px; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 80px;">
           <!-- Media Column -->
-          <div style="order: <%= index % 2 === 0 ? 1 : 2 %>; position: relative; height: 460px; overflow: hidden; border: 1px solid var(--border-hairline);">
+          <div class="package-media-col" style="order: <%= index % 2 === 0 ? 1 : 2 %>; position: relative; height: 460px; overflow: hidden; border: 1px solid var(--border-hairline);">
             <img src="<%= pkg.image %>" alt="<%= pkg.title %>" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
             <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(2,5,11,0.7) 100%);"></div>
           </div>
 
           <!-- Content Column -->
-          <div style="order: <%= index % 2 === 0 ? 2 : 1 %>;">
+          <div class="package-content-col" style="order: <%= index % 2 === 0 ? 2 : 1 %>;">
             <div class="eyebrow" style="margin-bottom: 12px;">Curated Itinerary 0<%= index + 1 %></div>
             <h2 class="editorial-title" style="font-size: 2.2rem; margin-bottom: 20px;">
               <%= pkg.title %>
