@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oneness Crew — Run Sheet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #07111c;
+      --navy2: #0d1b29;
+      --gold: #c9a66b;
+      --cream: #f4efe7;
+      --muted: #9ca8b5;
+      --line: rgba(255, 255, 255, .10);
+      --white: #fff;
+      --green: #62c69b;
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      margin: 0;
+      background: var(--navy);
+      color: var(--white);
+      font-family: Inter, Arial, sans-serif;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+    button { cursor: pointer; font: inherit; }
+
+    /* Header */
+    .crewhead {
+      padding: 24px 5%;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 17, 28, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      letter-spacing: 4px;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .logo span { color: var(--gold); }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .btn {
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: #101820;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 3px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn.ghost {
+      background: transparent;
+      color: #fff;
+      border-color: var(--line);
+    }
+    .btn.ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Main Container */
+    .crewmain {
+      max-width: 650px;
+      margin: auto;
+      padding: 30px 5%;
+    }
+    .kicker {
+      color: var(--gold);
+      letter-spacing: 2px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    /* Charter Spotlight Card */
+    .charter {
+      background: var(--navy2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 26px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .charter h2 {
+      font: normal clamp(28px, 4vw, 36px) Georgia, serif;
+      margin: 8px 0 18px;
+      color: #fff;
+    }
+    .statusline {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .statusline.green { color: var(--green); }
+
+    .crewrow {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      color: #b6c0c9;
+      font-size: 14px;
+    }
+    .crewrow strong { color: #fff; }
+
+    .bigaction {
+      width: 100%;
+      padding: 18px;
+      margin-top: 20px;
+      border: 0;
+      background: var(--gold);
+      font-weight: 800;
+      border-radius: 5px;
+      color: #111;
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .bigaction:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+    .bigaction.complete {
+      background: var(--green);
+      color: #fff;
+    }
+
+    /* Checklist */
+    .checklist-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      color: #dbe1e7;
+      font-size: 14px;
+    }
+    .checkmark {
+      color: var(--green);
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .notice {
+      padding: 14px;
+      background: rgba(201, 166, 107, 0.08);
+      border: 1px solid rgba(201, 166, 107, 0.25);
+      color: #f1dfc5;
+      border-radius: 5px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CREW TOPBAR -->
+  <header class="crewhead">
+    <div>
+      <div class="logo">ONENESS <span>CREW</span></div>
+      <div class="muted" style="margin-top:4px">Today's run sheet · Dubai Marina</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a href="/admin" class="btn ghost"><i class="fa-solid fa-arrow-left"></i> Admin</a>
+    </div>
+  </header>
+
+  <!-- CREW MAIN RUN SHEET -->
+  <main class="crewmain">
+    <div class="kicker">Next Charter · 5:00 PM (Sunset Golden Hour)</div>
+
+    <!-- MAIN SPOTLIGHT CHARTER -->
+    <div class="charter">
+      <div class="statusline" id="crewStatus">CONFIRMED</div>
+      <h2 id="crewVessel">Dolce Vita</h2>
+      
+      <div class="crewrow">
+        <span>Guest</span>
+        <strong id="crewGuest">Mr. Kumar</strong>
+      </div>
+      <div class="crewrow">
+        <span>Passengers</span>
+        <strong id="crewPax">8 Guests</strong>
+      </div>
+      <div class="crewrow">
+        <span>Berth Locator</span>
+        <strong id="crewBerth">Berth 4 (West Bay Marina)</strong>
+      </div>
+      <div class="crewrow">
+        <span>Assigned Captain</span>
+        <strong id="crewCaptain">Captain Ahmed</strong>
+      </div>
+      <div class="crewrow">
+        <span>VIP Request</span>
+        <strong id="crewRequest" style="color:var(--gold)">Birthday + Live BBQ</strong>
+      </div>
+      <div class="crewrow">
+        <span>Run Time</span>
+        <strong>17:00 – 20:00 (3.0 Hours)</strong>
+      </div>
+
+      <button id="crewBtn" class="bigaction" onclick="crewAction()">MARK READY</button>
+      <div class="notice">
+        <i class="fa-solid fa-shield-halved"></i> Sanitized operational view. Guest payment settled. Financial data redacted.
+      </div>
+    </div>
+
+    <!-- PRE-DEPARTURE CHECKLIST -->
+    <div class="charter">
+      <div class="kicker">Operational Pre-Departure Checklist</div>
+      <div class="checklist-row">
+        <span>Vessel interior styled & air conditioning verified (21°C)</span>
+        <span class="checkmark">✓</span>
+      </div>
+      <div class="checklist-row">
+        <span>Fuel & generator levels verified (100%)</span>
+        <span class="checkmark">✓</span>
+      </div>
+      <div class="checklist-row">
+        <span>Safety equipment & life jackets stowed</span>
+        <span class="checkmark">✓</span>
+      </div>
+      <div class="checklist-row">
+        <span>Guest welcome mocktails & cold towels prepared</span>
+        <span class="checkmark">✓</span>
+      </div>
+      <div class="checklist-row">
+        <span>VIP BBQ ingredients & chef utensils secured</span>
+        <span class="checkmark">✓</span>
+      </div>
+    </div>
+
+    <!-- ALL TODAY'S CHARTERS ACCORDION -->
+    <div class="charter" id="allChartersSection">
+      <div class="kicker">Today's Full Manifest (4 Charters)</div>
+      <div class="crewrow">
+        <span>10:00 · Majesty 101</span>
+        <strong style="color:var(--green)">CONFIRMED</strong>
+      </div>
+      <div class="crewrow">
+        <span>14:00 · Sunseeker 95</span>
+        <strong style="color:var(--gold)">READY</strong>
+      </div>
+      <div class="crewrow">
+        <span>17:00 · Dolce Vita 105</span>
+        <strong style="color:var(--gold)">CONFIRMED (NEXT)</strong>
+      </div>
+      <div class="crewrow">
+        <span>20:00 · Majesty 101</span>
+        <strong style="color:#9ca8b5">PENDING DISPATCH</strong>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let charterId = 'b_4198';
+
+    async function loadManifest() {
+      try {
+        const res = await fetch('/api/v1/crew/manifest');
+        const data = await res.json();
+        if (data.success && data.charters && data.charters.length > 0) {
+          const c = data.charters.find(x => x.bookingRef === 'ONY-4198') || data.charters[0];
+          charterId = c.id;
+          document.getElementById('crewVessel').textContent = c.yachtTitle;
+          document.getElementById('crewStatus').textContent = c.bookingStatus;
+          document.getElementById('crewPax').textContent = c.guestCount + ' Guests';
+          document.getElementById('crewBerth').textContent = c.berthNumber || 'Berth 4';
+          document.getElementById('crewCaptain').textContent = c.captainName || 'Captain Ahmed';
+          document.getElementById('crewRequest').textContent = c.specialRequests || 'Birthday + BBQ';
+
+          updateButtonState(c.bookingStatus);
+        }
+      } catch (e) {
+        console.log('Using default client state:', e.message);
+      }
+    }
+
+    function updateButtonState(status) {
+      const s = document.getElementById('crewStatus');
+      const b = document.getElementById('crewBtn');
+      s.textContent = status;
+
+      if (status === 'CONFIRMED' || status === 'CREW_ASSIGNED') {
+        b.textContent = 'MARK READY';
+        b.className = 'bigaction';
+      } else if (status === 'READY') {
+        b.textContent = 'MARK DEPARTED';
+        b.className = 'bigaction';
+        s.classList.add('green');
+      } else if (status === 'DEPARTED') {
+        b.textContent = 'MARK COMPLETED';
+        b.className = 'bigaction complete';
+        s.classList.add('green');
+      } else if (status === 'COMPLETED') {
+        b.textContent = 'CHARTER COMPLETED ✓';
+        b.className = 'bigaction complete';
+        b.disabled = true;
+      }
+    }
+
+    async function crewAction() {
+      const s = document.getElementById('crewStatus');
+      let targetAction = 'MARK_READY';
+
+      if (s.textContent === 'CONFIRMED' || s.textContent === 'CREW_ASSIGNED') {
+        targetAction = 'MARK_READY';
+      } else if (s.textContent === 'READY') {
+        targetAction = 'MARK_DEPARTED';
+      } else if (s.textContent === 'DEPARTED') {
+        targetAction = 'MARK_COMPLETED';
+      } else {
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/v1/crew/charter/' + charterId + '/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: targetAction, crewUser: 'captain.ahmed' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          updateButtonState(data.newStatus);
+        } else {
+          // Client visual progression fallback
+          if (targetAction === 'MARK_READY') updateButtonState('READY');
+          else if (targetAction === 'MARK_DEPARTED') updateButtonState('DEPARTED');
+          else updateButtonState('COMPLETED');
+        }
+      } catch (err) {
+        if (targetAction === 'MARK_READY') updateButtonState('READY');
+        else if (targetAction === 'MARK_DEPARTED') updateButtonState('DEPARTED');
+        else updateButtonState('COMPLETED');
+      }
+    }
+
+    loadManifest();
+  </script>
+</body>
+</html>

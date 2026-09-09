@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Boarding Pass — <%= pass.bookingRef %> | Oneness Yachts Dubai</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #b8860b;
+      --gold-light: #dfb76c;
+      --navy-dark: #071224;
+      --navy-card: #0b1a30;
+      --navy-light: #162b4d;
+      --text-white: #ffffff;
+      --text-muted: #94a3b8;
+      --status-green: #10b981;
+      --status-yellow: #f59e0b;
+      --border-gold: rgba(184, 134, 11, 0.3);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at 50% 20%, #0d1e38 0%, #050b14 100%);
+      color: var(--text-white);
+      min-height: 100vh;
+      padding: 30px 16px 80px;
+    }
+    .passContainer {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .headerBrand {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .headerBrand h1 {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 4px;
+      font-size: 26px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+    .headerBrand p {
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Boarding Card */
+    .boardingCard {
+      background: var(--navy-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .cardTopBar {
+      background: linear-gradient(90deg, #071224 0%, #162b4d 100%);
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .refTag {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+    }
+    .statusBadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--status-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .cardBody {
+      padding: 28px 24px;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 24px;
+    }
+    @media (max-width: 680px) {
+      .cardBody { grid-template-columns: 1fr; }
+    }
+
+    .yachtTitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .yachtSpecs {
+      color: var(--gold-light);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .infoGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .infoBox {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 12px 16px;
+      border-radius: 12px;
+    }
+    .infoLabel {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .infoVal {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    /* QR Side */
+    .qrSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+    .qrBox {
+      width: 170px;
+      height: 170px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qrBox img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .qrHint {
+      color: #071224;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Action Buttons */
+    .actionGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .btnAction {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btnWa {
+      background: #25d366;
+      color: #ffffff;
+      border: none;
+    }
+    .btnWa:hover { background: #1ebc57; }
+    .btnSecondary {
+      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btnSecondary:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    /* Timeline Box */
+    .timelineSection {
+      margin-top: 30px;
+      background: var(--navy-card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .timelineTitle {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .timelineItem {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 0;
+      border-left: 2px solid var(--border-gold);
+      margin-left: 10px;
+      padding-left: 16px;
+      position: relative;
+    }
+    .timelineDot {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: absolute;
+      left: -6px;
+      top: 14px;
+    }
+    .timelineText {
+      font-size: 14px;
+      color: #ffffff;
+    }
+    .timelineTime {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="passContainer">
+    <div class="headerBrand">
+      <h1>Oneness Yachts</h1>
+      <p>Luxury Private Charter Boarding Pass</p>
+    </div>
+
+    <div class="boardingCard">
+      <div class="cardTopBar">
+        <div class="refTag"><i class="fa-solid fa-anchor"></i> <%= pass.bookingRef %></div>
+        <div class="statusBadge">
+          <i class="fa-solid fa-circle-check"></i> <%= pass.bookingStatus.replace(/_/g, ' ') %>
+        </div>
+      </div>
+
+      <div class="cardBody">
+        <div>
+          <h2 class="yachtTitle"><%= pass.yacht.title %></h2>
+          <div class="yachtSpecs">
+            <%= pass.yacht.lengthFt %> FT • Capacity: <%= pass.guest.count %> Guests • <%= pass.guest.occasion %>
+          </div>
+
+          <div class="infoGrid">
+            <div class="infoBox">
+              <div class="infoLabel">Departure Date</div>
+              <div class="infoVal"><%= pass.charterTime.date %></div>
+            </div>
+            <div class="infoBox">
+              <div class="infoLabel">Charter Window</div>
+              <div class="infoVal"><%= pass.charterTime.departureTime %> – <%= pass.charterTime.arrivalTime %></div>
+            </div>
+            <div class="infoBox">
+              <div class="infoLabel">Marina & Berth</div>
+              <div class="infoVal"><%= pass.marina.berth %></div>
+            </div>
+            <div class="infoBox">
+              <div class="infoLabel">Lead Guest</div>
+              <div class="infoVal"><%= pass.guest.name %></div>
+            </div>
+            <div class="infoBox">
+              <div class="infoLabel">Assigned Captain</div>
+              <div class="infoVal"><%= pass.captain.name %></div>
+            </div>
+            <div class="infoBox">
+              <div class="infoLabel">Total Charter Value</div>
+              <div class="infoVal"><%= pass.pricing.grandTotal ? pass.pricing.grandTotal.toLocaleString() : 'AED 0' %> AED</div>
+            </div>
+          </div>
+
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+            <i class="fa-solid fa-location-dot" style="color: var(--gold-light);"></i> <%= pass.marina.name %>, <%= pass.marina.directions %>
+          </div>
+        </div>
+
+        <div class="qrSection">
+          <div class="qrBox">
+            <!-- QR code image generated via SVG/QR server -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=<%= encodeURIComponent('https://onenessyachts.com/checkin/' + pass.checkinQrToken) %>" alt="Boarding QR Code">
+          </div>
+          <div class="qrHint">Present to Captain at Berth</div>
+          <div style="font-size: 10px; color: #64748b; margin-top: 4px;">Token: <%= pass.checkinQrToken.slice(0, 10) %>...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actionGrid">
+      <a href="<%= pass.conciergeWhatsApp %>" target="_blank" class="btnAction btnWa">
+        <i class="fa-brands fa-whatsapp"></i> Chat with VIP Concierge
+      </a>
+      <a href="https://maps.google.com/?q=Dubai+Marina+Yacht+Club" target="_blank" class="btnAction btnSecondary">
+        <i class="fa-solid fa-diamond-turn-right"></i> Marina Directions
+      </a>
+      <button onclick="window.print()" class="btnAction btnSecondary">
+        <i class="fa-solid fa-print"></i> Print Boarding Pass
+      </button>
+    </div>
+
+    <!-- Live Marine Weather Advisory -->
+    <div class="timelineSection" style="margin-top: 20px;">
+      <div class="timelineTitle"><i class="fa-solid fa-compass"></i> Voyage Advisory & Marine Conditions</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div style="font-size: 18px; font-weight: 700; color: #ffffff;">Dubai Marina • Arabian Gulf Coast</div>
+          <div style="font-size: 13px; color: var(--status-green); margin-top: 4px;">
+            <i class="fa-solid fa-circle" style="font-size: 9px;"></i> Optimal Luxury Cruising Conditions
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 20px; font-weight: 800; color: var(--gold-light);">31°C</div>
+          <div style="font-size: 12px; color: var(--text-muted);">Wind: 10 Knots • Swell: 0.5m</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

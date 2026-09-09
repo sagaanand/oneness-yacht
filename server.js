@@ -6,7 +6,10 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const { securityHeaders } = require('./src/middleware/security');
+
 // Middleware
+app.use(securityHeaders);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -189,8 +192,52 @@ subDirs.forEach((folder) => {
   });
 });
 
+const apiV1Router = require('./src/routes/apiV1');
+const boardingPassService = require('./src/services/boardingPassService');
+const bookingService = require('./src/services/bookingService');
+
 // ============================================================================
-// API ENDPOINTS
+// ENTERPRISE OPERATIONAL ROUTES & PORTALS
+// ============================================================================
+
+// Customer Frictionless Boarding Pass
+app.get('/my-charter/:token', async (req, res) => {
+  const pass = await boardingPassService.getBoardingPass(req.params.token);
+  if (!pass.success) {
+    return res.status(404).render('index', { activeNav: 'home', yachts });
+  }
+  res.render('my-charter', { pass });
+});
+
+// Crew Sanitized QR Scan Check-in
+app.get('/checkin/:token', async (req, res) => {
+  const checkin = await boardingPassService.verifyCheckinToken(req.params.token);
+  res.render('checkin-verify', { checkin, token: req.params.token });
+});
+
+// Admin Operations OS
+app.get(['/admin', '/admin/operations'], async (req, res) => {
+  const manifest = await bookingService.getTodaysManifest();
+  res.render('admin/operations', {
+    activeNav: 'admin',
+    todayCharters: manifest.todayCharters,
+    metrics: manifest.metrics,
+    nextCharter: manifest.nextCharter
+  });
+});
+
+// Crew Mobile Run Sheet Portal
+app.get(['/crew', '/crew/portal'], (req, res) => {
+  res.render('crew/portal', { activeNav: 'crew' });
+});
+
+// ============================================================================
+// ENTERPRISE API V1 ENGINE
+// ============================================================================
+app.use('/api/v1', apiV1Router);
+
+// ============================================================================
+// LEGACY / RETRO-COMPATIBLE API ENDPOINTS
 // ============================================================================
 
 // API: Get yachts list with parsed numeric pricing
@@ -329,11 +376,41 @@ app.use((req, res) => {
   res.status(404).render('index', { activeNav: 'home', yachts });
 });
 
-// Start Server
-app.listen(PORT, () => {
+// Global Enterprise Error Handler
+app.use((err, req, res, next) => {
+  console.error(`[UNHANDLED ERROR] ${req.method} ${req.url}:`, err);
+  if (res.headersSent) return next(err);
+  if (req.path.startsWith('/api/')) {
+    return res.status(err.status || 500).json({
+      success: false,
+      error: process.env.NODE_ENV === 'production' ? 'Internal server error.' : (err.message || 'Server error.')
+    });
+  }
+  res.status(500).render('index', { activeNav: 'home', yachts });
+});
+
+// Start Server & Background Sweeper
+const holdService = require('./src/services/holdService');
+const holdSweeperInterval = setInterval(async () => {
+  try {
+    const sweep = await holdService.sweepExpiredHolds();
+    if (sweep && sweep.sweptCount > 0) {
+      console.log(`[HOLD SWEEPER] Auto-swept ${sweep.sweptCount} expired checkout hold(s).`);
+    }
+  } catch (e) {
+    console.error('[HOLD SWEEPER] Error during hold sweep:', e.message);
+  }
+}, 60000);
+if (holdSweeperInterval.unref) holdSweeperInterval.unref();
+
+const server = app.listen(PORT, () => {
   console.log(`=======================================================`);
   console.log(`  ONENESS YACHTS - NODE.JS (EXPRESS + EJS) RUNNING`);
   console.log(`  Local URL: http://localhost:${PORT}`);
   console.log(`  Yachts in memory: ${yachts.length}`);
   console.log(`=======================================================`);
 });
+
+module.exports = { app, server };
+
+

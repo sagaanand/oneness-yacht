@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berth Check-In Verification | Oneness Yachts Operations</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #b8860b;
+      --navy: #0b1a30;
+      --green: #10b981;
+      --red: #ef4444;
+      --card-bg: #112240;
+      --border: rgba(255,255,255,0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #071224;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .checkinCard {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+    .statusIcon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.15);
+      border: 2px solid var(--green);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 18px;
+    }
+    .statusIcon.invalid {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--red);
+      color: var(--red);
+    }
+    .badgeRef {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #dfb76c;
+      margin-bottom: 6px;
+    }
+    .badgeSub {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+    .detailsBox {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: left;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .detailRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .detailLabel {
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    .detailVal {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .btnBoard {
+      width: 100%;
+      background: var(--green);
+      color: #ffffff;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .btnBoard:hover { background: #059669; }
+    .btnBoard:disabled { background: #334155; cursor: not-allowed; }
+
+    .checkedBanner {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--green);
+      color: #6ee7b7;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="checkinCard">
+    <% if (checkin.valid) { %>
+      <div class="statusIcon">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div class="badgeRef"><%= checkin.bookingRef %></div>
+      <div class="badgeSub">Valid Boarding Pass Verified</div>
+
+      <div class="detailsBox">
+        <div class="detailRow">
+          <span class="detailLabel">Charter Vessel</span>
+          <span class="detailVal"><%= checkin.yachtTitle %> (<%= checkin.lengthFt %> FT)</span>
+        </div>
+        <div class="detailRow">
+          <span class="detailLabel">Departure Time</span>
+          <span class="detailVal"><%= checkin.departureDate %> @ <%= checkin.departureTime %></span>
+        </div>
+        <div class="detailRow">
+          <span class="detailLabel">Marina Berth</span>
+          <span class="detailVal" style="color: #dfb76c;"><%= checkin.berthNumber %></span>
+        </div>
+        <div class="detailRow">
+          <span class="detailLabel">Lead Guest</span>
+          <span class="detailVal"><%= checkin.guestName %></span>
+        </div>
+        <div class="detailRow">
+          <span class="detailLabel">Manifest Count</span>
+          <span class="detailVal"><%= checkin.guestCount %> Passengers</span>
+        </div>
+        <% if (checkin.occasion) { %>
+        <div class="detailRow">
+          <span class="detailLabel">Charter Event</span>
+          <span class="detailVal"><%= checkin.occasion %></span>
+        </div>
+        <% } %>
+      </div>
+
+      <div id="checkinActionArea">
+        <% if (checkin.alreadyCheckedIn) { %>
+          <div class="checkedBanner">
+            <i class="fa-solid fa-circle-check"></i> GUEST EMBARKED AT BERTH<br>
+            <span style="font-size: 11px; font-weight: normal; color: #a7f3d0;"><%= checkin.checkedInAt %></span>
+          </div>
+        <% } else { %>
+          <button id="btnConfirmBoarding" class="btnBoard" onclick="confirmBoarding()">
+            <i class="fa-solid fa-person-walking-luggage"></i> Confirm Guest Embarkation
+          </button>
+        <% } %>
+      </div>
+
+    <% } else { %>
+      <div class="statusIcon invalid">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <div class="badgeRef" style="color: #ef4444;">Access Denied</div>
+      <div class="badgeSub"><%= checkin.reason || 'Invalid QR Boarding Pass' %></div>
+      <p style="color: #94a3b8; font-size: 14px;">
+        Please direct the guest to the Marina Office or Oneness VIP Concierge Desk (+971 58 544 1134).
+      </p>
+    <% } %>
+  </div>
+
+  <script>
+    async function confirmBoarding() {
+      const btn = document.getElementById('btnConfirmBoarding');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Confirming Embarkation...';
+
+      try {
+        const token = '<%= token %>';
+        const res = await fetch(`/api/v1/checkin/${token}/confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('checkinActionArea').innerHTML = `
+            <div class="checkedBanner">
+              <i class="fa-solid fa-circle-check"></i> GUEST EMBARKED AT BERTH<br>
+              <span style="font-size: 11px; font-weight: normal; color: #a7f3d0;">Timestamp: ${data.checkedInAt || new Date().toLocaleTimeString()}</span>
+            </div>
+          `;
+        } else {
+          alert(data.error || 'Failed to confirm embarkation.');
+          btn.disabled = false;
+        }
+      } catch (err) {
+        alert('Network error confirming embarkation.');
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+</html>

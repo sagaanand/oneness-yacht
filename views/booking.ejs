@@ -97,60 +97,313 @@
     line-height: 1.6;
   }
 
-  /* Wizard Steps Nav (Light Theme) */
+  /* Wizard Steps Nav (Matching Demo Design) */
   .wizardProgress {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 30px 0 45px;
-    gap: 12px;
+    margin: 28px 0 40px;
+    gap: 16px;
     flex-wrap: wrap;
   }
 
   .stepItem {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     background: #ffffff;
-    border: 1px solid var(--card-border);
-    padding: 10px 22px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-secondary);
+    border: 1px solid #e2e8f0;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    user-select: none;
   }
 
   .stepItem:hover {
     border-color: var(--gold);
     color: var(--navy-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   .stepItem.active {
-    background: var(--navy-dark);
-    border-color: var(--navy-dark);
+    background: #0b1a30;
+    border-color: #0b1a30;
     color: #ffffff;
-    box-shadow: 0 4px 15px rgba(11, 26, 48, 0.2);
+    box-shadow: 0 4px 18px rgba(11, 26, 48, 0.25);
   }
 
   .stepNumber {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: #f1f5f9;
-    color: var(--navy-dark);
+    color: #1e293b;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 800;
+    transition: all 0.2s ease;
   }
 
   .stepItem.active .stepNumber {
-    background: #d4af37;
-    color: #000000;
+    background: #dfa031;
+    color: #0b1a30;
+  }
+
+  /* Wizard Step Transition Containers */
+  .wizardStep {
+    animation: fadeInStep 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes fadeInStep {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Step Navigation Footers & Buttons */
+  .stepNavFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stepNavInfo {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .stepSelectedYachtBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--navy-dark);
+  }
+
+  .btnStepNext {
+    background: #0b1a30;
+    color: #ffffff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(11, 26, 48, 0.15);
+    margin-left: auto;
+  }
+
+  .btnStepNext:hover {
+    background: #142845;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(11, 26, 48, 0.22);
+  }
+
+  .btnStepPrev {
+    background: #ffffff;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+  }
+
+  .btnStepPrev:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: var(--navy-dark);
+  }
+
+  .btnStepConfirm {
+    background: linear-gradient(135deg, #0b1a30 0%, #162b4d 100%);
+    color: #dfb76c;
+    border: 1px solid var(--gold);
+    padding: 16px 36px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 22px rgba(184, 134, 11, 0.25);
+    margin-left: auto;
+  }
+
+  .btnStepConfirm:hover {
+    background: linear-gradient(135deg, #102340 0%, #1c355e 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(184, 134, 11, 0.35);
+  }
+
+  /* Step 4 Quote & Review Styling */
+  .quoteReviewGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 768px) {
+    .quoteReviewGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .quoteBlock {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 22px;
+  }
+
+  .quoteBlockTitle {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--navy-dark);
+    font-weight: 800;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .quoteItemRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 14px;
+    color: #475569;
+  }
+
+  .quoteItemRow:last-child {
+    border-bottom: none;
+  }
+
+  .quoteItemRow strong {
+    color: var(--navy-dark);
+  }
+
+  .quoteTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0 6px;
+    margin-top: 10px;
+    border-top: 2px solid #e2e8f0;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--navy-dark);
+  }
+
+  .quoteTotalRow .grandAmount {
+    color: var(--gold);
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  .step4HoldBanner {
+    background: linear-gradient(135deg, #0b1a30 0%, #162b4d 100%);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.15);
+  }
+
+  .step4HoldIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(184, 134, 11, 0.2);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .step4TimerBadge {
+    background: rgba(184, 134, 11, 0.25);
+    border: 1px solid var(--gold);
+    color: #ffffff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: 1px;
+  }
+
+  .guaranteePillRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .guaranteePillRow {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .guaranteePill {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .guaranteePill i {
+    color: var(--gold);
+    font-size: 16px;
   }
 
   /* Grid Layout */
@@ -852,23 +1105,21 @@
       <h1 class="bookingTitle">Reserve Your Private Yacht Experience</h1>
       <p class="bookingSubtitle">
         Explore Dubai & Miami waters in supreme luxury. Select your yacht, customize VIP add-ons, view live rates, and receive instant booking confirmation.
-      </p>
-
-      <!-- Step Indicator -->
+      </p>      <!-- Step Indicator -->
       <div class="wizardProgress">
-        <div class="stepItem active" onclick="scrollToSection('step-yacht')">
+        <div class="stepItem active" data-step="1" onclick="goToStep(1)">
           <span class="stepNumber">1</span>
           <span>Charter & Fleet</span>
         </div>
-        <div class="stepItem" onclick="scrollToSection('step-addons')">
+        <div class="stepItem" data-step="2" onclick="goToStep(2)">
           <span class="stepNumber">2</span>
           <span>Luxury Add-ons</span>
         </div>
-        <div class="stepItem" onclick="scrollToSection('step-guest')">
+        <div class="stepItem" data-step="3" onclick="goToStep(3)">
           <span class="stepNumber">3</span>
           <span>Guest Details</span>
         </div>
-        <div class="stepItem" onclick="scrollToSection('step-summary')">
+        <div class="stepItem" data-step="4" onclick="goToStep(4)">
           <span class="stepNumber">4</span>
           <span>Instant Quote</span>
         </div>
@@ -878,244 +1129,429 @@
     <!-- Main Engine Layout -->
     <div class="bookingLayout">
 
-      <!-- LEFT COLUMN: Booking Config & Fleet -->
+      <!-- LEFT COLUMN: Booking Wizard Steps -->
       <div class="bookingFormsCol">
 
-        <!-- STEP 1: Charter Parameters -->
-        <div class="engineCard" id="step-yacht" data-aos="fade-up">
-          <div class="cardHeader">
-            <div class="cardHeaderIcon"><i class="fa-solid fa-compass"></i></div>
-            <div>
-              <h2 class="cardHeaderTitle">1. Charter Preferences</h2>
-              <p class="cardHeaderSubtitle">Select your destination, charter date, time slot, and cruise duration.</p>
+        <!-- ==================== STEP 1: CHARTER & FLEET ==================== -->
+        <div class="wizardStep" id="stepView1">
+          <!-- STEP 1A: Charter Parameters -->
+          <div class="engineCard" id="step-yacht" data-aos="fade-up">
+            <div class="cardHeader">
+              <div class="cardHeaderIcon"><i class="fa-solid fa-compass"></i></div>
+              <div>
+                <h2 class="cardHeaderTitle">1. Charter Preferences</h2>
+                <p class="cardHeaderSubtitle">Select your destination, charter date, time slot, and cruise duration.</p>
+              </div>
+            </div>
+
+            <div class="formGrid2">
+              <div class="fieldGroup">
+                <label class="fieldLabel">Destination</label>
+                <select id="bookingDestination" class="fieldSelect" onchange="updateSummary()">
+                  <option value="Dubai Marina, UAE">Dubai Marina & Palm Jumeirah (UAE)</option>
+                  <option value="Miami, FL">Miami Biscayne Bay (Florida, USA)</option>
+                </select>
+              </div>
+
+              <div class="fieldGroup">
+                <label class="fieldLabel">Charter Date</label>
+                <input type="date" id="bookingDate" class="fieldInput" onchange="updateSummary()">
+              </div>
+            </div>
+
+            <div class="formGrid2">
+              <div class="fieldGroup">
+                <label class="fieldLabel">Cruise Time Slot</label>
+                <select id="bookingTimeSlot" class="fieldSelect" onchange="updateSummary()">
+                  <option value="Morning Breeze (09:00 - 13:00)">Morning Breeze (09:00 - 13:00)</option>
+                  <option value="Sunset Golden Hour (16:00 - 19:00)" selected>Sunset Golden Hour (16:00 - 19:00) ★ Recommended</option>
+                  <option value="Night Starlight (20:00 - 00:00)">Night Starlight Cruise (20:00 - 00:00)</option>
+                  <option value="Full Day Charter (10:00 - 18:00)">Full Day Charter (10:00 - 18:00)</option>
+                </select>
+              </div>
+
+              <div class="fieldGroup">
+                <label class="fieldLabel">Number of Guests (PAX)</label>
+                <input type="number" id="bookingGuests" class="fieldInput" value="<%= defaultGuests %>" min="1" max="150" onchange="filterFleetAndCalculate()">
+              </div>
+            </div>
+
+            <div class="fieldGroup" style="margin-top: 10px;">
+              <label class="fieldLabel">Charter Duration</label>
+              <div class="pillGroup" id="durationPills">
+                <div class="pillBtn" data-hours="2" onclick="setDuration(2, this)"><i class="fa-regular fa-clock"></i> 2 Hours</div>
+                <div class="pillBtn active" data-hours="3" onclick="setDuration(3, this)"><i class="fa-regular fa-clock"></i> 3 Hours (Sunset)</div>
+                <div class="pillBtn" data-hours="4" onclick="setDuration(4, this)"><i class="fa-regular fa-clock"></i> 4 Hours</div>
+                <div class="pillBtn" data-hours="6" onclick="setDuration(6, this)"><i class="fa-regular fa-clock"></i> 6 Hours</div>
+                <div class="pillBtn" data-hours="8" onclick="setDuration(8, this)"><i class="fa-regular fa-clock"></i> 8 Hours (Full Day)</div>
+              </div>
             </div>
           </div>
 
-          <div class="formGrid2">
-            <div class="fieldGroup">
-              <label class="fieldLabel">Destination</label>
-              <select id="bookingDestination" class="fieldSelect" onchange="updateSummary()">
-                <option value="Dubai Marina, UAE">Dubai Marina & Palm Jumeirah (UAE)</option>
-                <option value="Miami, FL">Miami Biscayne Bay (Florida, USA)</option>
-              </select>
+          <!-- STEP 1B: Interactive Fleet Selection -->
+          <div class="engineCard" data-aos="fade-up">
+            <div class="cardHeader">
+              <div class="cardHeaderIcon"><i class="fa-solid fa-ship"></i></div>
+              <div>
+                <h2 class="cardHeaderTitle">Select Your Yacht</h2>
+                <p class="cardHeaderSubtitle">Browse our hand-selected luxury fleet. Click to select.</p>
+              </div>
             </div>
 
-            <div class="fieldGroup">
-              <label class="fieldLabel">Charter Date</label>
-              <input type="date" id="bookingDate" class="fieldInput" onchange="updateSummary()">
+            <div class="fleetFilterBar">
+              <div class="pillGroup" id="categoryPills">
+                <div class="pillBtn active" data-cat="all" onclick="filterCategory('all', this)">All Yachts</div>
+                <div class="pillBtn" data-cat="vip" onclick="filterCategory('vip', this)">VIP Superyachts</div>
+                <div class="pillBtn" data-cat="standard" onclick="filterCategory('standard', this)">Standard Yachts</div>
+              </div>
+              <div class="fleetCount">Showing <b id="visibleYachtsCount"><%= yachts.length %></b> available yachts</div>
+            </div>
+
+            <!-- Fleet Cards Grid -->
+            <div class="fleetGrid" id="fleetGrid">
+              <% yachts.forEach(function(yacht, index) { %>
+                <div class="yachtCardItem <%= (selectedSlug && yacht.slug.toLowerCase() === selectedSlug) || (!selectedSlug && index === 0) ? 'selected' : '' %>"
+                     data-slug="<%= yacht.slug %>"
+                     data-title="<%= yacht.title %>"
+                     data-tower="<%= yacht.tower %>"
+                     data-length="<%= yacht.lengthFt || '100' %>"
+                     data-capacity="<%= yacht.capacity || '20' %>"
+                     data-price="<%= yacht.numericPrice || 5000 %>"
+                     data-price-str="<%= yacht.price %>"
+                     data-image="<%= (yacht.images && yacht.images[0]) || '/assets/images/home/01.jpg' %>"
+                     data-category="<%= yacht.category || 'vip' %>"
+                     onclick="selectYacht(this)">
+                  
+                  <div class="yachtImgDiv">
+                    <img src="<%= (yacht.images && yacht.images[0]) || '/assets/images/home/01.jpg' %>" alt="<%= yacht.title %>" loading="lazy">
+                    <span class="yachtCategoryBadge"><%= yacht.category === 'vip' ? 'VIP' : 'Standard' %></span>
+                    <div class="selectedBadge"><i class="fa-solid fa-check"></i></div>
+                  </div>
+
+                  <div class="yachtCardBody">
+                    <div>
+                      <h3 class="yachtCardTitle"><%= yacht.title %></h3>
+                      <div class="yachtSpecsRow">
+                        <span><i class="fa-solid fa-ruler"></i> <%= yacht.lengthFt ? yacht.lengthFt + ' ft' : yacht.tower %></span>
+                        <span><i class="fa-solid fa-user-group"></i> Up to <%= yacht.capacity || '20' %> PAX</span>
+                      </div>
+                    </div>
+
+                    <div class="yachtPricingRow">
+                      <div class="yachtRateHour">
+                        Rate Per Hour
+                        <strong><%= yacht.price %></strong>
+                      </div>
+                      <button type="button" class="selectYachtBtn">
+                        <%= (selectedSlug && yacht.slug.toLowerCase() === selectedSlug) || (!selectedSlug && index === 0) ? 'Selected' : 'Select' %>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
             </div>
           </div>
 
-          <div class="formGrid2">
-            <div class="fieldGroup">
-              <label class="fieldLabel">Cruise Time Slot</label>
-              <select id="bookingTimeSlot" class="fieldSelect" onchange="updateSummary()">
-                <option value="Morning Breeze (09:00 - 13:00)">Morning Breeze (09:00 - 13:00)</option>
-                <option value="Sunset Golden Hour (16:00 - 19:00)" selected>Sunset Golden Hour (16:00 - 19:00) ★ Recommended</option>
-                <option value="Night Starlight (20:00 - 00:00)">Night Starlight Cruise (20:00 - 00:00)</option>
-                <option value="Full Day Charter (10:00 - 18:00)">Full Day Charter (10:00 - 18:00)</option>
-              </select>
+          <!-- STEP 1 FOOTER -->
+          <div class="stepNavFooter">
+            <div class="stepNavInfo">
+              <span class="stepSelectedYachtBadge">
+                <i class="fa-solid fa-ship" style="color: var(--gold);"></i> Selected: <strong id="step1SelectedName">Dolce Vita</strong> &nbsp;•&nbsp; <span id="step1SelectedRate">9,000 AED / hr</span>
+              </span>
             </div>
-
-            <div class="fieldGroup">
-              <label class="fieldLabel">Number of Guests (PAX)</label>
-              <input type="number" id="bookingGuests" class="fieldInput" value="<%= defaultGuests %>" min="1" max="150" onchange="filterFleetAndCalculate()">
-            </div>
+            <button type="button" class="btnStepNext" onclick="goToStep(2)">
+              Continue to Luxury Add-ons <i class="fa-solid fa-arrow-right"></i>
+            </button>
           </div>
+        </div>
 
-          <div class="fieldGroup" style="margin-top: 10px;">
-            <label class="fieldLabel">Charter Duration</label>
-            <div class="pillGroup" id="durationPills">
-              <div class="pillBtn" data-hours="2" onclick="setDuration(2, this)"><i class="fa-regular fa-clock"></i> 2 Hours</div>
-              <div class="pillBtn active" data-hours="3" onclick="setDuration(3, this)"><i class="fa-regular fa-clock"></i> 3 Hours (Sunset)</div>
-              <div class="pillBtn" data-hours="4" onclick="setDuration(4, this)"><i class="fa-regular fa-clock"></i> 4 Hours</div>
-              <div class="pillBtn" data-hours="6" onclick="setDuration(6, this)"><i class="fa-regular fa-clock"></i> 6 Hours</div>
-              <div class="pillBtn" data-hours="8" onclick="setDuration(8, this)"><i class="fa-regular fa-clock"></i> 8 Hours (Full Day)</div>
+        <!-- ==================== STEP 2: LUXURY ADD-ONS ==================== -->
+        <div class="wizardStep" id="stepView2" style="display: none;">
+          <div class="engineCard" id="step-addons" data-aos="fade-up">
+            <div class="cardHeader">
+              <div class="cardHeaderIcon"><i class="fa-solid fa-gem"></i></div>
+              <div>
+                <h2 class="cardHeaderTitle">2. Luxury Add-ons & Experiences</h2>
+                <p class="cardHeaderSubtitle">Elevate your voyage with world-class onboard catering, water sports, and entertainment.</p>
+              </div>
+            </div>
+
+            <div class="addonsGrid">
+              <!-- Addon 1 -->
+              <label class="addonItem" onclick="toggleAddon(this)">
+                <input type="checkbox" class="addonCheckbox" data-name="Live Resident DJ & Sound System" data-price="1500" data-per="fixed" onchange="updateSummary()">
+                <div class="addonInfo">
+                  <h4 class="addonTitle"><i class="fa-solid fa-music" style="color: var(--gold); margin-right: 6px;"></i> Live DJ & Sound System</h4>
+                  <p class="addonDesc">Professional DJ with state-of-the-art Pioneer sound equipment and ambient club lighting.</p>
+                  <span class="addonPrice">+1,500 AED</span>
+                </div>
+              </label>
+
+              <!-- Addon 2 -->
+              <label class="addonItem" onclick="toggleAddon(this)">
+                <input type="checkbox" class="addonCheckbox" data-name="Private Chef & Gourmet BBQ" data-price="250" data-per="pax" onchange="updateSummary()">
+                <div class="addonInfo">
+                  <h4 class="addonTitle"><i class="fa-solid fa-utensils" style="color: var(--gold); margin-right: 6px;"></i> Private Chef & Live BBQ</h4>
+                  <p class="addonDesc">Gourmet steaks, fresh seafood, Mediterranean appetizers, and non-alcoholic beverages.</p>
+                  <span class="addonPrice">+250 AED / guest</span>
+                </div>
+              </label>
+
+              <!-- Addon 3 -->
+              <label class="addonItem" onclick="toggleAddon(this)">
+                <input type="checkbox" class="addonCheckbox" data-name="Water Sports Bundle (Jet Ski & Seabob)" data-price="1800" data-per="fixed" onchange="updateSummary()">
+                <div class="addonInfo">
+                  <h4 class="addonTitle"><i class="fa-solid fa-water" style="color: var(--gold); margin-right: 6px;"></i> Water Sports Bundle</h4>
+                  <p class="addonDesc">1-Hour High-Speed Yamaha Jet Ski + Seabob underwater scooter with life jackets and instructor.</p>
+                  <span class="addonPrice">+1,800 AED</span>
+                </div>
+              </label>
+
+              <!-- Addon 4 -->
+              <label class="addonItem" onclick="toggleAddon(this)">
+                <input type="checkbox" class="addonCheckbox" data-name="Luxury Floral & Celebration Decor" data-price="1200" data-per="fixed" onchange="updateSummary()">
+                <div class="addonInfo">
+                  <h4 class="addonTitle"><i class="fa-solid fa-champagne-glasses" style="color: var(--gold); margin-right: 6px;"></i> Luxury Celebration Decor</h4>
+                  <p class="addonDesc">Bespoke balloon arch, floral arrangements, cake table styling for birthdays & anniversaries.</p>
+                  <span class="addonPrice">+1,200 AED</span>
+                </div>
+              </label>
+
+              <!-- Addon 5 -->
+              <label class="addonItem" onclick="toggleAddon(this)">
+                <input type="checkbox" class="addonCheckbox" data-name="Drone 4K Photography & Video" data-price="1000" data-per="fixed" onchange="updateSummary()">
+                <div class="addonInfo">
+                  <h4 class="addonTitle"><i class="fa-solid fa-camera" style="color: var(--gold); margin-right: 6px;"></i> Drone & 4K Videographer</h4>
+                  <p class="addonDesc">Professional videographer with 4K drone cinematography and edited 60-second highlight reel.</p>
+                  <span class="addonPrice">+1,000 AED</span>
+                </div>
+              </label>
+
+              <!-- Addon 6 -->
+              <label class="addonItem" onclick="toggleAddon(this)">
+                <input type="checkbox" class="addonCheckbox" data-name="VIP Mercedes-Benz Chauffeur Transfer" data-price="600" data-per="fixed" onchange="updateSummary()">
+                <div class="addonInfo">
+                  <h4 class="addonTitle"><i class="fa-solid fa-car" style="color: var(--gold); margin-right: 6px;"></i> VIP Chauffeur Transfer</h4>
+                  <p class="addonDesc">Luxury Mercedes V-Class or S-Class round-trip transfer from hotel/residence to marina.</p>
+                  <span class="addonPrice">+600 AED</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- STEP 2 FOOTER -->
+            <div class="stepNavFooter">
+              <button type="button" class="btnStepPrev" onclick="goToStep(1)">
+                <i class="fa-solid fa-arrow-left"></i> Back to Fleet
+              </button>
+              <button type="button" class="btnStepNext" onclick="goToStep(3)">
+                Continue to Guest Details <i class="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- STEP 1B: Interactive Fleet Selection -->
-        <div class="engineCard" data-aos="fade-up">
-          <div class="cardHeader">
-            <div class="cardHeaderIcon"><i class="fa-solid fa-ship"></i></div>
-            <div>
-              <h2 class="cardHeaderTitle">Select Your Yacht</h2>
-              <p class="cardHeaderSubtitle">Browse our hand-selected luxury fleet. Click to select.</p>
+        <!-- ==================== STEP 3: GUEST DETAILS ==================== -->
+        <div class="wizardStep" id="stepView3" style="display: none;">
+          <div class="engineCard" id="step-guest" data-aos="fade-up">
+            <div class="cardHeader">
+              <div class="cardHeaderIcon"><i class="fa-solid fa-user-check"></i></div>
+              <div>
+                <h2 class="cardHeaderTitle">3. Guest Details & Preferences</h2>
+                <p class="cardHeaderSubtitle">Where should we send your charter confirmation and boarding pass?</p>
+              </div>
+            </div>
+
+            <div class="formGrid2">
+              <div class="fieldGroup">
+                <label class="fieldLabel">Full Name *</label>
+                <input type="text" id="guestName" class="fieldInput" placeholder="e.g. Alexander Vance" required>
+              </div>
+
+              <div class="fieldGroup">
+                <label class="fieldLabel">Email Address</label>
+                <input type="email" id="guestEmail" class="fieldInput" placeholder="alexander@example.com">
+              </div>
+            </div>
+
+            <div class="formGrid2">
+              <div class="fieldGroup">
+                <label class="fieldLabel">WhatsApp / Mobile Phone *</label>
+                <input type="tel" id="guestPhone" class="fieldInput" placeholder="+971 50 123 4567" required>
+              </div>
+
+              <div class="fieldGroup">
+                <label class="fieldLabel">Special Occasion</label>
+                <select id="guestOccasion" class="fieldSelect">
+                  <option value="Leisure Cruise">Leisure Yacht Cruise</option>
+                  <option value="Birthday Celebration">Birthday Celebration</option>
+                  <option value="Romantic Proposal / Anniversary">Romantic Proposal / Anniversary</option>
+                  <option value="Bachelor / Bachelorette Party">Bachelor / Bachelorette Party</option>
+                  <option value="Corporate Event">Corporate / Client Entertainment</option>
+                  <option value="New Year / Festival">New Year / Special Festival</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="fieldGroup">
+              <label class="fieldLabel">Special Requests or Catering Notes</label>
+              <textarea id="guestNotes" class="fieldInput" rows="3" placeholder="Tell us about special dietary requirements, preferred music, route requests, or surprises for guests..."></textarea>
+            </div>
+
+            <!-- STEP 3 FOOTER -->
+            <div class="stepNavFooter">
+              <button type="button" class="btnStepPrev" onclick="goToStep(2)">
+                <i class="fa-solid fa-arrow-left"></i> Back to Add-ons
+              </button>
+              <button type="button" class="btnStepNext" onclick="goToStep(4)">
+                Continue to Instant Quote & Review <i class="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
           </div>
+        </div>
 
-          <div class="fleetFilterBar">
-            <div class="pillGroup" id="categoryPills">
-              <div class="pillBtn active" data-cat="all" onclick="filterCategory('all', this)">All Yachts</div>
-              <div class="pillBtn" data-cat="vip" onclick="filterCategory('vip', this)">VIP Superyachts</div>
-              <div class="pillBtn" data-cat="standard" onclick="filterCategory('standard', this)">Standard Yachts</div>
+        <!-- ==================== STEP 4: INSTANT QUOTE & REVIEW ==================== -->
+        <div class="wizardStep" id="stepView4" style="display: none;">
+          <div class="engineCard" data-aos="fade-up">
+            <div class="cardHeader">
+              <div class="cardHeaderIcon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+              <div>
+                <h2 class="cardHeaderTitle">4. Instant Quote & Reservation Confirmation</h2>
+                <p class="cardHeaderSubtitle">Review your itemized charter quote, exclusive 15m vessel hold, and finalize your booking.</p>
+              </div>
             </div>
-            <div class="fleetCount">Showing <b id="visibleYachtsCount"><%= yachts.length %></b> available yachts</div>
-          </div>
 
-          <!-- Fleet Cards Grid -->
-          <div class="fleetGrid" id="fleetGrid">
-            <% yachts.forEach(function(yacht, index) { %>
-              <div class="yachtCardItem <%= (selectedSlug && yacht.slug.toLowerCase() === selectedSlug) || (!selectedSlug && index === 0) ? 'selected' : '' %>"
-                   data-slug="<%= yacht.slug %>"
-                   data-title="<%= yacht.title %>"
-                   data-tower="<%= yacht.tower %>"
-                   data-length="<%= yacht.lengthFt || '100' %>"
-                   data-capacity="<%= yacht.capacity || '20' %>"
-                   data-price="<%= yacht.numericPrice || 5000 %>"
-                   data-price-str="<%= yacht.price %>"
-                   data-image="<%= (yacht.images && yacht.images[0]) || '/assets/images/home/01.jpg' %>"
-                   data-category="<%= yacht.category || 'vip' %>"
-                   onclick="selectYacht(this)">
-                
-                <div class="yachtImgDiv">
-                  <img src="<%= (yacht.images && yacht.images[0]) || '/assets/images/home/01.jpg' %>" alt="<%= yacht.title %>" loading="lazy">
-                  <span class="yachtCategoryBadge"><%= yacht.category === 'vip' ? 'VIP' : 'Standard' %></span>
-                  <div class="selectedBadge"><i class="fa-solid fa-check"></i></div>
+            <!-- Server 15m Hold Banner -->
+            <div class="step4HoldBanner">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div class="step4HoldIcon"><i class="fa-solid fa-lock"></i></div>
+                <div>
+                  <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 800;">
+                    Exclusive 15-Minute Server Hold Active
+                  </div>
+                  <div style="font-size: 13px; color: #ffffff; font-weight: 500;">
+                    Vessel reserved under PostgreSQL row lock against concurrent bookings
+                  </div>
                 </div>
+              </div>
+              <div class="step4TimerBadge" id="step4TimerBadge">14:59</div>
+            </div>
 
-                <div class="yachtCardBody">
+            <!-- Review Cards Grid -->
+            <div class="quoteReviewGrid">
+              <!-- Vessel & Itinerary Details -->
+              <div class="quoteBlock">
+                <div class="quoteBlockTitle">
+                  <i class="fa-solid fa-compass" style="color: var(--gold);"></i> Vessel & Route
+                </div>
+                <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+                  <img id="step4YachtImg" src="/assets/images/home/01.jpg" alt="Vessel" style="width: 75px; height: 52px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
                   <div>
-                    <h3 class="yachtCardTitle"><%= yacht.title %></h3>
-                    <div class="yachtSpecsRow">
-                      <span><i class="fa-solid fa-ruler"></i> <%= yacht.lengthFt ? yacht.lengthFt + ' ft' : yacht.tower %></span>
-                      <span><i class="fa-solid fa-user-group"></i> Up to <%= yacht.capacity || '20' %> PAX</span>
-                    </div>
-                  </div>
-
-                  <div class="yachtPricingRow">
-                    <div class="yachtRateHour">
-                      Rate Per Hour
-                      <strong><%= yacht.price %></strong>
-                    </div>
-                    <button type="button" class="selectYachtBtn">
-                      <%= (selectedSlug && yacht.slug.toLowerCase() === selectedSlug) || (!selectedSlug && index === 0) ? 'Selected' : 'Select' %>
-                    </button>
+                    <h4 id="step4YachtTitle" style="font-size: 16px; color: var(--navy-dark); font-weight: 700; margin: 0;">Dolce Vita</h4>
+                    <p id="step4YachtSpecs" style="font-size: 12px; color: var(--text-muted); margin: 2px 0 0;">105 ft • Up to 12 Guests</p>
                   </div>
                 </div>
+                <div class="quoteItemRow">
+                  <span>Itinerary</span>
+                  <strong id="step4Itinerary">Dubai Marina • Tomorrow</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>Duration</span>
+                  <strong id="step4Duration">3 Hours</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>Guests (PAX)</span>
+                  <strong id="step4Pax">10 Guests</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>Base Hourly Rate</span>
+                  <strong id="step4RateHour">9,000 AED / hr</strong>
+                </div>
               </div>
-            <% }); %>
-          </div>
-        </div>
 
-        <!-- STEP 2: VIP Experiences & Add-ons -->
-        <div class="engineCard" id="step-addons" data-aos="fade-up">
-          <div class="cardHeader">
-            <div class="cardHeaderIcon"><i class="fa-solid fa-gem"></i></div>
-            <div>
-              <h2 class="cardHeaderTitle">2. Luxury Add-ons & Experiences</h2>
-              <p class="cardHeaderSubtitle">Elevate your voyage with world-class onboard catering, water sports, and entertainment.</p>
-            </div>
-          </div>
-
-          <div class="addonsGrid">
-            <!-- Addon 1 -->
-            <label class="addonItem" onclick="toggleAddon(this)">
-              <input type="checkbox" class="addonCheckbox" data-name="Live Resident DJ & Sound System" data-price="1500" data-per="fixed" onchange="updateSummary()">
-              <div class="addonInfo">
-                <h4 class="addonTitle"><i class="fa-solid fa-music" style="color: var(--gold); margin-right: 6px;"></i> Live DJ & Sound System</h4>
-                <p class="addonDesc">Professional DJ with state-of-the-art Pioneer sound equipment and ambient club lighting.</p>
-                <span class="addonPrice">+1,500 AED</span>
+              <!-- Primary Guest Details -->
+              <div class="quoteBlock">
+                <div class="quoteBlockTitle">
+                  <i class="fa-solid fa-user-check" style="color: var(--gold);"></i> Charter Guest Details
+                </div>
+                <div class="quoteItemRow">
+                  <span>Full Name</span>
+                  <strong id="step4GuestName">Lead Guest</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>WhatsApp / Phone</span>
+                  <strong id="step4GuestPhone">+971 50 123 4567</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>Email</span>
+                  <strong id="step4GuestEmail">alexander@example.com</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>Occasion</span>
+                  <strong id="step4Occasion">Sunset Cruise</strong>
+                </div>
+                <div class="quoteItemRow">
+                  <span>Special Notes</span>
+                  <strong id="step4Notes" style="font-size: 12px; max-width: 180px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">None</strong>
+                </div>
               </div>
-            </label>
-
-            <!-- Addon 2 -->
-            <label class="addonItem" onclick="toggleAddon(this)">
-              <input type="checkbox" class="addonCheckbox" data-name="Private Chef & Gourmet BBQ" data-price="250" data-per="pax" onchange="updateSummary()">
-              <div class="addonInfo">
-                <h4 class="addonTitle"><i class="fa-solid fa-utensils" style="color: var(--gold); margin-right: 6px;"></i> Private Chef & Live BBQ</h4>
-                <p class="addonDesc">Gourmet steaks, fresh seafood, Mediterranean appetizers, and non-alcoholic beverages.</p>
-                <span class="addonPrice">+250 AED / guest</span>
-              </div>
-            </label>
-
-            <!-- Addon 3 -->
-            <label class="addonItem" onclick="toggleAddon(this)">
-              <input type="checkbox" class="addonCheckbox" data-name="Water Sports Bundle (Jet Ski & Seabob)" data-price="1800" data-per="fixed" onchange="updateSummary()">
-              <div class="addonInfo">
-                <h4 class="addonTitle"><i class="fa-solid fa-water" style="color: var(--gold); margin-right: 6px;"></i> Water Sports Bundle</h4>
-                <p class="addonDesc">1-Hour High-Speed Yamaha Jet Ski + Seabob underwater scooter with life jackets and instructor.</p>
-                <span class="addonPrice">+1,800 AED</span>
-              </div>
-            </label>
-
-            <!-- Addon 4 -->
-            <label class="addonItem" onclick="toggleAddon(this)">
-              <input type="checkbox" class="addonCheckbox" data-name="Luxury Floral & Celebration Decor" data-price="1200" data-per="fixed" onchange="updateSummary()">
-              <div class="addonInfo">
-                <h4 class="addonTitle"><i class="fa-solid fa-champagne-glasses" style="color: var(--gold); margin-right: 6px;"></i> Luxury Celebration Decor</h4>
-                <p class="addonDesc">Bespoke balloon arch, floral arrangements, cake table styling for birthdays & anniversaries.</p>
-                <span class="addonPrice">+1,200 AED</span>
-              </div>
-            </label>
-
-            <!-- Addon 5 -->
-            <label class="addonItem" onclick="toggleAddon(this)">
-              <input type="checkbox" class="addonCheckbox" data-name="Drone 4K Photography & Video" data-price="1000" data-per="fixed" onchange="updateSummary()">
-              <div class="addonInfo">
-                <h4 class="addonTitle"><i class="fa-solid fa-camera" style="color: var(--gold); margin-right: 6px;"></i> Drone & 4K Videographer</h4>
-                <p class="addonDesc">Professional videographer with 4K drone cinematography and edited 60-second highlight reel.</p>
-                <span class="addonPrice">+1,000 AED</span>
-              </div>
-            </label>
-
-            <!-- Addon 6 -->
-            <label class="addonItem" onclick="toggleAddon(this)">
-              <input type="checkbox" class="addonCheckbox" data-name="VIP Mercedes-Benz Chauffeur Transfer" data-price="600" data-per="fixed" onchange="updateSummary()">
-              <div class="addonInfo">
-                <h4 class="addonTitle"><i class="fa-solid fa-car" style="color: var(--gold); margin-right: 6px;"></i> VIP Chauffeur Transfer</h4>
-                <p class="addonDesc">Luxury Mercedes V-Class or S-Class round-trip transfer from hotel/residence to marina.</p>
-                <span class="addonPrice">+600 AED</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- STEP 3: Primary Guest Information -->
-        <div class="engineCard" id="step-guest" data-aos="fade-up">
-          <div class="cardHeader">
-            <div class="cardHeaderIcon"><i class="fa-solid fa-user-check"></i></div>
-            <div>
-              <h2 class="cardHeaderTitle">3. Guest Details & Preferences</h2>
-              <p class="cardHeaderSubtitle">Where should we send your charter confirmation and boarding pass?</p>
-            </div>
-          </div>
-
-          <div class="formGrid2">
-            <div class="fieldGroup">
-              <label class="fieldLabel">Full Name *</label>
-              <input type="text" id="guestName" class="fieldInput" placeholder="e.g. Alexander Vance" required>
             </div>
 
-            <div class="fieldGroup">
-              <label class="fieldLabel">Email Address</label>
-              <input type="email" id="guestEmail" class="fieldInput" placeholder="alexander@example.com">
-            </div>
-          </div>
+            <!-- Itemized Financial Breakdown -->
+            <div class="quoteBlock" style="margin-top: 16px;">
+              <div class="quoteBlockTitle">
+                <i class="fa-solid fa-receipt" style="color: var(--gold);"></i> Itemized Financial Quotation
+              </div>
+              
+              <div class="quoteItemRow">
+                <span>Base Private Yacht Charter</span>
+                <strong id="step4BaseCost">27,000 AED</strong>
+              </div>
 
-          <div class="formGrid2">
-            <div class="fieldGroup">
-              <label class="fieldLabel">WhatsApp / Mobile Phone *</label>
-              <input type="tel" id="guestPhone" class="fieldInput" placeholder="+971 50 123 4567" required>
+              <div id="step4AddonsList">
+                <!-- Dynamically populated selected add-ons -->
+              </div>
+
+              <div class="quoteItemRow" style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
+                <span>Subtotal</span>
+                <strong id="step4Subtotal">27,000 AED</strong>
+              </div>
+
+              <div class="quoteItemRow">
+                <span>UAE VAT (5%)</span>
+                <strong id="step4Vat">1,350 AED</strong>
+              </div>
+
+              <div class="quoteTotalRow">
+                <span>Total Charter Investment:</span>
+                <span class="grandAmount" id="step4GrandTotal">28,350 AED</span>
+              </div>
             </div>
 
-            <div class="fieldGroup">
-              <label class="fieldLabel">Special Occasion</label>
-              <select id="guestOccasion" class="fieldSelect">
-                <option value="Leisure Cruise">Leisure Yacht Cruise</option>
-                <option value="Birthday Celebration">Birthday Celebration</option>
-                <option value="Romantic Proposal / Anniversary">Romantic Proposal / Anniversary</option>
-                <option value="Bachelor / Bachelorette Party">Bachelor / Bachelorette Party</option>
-                <option value="Corporate Event">Corporate / Client Entertainment</option>
-                <option value="New Year / Festival">New Year / Special Festival</option>
-              </select>
+            <!-- Guarantees & Safe Harbor -->
+            <div class="guaranteePillRow">
+              <div class="guaranteePill">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Direct Fleet Best Price Guarantee</span>
+              </div>
+              <div class="guaranteePill">
+                <i class="fa-solid fa-umbrella-beach"></i>
+                <span>100% Refund (7+ Days Notice)</span>
+              </div>
+              <div class="guaranteePill">
+                <i class="fa-solid fa-cloud-sun"></i>
+                <span>Weather Reschedule Guarantee</span>
+              </div>
             </div>
-          </div>
 
-          <div class="fieldGroup">
-            <label class="fieldLabel">Special Requests or Catering Notes</label>
-            <textarea id="guestNotes" class="fieldInput" rows="3" placeholder="Tell us about special dietary requirements, preferred music, route requests, or surprises for guests..."></textarea>
+            <!-- STEP 4 FOOTER -->
+            <div class="stepNavFooter">
+              <button type="button" class="btnStepPrev" onclick="goToStep(3)">
+                <i class="fa-solid fa-arrow-left"></i> Back to Guest Details
+              </button>
+              <button type="button" class="btnStepConfirm" id="btnSubmitBookingStep4" onclick="submitBooking()">
+                <i class="fa-solid fa-shield-halved"></i> Confirm & Secure Charter
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1130,6 +1566,23 @@
               <button type="button" class="currBtn active" onclick="setCurrency('AED', this)">AED</button>
               <button type="button" class="currBtn" onclick="setCurrency('USD', this)">USD</button>
               <button type="button" class="currBtn" onclick="setCurrency('EUR', this)">EUR</button>
+            </div>
+          </div>
+
+          <!-- Server-Authoritative 15-Minute Hold Banner -->
+          <div id="holdCountdownBanner" style="display: none; background: linear-gradient(135deg, #0b1a30 0%, #162b4d 100%); border: 1px solid var(--gold); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.15);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div>
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 700;">
+                  <i class="fa-solid fa-lock"></i> Vessel On 15m Hold
+                </div>
+                <div style="font-size: 12px; color: #ffffff; margin-top: 2px;">
+                  Exclusive interval reserved
+                </div>
+              </div>
+              <div id="holdTimerBadge" style="background: rgba(184, 134, 11, 0.25); border: 1px solid var(--gold); color: #fff; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 14px;">
+                14:59
+              </div>
             </div>
           </div>
 
@@ -1257,6 +1710,9 @@
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a href="#" id="modalPassBtn" class="bookWhatsappBtn" target="_blank" style="text-align: center; background: #071224; color: #dfb76c; border: 1px solid #b8860b;">
+        <i class="fa-solid fa-qrcode"></i> View Digital Boarding Pass & QR
+      </a>
       <a href="#" id="modalWhatsAppBtn" class="bookWhatsappBtn" target="_blank" style="text-align: center;">
         <i class="fab fa-whatsapp"></i> Chat with Dedicated Concierge on WhatsApp
       </a>
@@ -1311,6 +1767,208 @@
     }
   });
 
+  let currentStep = 1;
+
+  // Step Wizard Navigation
+  function goToStep(step) {
+    if (step < 1 || step > 4) return;
+
+    // Validation when leaving Step 1 (Fleet & Charter Params)
+    if (step > 1) {
+      const date = document.getElementById('bookingDate').value;
+      if (!date) {
+        alert('Please select your charter date first.');
+        goToStep(1);
+        document.getElementById('bookingDate').focus();
+        return;
+      }
+      if (!selectedYacht.title) {
+        alert('Please select a yacht from our luxury fleet.');
+        goToStep(1);
+        return;
+      }
+    }
+
+    // Validation when going to Step 4 (Instant Quote & Confirmation)
+    if (step === 4) {
+      const guestName = document.getElementById('guestName').value.trim();
+      const guestPhone = document.getElementById('guestPhone').value.trim();
+      if (!guestName) {
+        alert('Please enter your full name before reviewing the instant quote.');
+        goToStep(3);
+        document.getElementById('guestName').focus();
+        return;
+      }
+      if (!guestPhone) {
+        alert('Please enter your WhatsApp / mobile phone number.');
+        goToStep(3);
+        document.getElementById('guestPhone').focus();
+        return;
+      }
+    }
+
+    currentStep = step;
+
+    // Update pill tabs active state
+    document.querySelectorAll('.wizardProgress .stepItem').forEach(item => {
+      const s = parseInt(item.getAttribute('data-step'), 10);
+      if (s === step) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Toggle step containers
+    for (let i = 1; i <= 4; i++) {
+      const view = document.getElementById('stepView' + i);
+      if (view) {
+        view.style.display = (i === step) ? 'block' : 'none';
+      }
+    }
+
+    // When entering Step 4, populate the comprehensive quote and initiate 15m server hold
+    if (step === 4) {
+      renderStep4Quote();
+      ensureServerHold();
+    }
+
+    // Smooth scroll to top of wizard engine
+    const layout = document.querySelector('.bookingContainer');
+    if (layout) {
+      const headerOffset = 80;
+      const elementPosition = layout.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  }
+
+  // Render Step 4 itemized quotation & review data
+  function renderStep4Quote() {
+    const dest = document.getElementById('bookingDestination').value;
+    const date = document.getElementById('bookingDate').value;
+    const slot = document.getElementById('bookingTimeSlot').value;
+    const pax = parseInt(document.getElementById('bookingGuests').value, 10) || 1;
+    const guestName = document.getElementById('guestName').value.trim() || 'Lead Charter Guest';
+    const guestPhone = document.getElementById('guestPhone').value.trim() || 'Not specified';
+    const guestEmail = document.getElementById('guestEmail').value.trim() || 'Not specified';
+    const guestOccasion = document.getElementById('guestOccasion').value;
+    const guestNotes = document.getElementById('guestNotes').value.trim() || 'Standard luxury VIP charter setup';
+
+    // Vessel & Itinerary Details
+    const yachtTitleEl = document.getElementById('step4YachtTitle');
+    if (yachtTitleEl) yachtTitleEl.textContent = selectedYacht.title;
+    const yachtImgEl = document.getElementById('step4YachtImg');
+    if (yachtImgEl) yachtImgEl.src = selectedYacht.image;
+    const yachtSpecsEl = document.getElementById('step4YachtSpecs');
+    if (yachtSpecsEl) yachtSpecsEl.textContent = `Length: ${selectedYacht.length} ft • Up to ${selectedYacht.capacity} Guests`;
+    const itineraryEl = document.getElementById('step4Itinerary');
+    if (itineraryEl) itineraryEl.textContent = `${dest.includes('Dubai') ? 'Dubai Marina & Palm Jumeirah' : 'Miami Biscayne Bay'} • ${date} • ${slot.split('(')[0].trim()}`;
+    const durationEl = document.getElementById('step4Duration');
+    if (durationEl) durationEl.textContent = `${currentDuration} Hours`;
+    const paxEl = document.getElementById('step4Pax');
+    if (paxEl) paxEl.textContent = `${pax} Guests`;
+
+    // Pricing calculation
+    const baseCharterAED = selectedYacht.pricePerHour * currentDuration;
+    const rateHourEl = document.getElementById('step4RateHour');
+    if (rateHourEl) rateHourEl.textContent = `${formatMoney(selectedYacht.pricePerHour)} / hr`;
+    const baseCostEl = document.getElementById('step4BaseCost');
+    if (baseCostEl) baseCostEl.textContent = formatMoney(baseCharterAED);
+
+    // Selected VIP Addons
+    let addonsTotalAED = 0;
+    const addonsListContainer = document.getElementById('step4AddonsList');
+    if (addonsListContainer) {
+      addonsListContainer.innerHTML = '';
+      const checkedAddons = document.querySelectorAll('.addonCheckbox:checked');
+      if (checkedAddons.length > 0) {
+        checkedAddons.forEach(cb => {
+          const name = cb.getAttribute('data-name');
+          const price = parseFloat(cb.getAttribute('data-price')) || 0;
+          const per = cb.getAttribute('data-per');
+          const cost = (per === 'pax') ? (price * pax) : price;
+          addonsTotalAED += cost;
+
+          const row = document.createElement('div');
+          row.className = 'quoteItemRow';
+          row.innerHTML = `<span><i class="fa-solid fa-check" style="color: var(--gold); margin-right: 6px;"></i> ${name}</span><strong>+${formatMoney(cost)}</strong>`;
+          addonsListContainer.appendChild(row);
+        });
+      } else {
+        addonsListContainer.innerHTML = '<div class="quoteItemRow" style="color: #94a3b8; font-style: italic;"><span>No VIP add-ons selected</span><strong>0 AED</strong></div>';
+      }
+    }
+
+    const subtotalAED = baseCharterAED + addonsTotalAED;
+    const vatAED = Math.round(subtotalAED * 0.05);
+    const grandTotalAED = subtotalAED + vatAED;
+
+    const subtotalEl = document.getElementById('step4Subtotal');
+    if (subtotalEl) subtotalEl.textContent = formatMoney(subtotalAED);
+    const vatEl = document.getElementById('step4Vat');
+    if (vatEl) vatEl.textContent = formatMoney(vatAED);
+    const grandTotalEl = document.getElementById('step4GrandTotal');
+    if (grandTotalEl) grandTotalEl.textContent = formatMoney(grandTotalAED);
+
+    // Primary Guest Details
+    const gNameEl = document.getElementById('step4GuestName');
+    if (gNameEl) gNameEl.textContent = guestName;
+    const gPhoneEl = document.getElementById('step4GuestPhone');
+    if (gPhoneEl) gPhoneEl.textContent = guestPhone;
+    const gEmailEl = document.getElementById('step4GuestEmail');
+    if (gEmailEl) gEmailEl.textContent = guestEmail;
+    const gOccasionEl = document.getElementById('step4Occasion');
+    if (gOccasionEl) gOccasionEl.textContent = guestOccasion;
+    const gNotesEl = document.getElementById('step4Notes');
+    if (gNotesEl) gNotesEl.textContent = guestNotes;
+  }
+
+  // Pre-acquire 15-minute server hold when entering Step 4
+  async function ensureServerHold() {
+    if (activeHoldToken) return;
+
+    const date = document.getElementById('bookingDate').value;
+    const slot = document.getElementById('bookingTimeSlot').value;
+    const pax = parseInt(document.getElementById('bookingGuests').value, 10) || 1;
+
+    let startHour = 14;
+    if (slot.includes('Morning')) startHour = 9;
+    else if (slot.includes('Sunset')) startHour = 17;
+    else if (slot.includes('Starlight')) startHour = 20;
+
+    const startDate = new Date(`${date}T${String(startHour).padStart(2, '0')}:00:00`);
+    const endDate = new Date(startDate.getTime() + currentDuration * 3600000);
+
+    const addonCodes = [];
+    document.querySelectorAll('.addonCheckbox:checked').forEach(cb => {
+      const code = cb.getAttribute('data-code') || cb.getAttribute('data-name');
+      addonCodes.push(code);
+    });
+
+    try {
+      const holdRes = await fetch('/api/v1/holds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          yachtId: selectedYacht.slug,
+          startTime: startDate.toISOString(),
+          endTime: endDate.toISOString(),
+          durationHours: currentDuration,
+          guests: pax,
+          addonCodes
+        })
+      });
+      const holdData = await holdRes.json();
+      if (holdData.success) {
+        activeHoldToken = holdData.holdToken;
+        startHoldCountdown(holdData.remainingSeconds || 900);
+      }
+    } catch (e) {
+      console.warn('Hold pre-acquisition notice:', e.message);
+    }
+  }
+
   // Smooth scroll
   function scrollToSection(id) {
     const el = document.getElementById(id);
@@ -1325,6 +1983,7 @@
     document.querySelectorAll('#durationPills .pillBtn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     updateSummary();
+    if (currentStep === 4) renderStep4Quote();
   }
 
   // Currency toggle handler
@@ -1333,6 +1992,7 @@
     document.querySelectorAll('.currBtn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     updateSummary();
+    if (currentStep === 4) renderStep4Quote();
   }
 
   // Yacht selection
@@ -1357,7 +2017,14 @@
       image: cardEl.getAttribute('data-image') || '/assets/images/home/01.jpg'
     };
 
+    // Update Step 1 selected badge
+    const badgeName = document.getElementById('step1SelectedName');
+    if (badgeName) badgeName.textContent = selectedYacht.title;
+    const badgeRate = document.getElementById('step1SelectedRate');
+    if (badgeRate) badgeRate.textContent = selectedYacht.priceStr || (selectedYacht.pricePerHour.toLocaleString() + ' AED / hr');
+
     updateSummary();
+    if (currentStep === 4) renderStep4Quote();
   }
 
   // Add-on item toggle
@@ -1479,7 +2146,42 @@
     document.getElementById('btnWhatsAppDirect').href = `https://wa.me/971585441134?text=${waText}`;
   }
 
-  // Submit booking online
+  let activeHoldToken = null;
+  let holdCountdownInterval = null;
+
+  function startHoldCountdown(remainingSecs) {
+    let secs = remainingSecs;
+    const badge = document.getElementById('holdTimerBadge');
+    const banner = document.getElementById('holdCountdownBanner');
+    if (banner) banner.style.display = 'block';
+    const step4Badge = document.getElementById('step4TimerBadge');
+
+    if (holdCountdownInterval) clearInterval(holdCountdownInterval);
+
+    holdCountdownInterval = setInterval(() => {
+      secs--;
+      if (secs <= 0) {
+        clearInterval(holdCountdownInterval);
+        if (badge) {
+          badge.textContent = 'EXPIRED';
+          badge.style.background = 'rgba(239, 68, 68, 0.3)';
+        }
+        if (step4Badge) {
+          step4Badge.textContent = 'EXPIRED';
+          step4Badge.style.background = 'rgba(239, 68, 68, 0.3)';
+        }
+        alert('Your 15-minute reservation hold has expired. Please refresh availability.');
+        return;
+      }
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      if (badge) badge.textContent = timeStr;
+      if (step4Badge) step4Badge.textContent = timeStr;
+    }, 1000);
+  }
+
+  // Submit booking online with Server-Authoritative 15m Hold & Idempotent Payments
   async function submitBooking() {
     const guestName = document.getElementById('guestName').value.trim();
     const guestPhone = document.getElementById('guestPhone').value.trim();
@@ -1489,96 +2191,149 @@
 
     if (!guestName) {
       alert('Please enter your full name.');
+      goToStep(3);
       document.getElementById('guestName').focus();
       return;
     }
     if (!guestPhone) {
       alert('Please enter your WhatsApp / mobile phone number.');
+      goToStep(3);
       document.getElementById('guestPhone').focus();
       return;
     }
 
     const submitBtn = document.getElementById('btnSubmitBooking');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Charter Reservation...';
+    const submitBtn4 = document.getElementById('btnSubmitBookingStep4');
+    const setButtonsLoading = (loadingText) => {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadingText}`;
+      }
+      if (submitBtn4) {
+        submitBtn4.disabled = true;
+        submitBtn4.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadingText}`;
+      }
+    };
+    const resetButtons = () => {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Confirm Reservation Online';
+      }
+      if (submitBtn4) {
+        submitBtn4.disabled = false;
+        submitBtn4.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Confirm & Secure Charter';
+      }
+    };
+
+    setButtonsLoading('Securing 15m Yacht Hold...');
 
     const dest = document.getElementById('bookingDestination').value;
     const date = document.getElementById('bookingDate').value;
     const slot = document.getElementById('bookingTimeSlot').value;
     const pax = parseInt(document.getElementById('bookingGuests').value, 10) || 1;
 
-    // Collect add-ons
-    const addOns = [];
-    let addonsTotalAED = 0;
+    // Collect add-on codes
+    const addonCodes = [];
     document.querySelectorAll('.addonCheckbox:checked').forEach(cb => {
-      const name = cb.getAttribute('data-name');
-      const price = parseFloat(cb.getAttribute('data-price')) || 0;
-      const per = cb.getAttribute('data-per');
-      const itemCost = (per === 'pax') ? (price * pax) : price;
-      addonsTotalAED += itemCost;
-      addOns.push({ name, costAED: itemCost });
+      const code = cb.getAttribute('data-code') || cb.getAttribute('data-name');
+      addonCodes.push(code);
     });
 
-    const baseCharterAED = selectedYacht.pricePerHour * currentDuration;
-    const vatAED = Math.round((baseCharterAED + addonsTotalAED) * 0.05);
-    const grandTotalAED = baseCharterAED + addonsTotalAED + vatAED;
+    let startHour = 14;
+    if (slot.includes('Morning')) startHour = 9;
+    else if (slot.includes('Afternoon')) startHour = 13;
+    else if (slot.includes('Sunset')) startHour = 17;
+    else if (slot.includes('Starlight')) startHour = 20;
 
-    const payload = {
-      destination: dest,
-      date: date,
-      timeSlot: slot,
-      duration: currentDuration,
-      guests: pax,
-      yachtSlug: selectedYacht.slug,
-      yachtName: selectedYacht.title,
-      addOns: addOns,
-      guestName: guestName,
-      guestEmail: guestEmail,
-      guestPhone: guestPhone,
-      notes: `[Occasion: ${guestOccasion}] ${guestNotes}`,
-      basePrice: baseCharterAED,
-      addOnsTotal: addonsTotalAED,
-      vatAmount: vatAED,
-      grandTotal: grandTotalAED
-    };
+    const startDate = new Date(`${date}T${String(startHour).padStart(2, '0')}:00:00`);
+    const endDate = new Date(startDate.getTime() + currentDuration * 3600000);
 
     try {
-      const response = await fetch('/api/bookings', {
+      // 1. Acquire Server-Authoritative 15-Minute Hold under Yacht Lock if needed
+      if (!activeHoldToken) {
+        const holdRes = await fetch('/api/v1/holds', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            yachtId: selectedYacht.slug,
+            startTime: startDate.toISOString(),
+            endTime: endDate.toISOString(),
+            durationHours: currentDuration,
+            guests: pax,
+            addonCodes
+          })
+        });
+
+        const holdData = await holdRes.json();
+        if (!holdData.success) {
+          alert(holdData.error || 'The requested interval is unavailable due to an existing charter or active hold. Please choose another date or time window.');
+          resetButtons();
+          return;
+        }
+
+        activeHoldToken = holdData.holdToken;
+        startHoldCountdown(holdData.remainingSeconds || 900);
+      }
+
+      setButtonsLoading('Finalizing Charter Booking...');
+
+      // 2. Convert Hold into Booking
+      const bookingRes = await fetch('/api/v1/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          holdToken: activeHoldToken,
+          customer: { fullName: guestName, phone: guestPhone, email: guestEmail },
+          occasion: guestOccasion,
+          specialRequests: guestNotes
+        })
+      });
+
+      const bookingData = await bookingRes.json();
+      if (!bookingData.success) {
+        alert(bookingData.error || 'Failed to create charter booking.');
+        resetButtons();
+        return;
+      }
+
+      // 3. Initiate Idempotent Payment
+      const idempotencyKey = 'idem_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+      await fetch('/api/v1/payments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Idempotency-Key': idempotencyKey
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          bookingId: bookingData.bookingId,
+          paymentMethod: 'CARD_ONLINE',
+          gateway: 'STRIPE'
+        })
       });
 
-      const data = await response.json();
+      // 4. Present Confirmation Modal with Digital Boarding Pass Link
+      document.getElementById('modalVoucherCode').textContent = bookingData.bookingRef;
+      document.getElementById('modalYachtName').textContent = `${selectedYacht.title} (${selectedYacht.length} ft)`;
+      document.getElementById('modalCharterDate').textContent = `${date} (${dest})`;
+      document.getElementById('modalTimeDuration').textContent = `${slot} • ${currentDuration} Hours`;
+      document.getElementById('modalGuestName').textContent = `${guestName} (${guestPhone})`;
+      document.getElementById('modalGrandTotal').textContent = `${bookingData.pricing.grandTotal.toLocaleString()} AED`;
 
-      if (data.success) {
-        // Show confirmation voucher modal
-        document.getElementById('modalVoucherCode').textContent = data.bookingRef;
-        document.getElementById('modalYachtName').textContent = `${selectedYacht.title} (${selectedYacht.length} ft)`;
-        document.getElementById('modalCharterDate').textContent = `${date} (${dest})`;
-        document.getElementById('modalTimeDuration').textContent = `${slot} • ${currentDuration} Hours`;
-        document.getElementById('modalGuestName').textContent = `${guestName} (${guestPhone})`;
-        document.getElementById('modalGrandTotal').textContent = `${grandTotalAED.toLocaleString()} AED (~$${Math.round(grandTotalAED * 0.272).toLocaleString()} USD)`;
+      // Update boarding pass link
+      document.getElementById('modalPassBtn').href = `/my-charter/${bookingData.bookingAccessToken}`;
 
-        // Update modal WhatsApp button
-        const modalWaText = encodeURIComponent(
-          `Hello! I just confirmed charter booking reference: ${data.bookingRef} for ${selectedYacht.title} on ${date}. Please assist with payment & boarding pass!`
-        );
-        document.getElementById('modalWhatsAppBtn').href = `https://wa.me/971585441134?text=${modalWaText}`;
+      // WhatsApp direct
+      const modalWaText = encodeURIComponent(
+        `Hello! I just confirmed charter booking reference: ${bookingData.bookingRef} for ${selectedYacht.title} on ${date}. Please assist with payment & boarding pass!`
+      );
+      document.getElementById('modalWhatsAppBtn').href = `https://wa.me/971585441134?text=${modalWaText}`;
 
-        document.getElementById('voucherModal').classList.add('active');
-      } else {
-        alert(data.message || 'Error creating reservation. Please try again or contact us via WhatsApp.');
-      }
+      document.getElementById('voucherModal').classList.add('active');
     } catch (err) {
       console.error('Booking submission error:', err);
       alert('An unexpected network error occurred. Please contact Oneness Yachts directly via WhatsApp.');
     } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Confirm Reservation Online';
+      resetButtons();
     }
   }
 

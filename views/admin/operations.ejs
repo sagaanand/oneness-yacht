@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oneness Yachts — Operations OS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #07111c;
+      --navy2: #08131f;
+      --gold: #c9a66b;
+      --cream: #f4efe7;
+      --muted: #71808c;
+      --line: rgba(255, 255, 255, .10);
+      --white: #fff;
+      --green: #287654;
+      --green-bg: #e4f6ee;
+      --amber: #946719;
+      --amber-bg: #fff3dc;
+      --blue: #3c5e9b;
+      --blue-bg: #e8effc;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #eef1f3;
+      color: #18232d;
+      font-family: Inter, Arial, sans-serif;
+      min-height: 100vh;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Topbar */
+    .adminbar {
+      height: 72px;
+      background: #08131f;
+      color: #fff;
+      padding: 0 4%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .logo {
+      letter-spacing: 4px;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--gold); }
+    .topbar-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn {
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: #101820;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 3px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn.ghost {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,0.25);
+    }
+    .btn.ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Body */
+    .adminbody {
+      padding: 35px 4%;
+      max-width: 1400px;
+      margin: auto;
+    }
+    .kicker {
+      color: #7a8791;
+      letter-spacing: 2px;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    h1 {
+      font: normal clamp(32px, 4vw, 44px) Georgia, serif;
+      color: #18232d;
+      margin: 0 0 6px;
+    }
+    .muted { color: var(--muted); font-size: 15px; }
+
+    /* KPIs */
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .kpi {
+      background: #fff;
+      border: 1px solid #dce2e7;
+      padding: 22px 24px;
+      border-radius: 7px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .kpi span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7a8791;
+      font-weight: 600;
+      display: block;
+    }
+    .kpi b {
+      font-size: 30px;
+      display: block;
+      margin-top: 8px;
+      color: #18232d;
+      font-family: Georgia, serif;
+      font-weight: normal;
+    }
+
+    /* Admin Grid */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1.4fr .6fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .tablebox, .nextbox {
+      background: #fff;
+      border: 1px solid #dce2e7;
+      border-radius: 7px;
+      padding: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .table-header h3 {
+      font: normal 22px Georgia, serif;
+      color: #18232d;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .table th {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid #edf0f2;
+      color: #7a8791;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    .table td {
+      padding: 15px 10px;
+      border-bottom: 1px solid #edf0f2;
+      color: #18232d;
+    }
+    .table tr:hover td {
+      background: #fafbfc;
+    }
+    .badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      text-transform: uppercase;
+    }
+    .badge.confirmed { background: var(--green-bg); color: var(--green); }
+    .badge.ready { background: var(--blue-bg); color: var(--blue); }
+    .badge.pending { background: var(--amber-bg); color: var(--amber); }
+    .badge.completed { background: #e2e8f0; color: #475569; }
+
+    .admin-btn {
+      padding: 8px 16px;
+      border: 1px solid #cfd7dd;
+      background: #fff;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #18232d;
+      transition: all 0.2s;
+    }
+    .admin-btn:hover {
+      background: #f4f6f8;
+      border-color: #b0bcc6;
+    }
+    .admin-btn.primary {
+      width: 100%;
+      margin-top: 14px;
+      padding: 13px;
+      background: #172635;
+      color: #fff;
+      border-color: #172635;
+      font-size: 13px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .admin-btn.primary:hover {
+      background: #0d1b2a;
+    }
+
+    /* Next Charter Card */
+    .next-card {
+      background: #f5f7f8;
+      border: 1px solid #e3e8ec;
+      padding: 22px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+    .next-card h3 {
+      font: normal 26px Georgia, serif;
+      margin: 8px 0 4px;
+      color: #18232d;
+    }
+    .next-card p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .statusline {
+      color: var(--amber);
+      font-size: 11.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .statusline.green { color: var(--green); }
+    .crewrow {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5eaee;
+      font-size: 13px;
+      color: #52606d;
+    }
+    .crewrow strong { color: #18232d; }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 11, 18, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.open { display: flex; }
+    .modalbox {
+      max-width: 600px;
+      width: 100%;
+      background: #fff;
+      color: #18232d;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: 0;
+      font-size: 24px;
+      color: #8896a2;
+      cursor: pointer;
+    }
+    .modalbox h2 {
+      font: normal 28px Georgia, serif;
+      margin-bottom: 16px;
+    }
+    .formField {
+      margin-bottom: 16px;
+    }
+    .formField label {
+      display: block;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .formField input, .formField select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid #cfd7dd;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+    }
+    .btnGroup {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 880px) {
+      .admin-grid { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+      .topbar-actions span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="adminbar">
+    <div class="logo">ONENESS <span>YACHTS</span> · OPERATIONS</div>
+    <div class="topbar-actions">
+      <a href="/" class="btn ghost"><i class="fa-solid fa-arrow-left"></i> <span>Customer View</span></a>
+      <a href="/booking" class="btn ghost"><i class="fa-solid fa-calendar-check"></i> <span>Book a Yacht</span></a>
+      <a href="/crew" class="btn ghost"><i class="fa-solid fa-compass"></i> <span>Crew Run Sheet</span></a>
+      <button class="btn" onclick="openConciergeModal()"><i class="fa-solid fa-plus"></i> New Booking</button>
+    </div>
+  </div>
+
+  <!-- MAIN OPERATIONS BODY -->
+  <div class="adminbody">
+    <div class="kicker">
+      <%= new Date().toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) %>
+    </div>
+    <h1>Good morning.</h1>
+    <p class="muted">You have <%= metrics.chartersToday || todayCharters.length %> charters today.</p>
+
+    <!-- 4 KPIS -->
+    <div class="kpis">
+      <div class="kpi">
+        <span>Today's Charters</span>
+        <b><%= metrics.chartersToday || todayCharters.length %></b>
+      </div>
+      <div class="kpi">
+        <span>Confirmed</span>
+        <b><%= metrics.confirmedCount || 3 %></b>
+      </div>
+      <div class="kpi">
+        <span>Pending Payment</span>
+        <b><%= metrics.pendingPaymentCount || 1 %></b>
+      </div>
+      <div class="kpi">
+        <span>Today's Revenue</span>
+        <b>AED <%= (metrics.todayRevenueAED || 48500).toLocaleString() %></b>
+      </div>
+    </div>
+
+    <!-- 2-COLUMN ADMIN GRID -->
+    <div class="admin-grid">
+      
+      <!-- LEFT COLUMN: TODAY'S BOOKINGS -->
+      <div class="tablebox">
+        <div class="table-header">
+          <h3>Today's Bookings</h3>
+          <span class="kicker" style="margin:0">Dubai Marina Fleet</span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Yacht</th>
+              <th>Guest</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (todayCharters && todayCharters.length > 0) { %>
+              <% todayCharters.forEach(function(c) { 
+                const d = new Date(c.start_time);
+                const timeStr = !isNaN(d.getTime()) ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '14:00';
+                let badgeClass = 'confirmed';
+                let label = c.booking_status;
+                if (c.booking_status === 'READY') { badgeClass = 'ready'; label = 'READY'; }
+                else if (c.booking_status === 'PENDING_PAYMENT' || c.payment_status === 'UNPAID') { badgeClass = 'pending'; label = 'PAYMENT'; }
+                else if (c.booking_status === 'CONFIRMED' || c.booking_status === 'CREW_ASSIGNED') { badgeClass = 'confirmed'; label = 'CONFIRMED'; }
+                else if (c.booking_status === 'COMPLETED') { badgeClass = 'completed'; label = 'COMPLETED'; }
+              %>
+                <tr>
+                  <td><strong><%= timeStr %></strong></td>
+                  <td><%= c.yacht ? c.yacht.title : 'Luxury Yacht' %></td>
+                  <td><%= c.customer ? c.customer.full_name : 'Guest' %> · <%= c.guest_count %></td>
+                  <td><span class="badge <%= badgeClass %>"><%= label %></span></td>
+                  <td>
+                    <% if (label === 'PAYMENT') { %>
+                      <button class="admin-btn" onclick="openBookingDetails('<%= c.id %>')">Follow up</button>
+                    <% } else { %>
+                      <button class="admin-btn" onclick="openBookingDetails('<%= c.id %>')">View</button>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align:center; padding: 25px;" class="muted">No charters registered for today.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RIGHT COLUMN: NEXT CHARTER SPOTLIGHT -->
+      <div class="nextbox">
+        <div class="kicker">Next Charter</div>
+        <% 
+          const next = nextCharter || (todayCharters && todayCharters[0]) || {
+            yacht: { title: 'Dolce Vita' },
+            customer: { full_name: 'Mr. Kumar' },
+            guest_count: 8,
+            start_time: new Date().toISOString(),
+            booking_status: 'CONFIRMED',
+            berth_number: '4',
+            special_requests: 'Birthday + BBQ',
+            captain: { full_name: 'Ahmed' }
+          };
+          const nextTime = new Date(next.start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+        %>
+        <div class="next-card">
+          <div class="statusline <%= next.booking_status === 'READY' ? 'green' : '' %>">
+            <%= nextTime %> · <%= next.booking_status %>
+          </div>
+          <h3><%= next.yacht ? next.yacht.title : 'Dolce Vita' %></h3>
+          <p><%= next.customer ? next.customer.full_name : 'Mr. Kumar' %> · <%= next.guest_count %> Guests</p>
+          <div class="crewrow">
+            <span>Captain</span>
+            <strong><%= next.captain ? next.captain.full_name.replace(/^Captain\s+/i, '') : 'Ahmed' %></strong>
+          </div>
+          <div class="crewrow">
+            <span>Berth</span>
+            <strong><%= next.berth_number || '4' %></strong>
+          </div>
+          <div class="crewrow">
+            <span>Request</span>
+            <strong><%= next.special_requests || 'Birthday + BBQ' %></strong>
+          </div>
+          <button class="admin-btn primary" onclick="location.href='/crew'">Open Crew View →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOOKING DETAILS MODAL -->
+  <div id="bookingModal" class="modal">
+    <div class="modalbox">
+      <button class="close" onclick="closeModal('bookingModal')">&times;</button>
+      <div class="kicker" id="mRef">ONY-0000</div>
+      <h2 id="mYacht">Charter Details</h2>
+      <div class="crewrow"><span>Guest</span><strong id="mGuest">-</strong></div>
+      <div class="crewrow"><span>Time Window</span><strong id="mTime">-</strong></div>
+      <div class="crewrow"><span>Status</span><strong id="mStatus">-</strong></div>
+      <div class="crewrow"><span>Total Price</span><strong id="mTotal" style="color:var(--gold)">-</strong></div>
+      <div class="crewrow"><span>Assigned Captain</span><strong id="mCaptain">-</strong></div>
+      <div class="crewrow"><span>Special Requests</span><strong id="mNotes">-</strong></div>
+
+      <div class="btnGroup">
+        <button class="btn" id="mPassBtn" onclick="openBoardingPass()" style="flex:1"><i class="fa-solid fa-ticket"></i> Boarding Pass</button>
+        <button class="admin-btn" onclick="promptAssignCrew()" style="flex:1"><i class="fa-solid fa-user-check"></i> Assign Crew</button>
+        <button class="admin-btn" onclick="promptReschedule()" style="flex:1"><i class="fa-solid fa-clock-rotate-left"></i> Reschedule</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW CONCIERGE BOOKING MODAL -->
+  <div id="conciergeModal" class="modal">
+    <div class="modalbox">
+      <button class="close" onclick="closeModal('conciergeModal')">&times;</button>
+      <div class="kicker">Desk Reservation</div>
+      <h2>New Concierge Booking</h2>
+      <div class="formField">
+        <label>Vessel</label>
+        <select id="cboYacht">
+          <option value="dolce-vita-105-ft">Dolce Vita 105 ft (9,000 AED/h)</option>
+          <option value="sunseeker-95-ft">Sunseeker 95 ft (14,000 AED/h)</option>
+          <option value="hamdan-majesty-88-ft">Majesty 101 ft (7,500 AED/h)</option>
+        </select>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+        <div class="formField">
+          <label>Date</label>
+          <input type="date" id="txtDate" value="<%= new Date().toISOString().split('T')[0] %>">
+        </div>
+        <div class="formField">
+          <label>Start Time</label>
+          <select id="selTime">
+            <option value="10:00">10:00 AM</option>
+            <option value="14:00">02:00 PM</option>
+            <option value="17:00" selected>05:00 PM (Sunset)</option>
+            <option value="20:00">08:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+        <div class="formField">
+          <label>Guests</label>
+          <select id="selGuests">
+            <option>2</option><option>4</option><option>6</option><option selected>8</option><option>10</option><option>12</option>
+          </select>
+        </div>
+        <div class="formField">
+          <label>Duration</label>
+          <select id="selDuration">
+            <option value="2">2 Hours</option>
+            <option value="3" selected>3 Hours</option>
+            <option value="4">4 Hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="formField">
+        <label>Guest Full Name</label>
+        <input type="text" id="txtGuestName" placeholder="VIP Guest Name">
+      </div>
+      <div class="formField">
+        <label>Phone / WhatsApp</label>
+        <input type="text" id="txtGuestPhone" placeholder="+971 50 123 4567">
+      </div>
+      <div class="formField">
+        <label>Occasion & Requests</label>
+        <input type="text" id="txtRequests" placeholder="e.g. Birthday Setup, Chef, Flowers">
+      </div>
+      <button class="btn" style="width:100%; margin-top:8px" onclick="submitConciergeBooking()">Create & Confirm Charter</button>
+    </div>
+  </div>
+
+  <script>
+    let currentCharter = null;
+    const chartersData = <%- JSON.stringify(todayCharters || []) %>;
+
+    function openBookingDetails(id) {
+      currentCharter = chartersData.find(c => c.id === id) || chartersData[0];
+      if (!currentCharter) return;
+
+      document.getElementById('mRef').textContent = currentCharter.booking_ref;
+      document.getElementById('mYacht').textContent = currentCharter.yacht ? currentCharter.yacht.title : 'Luxury Yacht';
+      document.getElementById('mGuest').textContent = (currentCharter.customer ? currentCharter.customer.full_name : 'Guest') + ' · ' + currentCharter.guest_count + ' PAX';
+      
+      const s = new Date(currentCharter.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const e = new Date(currentCharter.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('mTime').textContent = s + ' - ' + e;
+      document.getElementById('mStatus').textContent = currentCharter.booking_status;
+      document.getElementById('mTotal').textContent = 'AED ' + Number(currentCharter.total_price || 0).toLocaleString();
+      document.getElementById('mCaptain').textContent = currentCharter.captain ? currentCharter.captain.full_name : 'Unassigned';
+      document.getElementById('mNotes').textContent = currentCharter.special_requests || 'Standard Charter Setup';
+
+      document.getElementById('bookingModal').classList.add('open');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function openBoardingPass() {
+      if (currentCharter && currentCharter.booking_access_token) {
+        window.open('/my-charter/' + currentCharter.booking_access_token, '_blank');
+      } else {
+        alert('Boarding pass token not available for this booking.');
+      }
+    }
+
+    async function promptAssignCrew() {
+      if (!currentCharter) return;
+      const captain = prompt('Enter Captain identifier (e.g. captain.ahmed or captain.tariq):', 'captain.ahmed');
+      if (!captain) return;
+
+      try {
+        const res = await fetch('/api/v1/admin/bookings/' + currentCharter.id + '/crew', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ captainId: captain, crewNotes: 'Assigned via Operations Dashboard' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Captain successfully assigned!');
+          location.reload();
+        } else {
+          alert(data.error || 'Failed to assign captain.');
+        }
+      } catch (err) {
+        alert('Error communicating with server.');
+      }
+    }
+
+    async function promptReschedule() {
+      if (!currentCharter) return;
+      const newTime = prompt('Enter new start time for today (HH:MM e.g. 18:00):', '18:00');
+      if (!newTime) return;
+
+      const dateStr = currentCharter.start_time.split('T')[0];
+      const start = new Date(dateStr + 'T' + newTime + ':00.000Z');
+      const end = new Date(start.getTime() + 3 * 3600000);
+
+      try {
+        const res = await fetch('/api/v1/admin/bookings/' + currentCharter.id + '/reschedule', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            newStartTime: start.toISOString(),
+            newEndTime: end.toISOString(),
+            reason: 'Operations Schedule Adjustment'
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Charter successfully rescheduled!');
+          location.reload();
+        } else {
+          alert(data.error || 'Reschedule conflict or error.');
+        }
+      } catch (err) {
+        alert('Communication error.');
+      }
+    }
+
+    function openConciergeModal() {
+      document.getElementById('conciergeModal').classList.add('open');
+    }
+
+    async function submitConciergeBooking() {
+      const yachtId = document.getElementById('cboYacht').value;
+      const date = document.getElementById('txtDate').value;
+      const time = document.getElementById('selTime').value;
+      const duration = Number(document.getElementById('selDuration').value);
+      const guests = Number(document.getElementById('selGuests').value);
+      const name = document.getElementById('txtGuestName').value.trim();
+      const phone = document.getElementById('txtGuestPhone').value.trim();
+      const requests = document.getElementById('txtRequests').value.trim();
+
+      if (!name || !phone) {
+        alert('Please enter guest name and phone number.');
+        return;
+      }
+
+      const start = new Date(date + 'T' + time + ':00.000Z');
+      const end = new Date(start.getTime() + duration * 3600000);
+
+      try {
+        const res = await fetch('/api/v1/admin/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            yachtId,
+            startTime: start.toISOString(),
+            endTime: end.toISOString(),
+            guests,
+            customer: { fullName: name, phone: phone },
+            specialRequests: requests,
+            sourceChannel: 'CONCIERGE_DESK'
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          alert('Charter successfully booked: Reference ' + data.bookingRef);
+          location.reload();
+        } else {
+          alert(data.error || 'Booking failed.');
+        }
+      } catch (err) {
+        alert('Error creating concierge booking.');
+      }
+    }
+  </script>
+</body>
+</html>
