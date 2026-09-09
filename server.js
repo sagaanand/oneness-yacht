@@ -142,12 +142,6 @@ app.get(['/yacht/:slug', '/yacht/:slug.html'], (req, res, next) => {
   if (yacht) {
     return res.render('yacht-detail', { yacht });
   }
-
-  // Fallback to static HTML file if present
-  const staticFile = path.join(filesDir, 'yacht', `${req.params.slug.replace(/\.html$/, '')}.html`);
-  if (fs.existsSync(staticFile)) {
-    return res.sendFile(staticFile);
-  }
   next();
 });
 
@@ -156,14 +150,9 @@ const subDirs = ['packages', 'services', 'amenity'];
 subDirs.forEach((folder) => {
   app.get([`/${folder}/:slug`, `/${folder}/:slug.html`], (req, res, next) => {
     const slug = req.params.slug.replace(/\.html$/, '');
-    const candidateFiles = [
-      path.join(filesDir, folder, `${slug}.html`),
-      path.join(filesDir, folder, `${req.params.slug}`)
-    ];
-    for (const f of candidateFiles) {
-      if (fs.existsSync(f) && !fs.statSync(f).isDirectory()) {
-        return res.sendFile(f);
-      }
+    const viewPath = path.join(__dirname, 'views', folder, `${slug}.ejs`);
+    if (fs.existsSync(viewPath)) {
+      return res.render(`${folder}/${slug}`);
     }
     next();
   });
