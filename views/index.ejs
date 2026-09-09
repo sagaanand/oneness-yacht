@@ -11,7 +11,7 @@
                         <div class="btnDiv">
                             <a href="/contact"
                                 class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
-                            <a href="packages/sail-into-romance-adventure.html" class="outlinedBtn white lgBtn">Explore</a>
+                            <a href="/packages/sail-into-romance-adventure" class="outlinedBtn white lgBtn">Explore</a>
                         </div>
                     </div>
                     <div class="text-slide">
@@ -19,7 +19,7 @@
                         <div class="btnDiv">
                             <a href="/contact"
                                 class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
-                            <a href="/yacht/ak-royalty-136-ft.html" class="outlinedBtn white lgBtn">Explore</a>
+                            <a href="/yacht/ak-royalty-136-ft" class="outlinedBtn white lgBtn">Explore</a>
                         </div>
                     </div>
                     <div class="text-slide">
@@ -28,7 +28,7 @@
                         <div class="btnDiv">
                             <a href="/contact"
                                 class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
-                            <a href="/yacht/bennetti-110-ft.html" class="outlinedBtn white lgBtn">Explore</a>
+                            <a href="/yacht/bennetti-110-ft" class="outlinedBtn white lgBtn">Explore</a>
                         </div>
                     </div>
                     <div class="text-slide">
@@ -38,7 +38,7 @@
                         <div class="btnDiv">
                             <a href="/contact"
                                 class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
-                            <a href="/yacht/santorini-superyacht-115-ft.html"
+                            <a href="/yacht/santorini-superyacht-115-ft"
                                 class="outlinedBtn white lgBtn">Explore</a>
                         </div>
                     </div>
@@ -46,12 +46,12 @@
                 </div>
             </div>
 
-            <div class="slider-control">
-                <div class="prev"><button type="button">
-                        <img src="/image/icons/white-prew.png" alt="">
+            <div class="slider-control" style="display: flex;">
+                <div class="prev"><button type="button" aria-label="Previous Slide">
+                        <i class="fa-solid fa-chevron-left" style="color: #ffffff; font-size: 16px; line-height: 48px; text-align: center; display: block;"></i>
                     </button></div>
-                <div class="next"><button type="button">
-                        <img src="/image/icons/white-arrow.png" alt="">
+                <div class="next"><button type="button" aria-label="Next Slide">
+                        <i class="fa-solid fa-chevron-right" style="color: #ffffff; font-size: 16px; line-height: 48px; text-align: center; display: block;"></i>
                     </button></div>
             </div>
 
@@ -884,3 +884,38 @@
 
 <%- include('partials/footer') %>
 <%- include('partials/scripts') %>
+
+<script>
+    $(document).ready(function() {
+        var sickPrimary = {
+            autoplay: true,
+            autoplaySpeed: 2400,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 1800,
+            cssEase: 'cubic-bezier(.84, 0, .08, .99)',
+            asNavFor: '.text-slider',
+            centerMode: true,
+            prevArrow: $('.prev'),
+            nextArrow: $('.next')
+        };
+
+        var sickSecondary = {
+            autoplay: true,
+            autoplaySpeed: 2400,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 1800,
+            cssEase: 'cubic-bezier(.84, 0, .08, .99)',
+            asNavFor: '.image-slider',
+            prevArrow: $('.prev'),
+            nextArrow: $('.next')
+        };
+
+        if ($('.image-slider').length && $('.text-slider').length) {
+            $('.image-slider').slick(sickPrimary);
+            $('.text-slider').slick(sickSecondary);
+        }
+    });
+</script>
+</html>
