@@ -50,17 +50,22 @@ const parsePrice = (priceStr) => {
 };
 
 // Logging helper for incoming inquiries
+const LOG_DIR = process.env.VERCEL ? '/tmp' : __dirname;
 const logInquiry = (inquiry) => {
-  const logFile = path.join(__dirname, 'inquiries.log');
-  const line = `[${new Date().toISOString()}] ${JSON.stringify(inquiry)}\n`;
-  fs.appendFileSync(logFile, line);
+  try {
+    const logFile = path.join(LOG_DIR, 'inquiries.log');
+    const line = `[${new Date().toISOString()}] ${JSON.stringify(inquiry)}\n`;
+    fs.appendFileSync(logFile, line);
+  } catch (e) { console.log('[LOG]', JSON.stringify(inquiry)); }
 };
 
 // Logging helper for charter bookings
 const logBooking = (booking) => {
-  const logFile = path.join(__dirname, 'bookings.log');
-  const line = `[${new Date().toISOString()}] ${JSON.stringify(booking)}\n`;
-  fs.appendFileSync(logFile, line);
+  try {
+    const logFile = path.join(LOG_DIR, 'bookings.log');
+    const line = `[${new Date().toISOString()}] ${JSON.stringify(booking)}\n`;
+    fs.appendFileSync(logFile, line);
+  } catch (e) { console.log('[BOOKING]', JSON.stringify(booking)); }
   logInquiry({ ...booking, type: 'Yacht Charter Booking' });
 };
 
@@ -390,28 +395,32 @@ app.use((err, req, res, next) => {
   res.status(500).render('index', { activeNav: 'home', yachts });
 });
 
-// Start Server & Background Sweeper
+// Background Hold Sweeper (only in persistent/local environments)
 const holdService = require('./src/services/holdService');
-const holdSweeperInterval = setInterval(async () => {
-  try {
-    const sweep = await holdService.sweepExpiredHolds();
-    if (sweep && sweep.sweptCount > 0) {
-      console.log(`[HOLD SWEEPER] Auto-swept ${sweep.sweptCount} expired checkout hold(s).`);
+if (!process.env.VERCEL) {
+  const holdSweeperInterval = setInterval(async () => {
+    try {
+      const sweep = await holdService.sweepExpiredHolds();
+      if (sweep && sweep.sweptCount > 0) {
+        console.log(`[HOLD SWEEPER] Auto-swept ${sweep.sweptCount} expired checkout hold(s).`);
+      }
+    } catch (e) {
+      console.error('[HOLD SWEEPER] Error during hold sweep:', e.message);
     }
-  } catch (e) {
-    console.error('[HOLD SWEEPER] Error during hold sweep:', e.message);
-  }
-}, 60000);
-if (holdSweeperInterval.unref) holdSweeperInterval.unref();
+  }, 60000);
+  if (holdSweeperInterval.unref) holdSweeperInterval.unref();
+}
 
-const server = app.listen(PORT, () => {
-  console.log(`=======================================================`);
-  console.log(`  ONENESS YACHTS - NODE.JS (EXPRESS + EJS) RUNNING`);
-  console.log(`  Local URL: http://localhost:${PORT}`);
-  console.log(`  Yachts in memory: ${yachts.length}`);
-  console.log(`=======================================================`);
-});
-
-module.exports = { app, server };
-
-
+// Start server only when running directly (not on Vercel serverless)
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, () => {
+    console.log(`=======================================================`);
+    console.log(`  ONENESS YACHTS - NODE.JS (EXPRESS + EJS) RUNNING`);
+    console.log(`  Local URL: http://localhost:${PORT}`);
+    console.log(`  Yachts in memory: ${yachts.length}`);
+    console.log(`=======================================================`);
+  });
+  module.exports = { app, server };
+} else {
+  module.exports = app;
+}
