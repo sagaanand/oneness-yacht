@@ -17,13 +17,26 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-const filesDir = path.join(__dirname, 'Files');
+// Template Engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-// Serve all static assets and HTML from Files directory
-app.use(express.static(filesDir, {
-  extensions: ['html', 'htm']
-}));
+// Static Assets
+const filesDir = path.join(__dirname, 'Files');
 app.use('/assets', express.static(path.join(filesDir, 'assets')));
+app.use(express.static(filesDir, { extensions: ['html', 'htm'] }));
+
+// Load Yachts Dataset
+let yachts = [];
+try {
+  const yachtsDataPath = path.join(__dirname, 'data', 'yachts.json');
+  if (fs.existsSync(yachtsDataPath)) {
+    yachts = JSON.parse(fs.readFileSync(yachtsDataPath, 'utf8'));
+    console.log(`Loaded ${yachts.length} yachts into memory.`);
+  }
+} catch (err) {
+  console.error('Failed to load data/yachts.json:', err.message);
+}
 
 // Logging helper for incoming inquiries
 const logInquiry = (inquiry) => {
@@ -33,44 +46,113 @@ const logInquiry = (inquiry) => {
 };
 
 // ============================================================================
-// CORE ROUTES (ORIGINAL ONENESS YACHTS WEBSITE)
+// CORE NODE.JS ROUTES (AUTHENTIC ONENESS YACHTS APPLICATION)
 // ============================================================================
 
 // 1. Homepage
 app.get(['/', '/index', '/index.html'], (req, res) => {
-  res.sendFile(path.join(filesDir, 'index.html'));
-});
-
-// 2. Main Pages (both clean URLs and .html extensions)
-const mainPages = [
-  'VIP-yacht-rental',
-  'standard-yachts',
-  'dubai-packages',
-  'miami-packages',
-  'amenities',
-  'blogs',
-  'about',
-  'contact',
-  'new-year-packages',
-  'privacy-policy',
-  'security-policy',
-  'terms-and-conditions'
-];
-
-mainPages.forEach((page) => {
-  app.get([`/${page}`, `/${page}.html`], (req, res) => {
-    res.sendFile(path.join(filesDir, `${page}.html`));
+  res.render('index', {
+    activeNav: 'home',
+    yachts
   });
 });
 
-// Fleet / Yachts aliases -> redirect to VIP Yacht Rental
-app.get(['/fleet', '/fleet.html', '/yachts'], (req, res) => {
-  res.redirect('/VIP-yacht-rental.html');
+// 2. VIP Yacht Rental
+app.get(['/VIP-yacht-rental', '/VIP-yacht-rental.html', '/fleet', '/fleet.html', '/yachts'], (req, res) => {
+  res.render('vip-yacht-rental', {
+    activeNav: 'vip',
+    yachts
+  });
 });
 
-// 3. Sub-directories: /yacht/:slug, /packages/:slug, /services/:slug, /amenity/:slug
-const subDirs = ['yacht', 'packages', 'services', 'amenity'];
+// 3. Standard Yachts
+app.get(['/standard-yachts', '/standard-yachts.html'], (req, res) => {
+  res.render('standard-yachts', {
+    activeNav: 'standard',
+    yachts
+  });
+});
 
+// 4. Dubai Packages
+app.get(['/dubai-packages', '/dubai-packages.html', '/packages'], (req, res) => {
+  res.render('dubai-packages', {
+    activeNav: 'dubai-packages'
+  });
+});
+
+// 5. Miami Packages
+app.get(['/miami-packages', '/miami-packages.html'], (req, res) => {
+  res.render('miami-packages', {
+    activeNav: 'miami-packages'
+  });
+});
+
+// 6. Amenities
+app.get(['/amenities', '/amenities.html'], (req, res) => {
+  res.render('amenities', {
+    activeNav: 'amenities'
+  });
+});
+
+// 7. About Us
+app.get(['/about', '/about.html'], (req, res) => {
+  res.render('about', {
+    activeNav: 'about'
+  });
+});
+
+// 8. Contact Us
+app.get(['/contact', '/contact.html'], (req, res) => {
+  res.render('contact', {
+    activeNav: 'contact',
+    defaultYacht: req.query.yacht || ''
+  });
+});
+
+// 9. Blogs
+app.get(['/blogs', '/blogs.html'], (req, res) => {
+  res.render('blogs', {
+    activeNav: 'blogs'
+  });
+});
+
+// 10. New Year Packages
+app.get(['/new-year-packages', '/new-year-packages.html'], (req, res) => {
+  res.render('new-year-packages', {
+    activeNav: 'dubai-packages'
+  });
+});
+
+// 11. Legal Policies
+app.get(['/privacy-policy', '/privacy-policy.html'], (req, res) => {
+  res.render('privacy-policy', { activeNav: '' });
+});
+app.get(['/security-policy', '/security-policy.html'], (req, res) => {
+  res.render('security-policy', { activeNav: '' });
+});
+app.get(['/terms-and-conditions', '/terms-and-conditions.html'], (req, res) => {
+  res.render('terms-and-conditions', { activeNav: '' });
+});
+
+// 12. Dynamic Yacht Detail Page
+app.get(['/yacht/:slug', '/yacht/:slug.html'], (req, res, next) => {
+  const slug = req.params.slug.replace(/\.html$/, '').toLowerCase();
+  const yacht = yachts.find(y => y.slug.toLowerCase() === slug);
+
+  if (yacht) {
+    return res.render('yacht-detail', { yacht });
+  }
+
+  // Fallback to static HTML file if present
+  const staticFile = path.join(filesDir, 'yacht', `${req.params.slug.replace(/\.html$/, '')}.html`);
+  if (fs.existsSync(staticFile)) {
+    return res.sendFile(staticFile);
+  }
+  next();
+});
+
+// 13. Sub-directories: /packages/:slug, /services/:slug, /amenity/:slug
+const subDirs = ['packages', 'services', 'amenity'];
 subDirs.forEach((folder) => {
   app.get([`/${folder}/:slug`, `/${folder}/:slug.html`], (req, res, next) => {
     const slug = req.params.slug.replace(/\.html$/, '');
@@ -91,7 +173,7 @@ subDirs.forEach((folder) => {
 // API ENDPOINTS
 // ============================================================================
 
-app.post(['/api/inquire', '/api/contact', '/contact.html'], (req, res) => {
+app.post(['/api/inquire', '/api/contact', '/contact.html', '/contact'], (req, res) => {
   const { name, phone, email, yacht, date, guests, message, notes } = req.body;
 
   const inquiry = {
@@ -118,7 +200,7 @@ app.post(['/api/inquire', '/api/contact', '/contact.html'], (req, res) => {
         message: 'Your inquiry has been received by Oneness Yachts.'
       });
     }
-    res.redirect('/contact.html?submitted=true');
+    res.redirect('/contact?submitted=true');
   } catch (err) {
     console.error('Error logging inquiry:', err);
     res.status(500).send('Internal server error');
@@ -129,19 +211,21 @@ app.post(['/api/inquire', '/api/contact', '/contact.html'], (req, res) => {
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    yachtsLoaded: yachts.length
   });
 });
 
-// 404 Catch-All -> index.html
+// 404 Catch-All -> render index or redirect
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(filesDir, 'index.html'));
+  res.status(404).render('index', { activeNav: 'home', yachts });
 });
 
 // Start Server
 app.listen(PORT, () => {
   console.log(`=======================================================`);
-  console.log(`  ONENESS YACHTS - ORIGINAL DESIGN SERVER RUNNING`);
+  console.log(`  ONENESS YACHTS - NODE.JS (EXPRESS + EJS) RUNNING`);
   console.log(`  Local URL: http://localhost:${PORT}`);
+  console.log(`  Yachts in memory: ${yachts.length}`);
   console.log(`=======================================================`);
 });

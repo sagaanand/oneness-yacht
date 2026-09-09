@@ -1,0 +1,128 @@
+<%- include('partials/head', { title: 'Oneness Yachts — Luxury Yacht Charter Dubai', description: 'Ready to book your private yacht in Dubai? Call +971 585441134 or fill out the form to secure your luxury experience with Oneness Yachts.', activeNav: 'contact' }) %>
+<%- include('partials/header', { activeNav: 'contact' }) %>
+
+<!-- Hero Section -->
+    <section class="contact-hero">
+        <div class="contact-hero-content">
+            <h1>Let’s Set Sail Together</h1>
+            <p>“Have questions or ready to plan your unforgettable yacht experience? Our team is here to help you every step of the way—from choosing the perfect yacht to tailoring the journey to your vision"</p>
+	     </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact-form" class="section contact-form-section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Want to visit us or take a private yacht tour? Schedule your appointment below.</p>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-info-box">
+                        <h3>Contact Information</h3>
+                        
+                        <div class="contact-detail">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Our Location</h4>
+                                <p>2906, Marina Plaza, Dubai, UAE</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Phone Number</h4>
+                                <a href="tel:+971585441134">+971 585441134</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Email Address</h4>
+                                <a href="mailto:info@onenessyachts.com">info@onenessyachts.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Working Hours</h4>
+                                <p>Monday – Sunday: 9:00 AM to 10:00 PM
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/people/Oneness-Ocean-Yachts/61579166856902/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/onenessyachts" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://twitter.com/onenessyachts" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.youtube.com/onenessyachts" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <div class="form-container">
+                        <h3>Send Us a Message</h3>
+                        
+                        <form action="https://api.web3forms.com/submit" method="POST">
+                            <input type="hidden" name="access_key" value="e42447ca-6891-4410-9223-81646b36b235">
+                            
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" name="name" id="name" placeholder="Enter your name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" name="phone" id="phone" placeholder="Enter your phone number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="yacht">Number Of Pax</label>
+                                 <input type="tel" name="Number" id="Number" placeholder="Enter number of Pax">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Your Message</label>
+                                <textarea name="message" id="message" placeholder="How can we help you?" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Submit Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="section map-section">
+        <div class="container">
+            <h2 class="section-title">Our Location</h2>
+            <p class="section-subtitle">Visit our office at Marina Plaza in Dubai</p>
+            
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.366109165944!2d55.13722301500864!3d25.186997983904114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6b9a7a1e85a9%3A0x4c9d8d5b8b3b3b3b!2sMarina%20Plaza%2C%20Dubai!5e0!3m2!1sen!2sae!4v1650562100000!5m2!1sen!2sae" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+
+<%- include('partials/footer') %>
+<%- include('partials/scripts') %>

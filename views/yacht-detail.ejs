@@ -1,0 +1,136 @@
+<%- include('partials/head', { 
+  title: yacht.title + ' — Oneness Luxury Yacht Charter Dubai',
+  description: yacht.overview ? yacht.overview.slice(0, 160) : 'Explore luxury yacht charter in Dubai with Oneness Yachts.',
+  activeNav: yacht.category === 'vip' ? 'vip' : 'standard'
+}) %>
+<%- include('partials/header', { activeNav: yacht.category === 'vip' ? 'vip' : 'standard' }) %>
+
+    <section class="mediaDiv">
+      <div id="media" class="mediaWrapper">
+        <% yacht.images.forEach(function(img) { %>
+          <div class="mediaFile">
+            <img src="<%= img %>" alt="<%= yacht.title %>">
+          </div>
+        <% }); %>
+      </div>
+      <div class="arrowDiv">
+        <a class="arrow leftArrow" onclick="sideScrollCards('media','mediaFile','prev',1);"><i
+            class="fi fi-rr-angle-double-left"></i></a>
+        <a class="arrow rightArrow" onclick="sideScrollCards('media','mediaFile','next',1);"><i
+            class="fi fi-rr-angle-double-right"></i></a>
+      </div>
+      <div class="popupClose">
+        <i class="fi fi-rr-cross"></i>
+      </div>
+    </section>
+
+    <section class="propertyDetails">
+      <div class="innerSection">
+        <div class="contentDiv">
+          <div class="titleDiv">
+            <h1 class="title"><%= yacht.title %></h1>
+            <p class="tower"><%= yacht.tower %></p>
+          </div>
+          <div class="content">
+            <% if (yacht.specs && yacht.specs.length > 0) { %>
+            <div class="list">
+              <h2 class="title">Specification</h2>
+              <div class="amenities">
+                <ul>
+                  <% yacht.specs.forEach(function(spec) { %>
+                    <li><%= spec %></li>
+                  <% }); %>
+                </ul>
+              </div>
+            </div>
+            <% } %>
+
+            <% if (yacht.overview) { %>
+            <div class="list">
+              <h2 class="title">Overview</h2>
+              <% yacht.overview.split('\n\n').forEach(function(para) { %>
+                <p><%= para %></p>
+              <% }); %>
+            </div>
+            <% } %>
+
+            <% if (yacht.extraSections && yacht.extraSections.length > 0) { %>
+              <% yacht.extraSections.forEach(function(sec) { %>
+                <div class="list">
+                  <h2 class="title"><%= sec.title %></h2>
+                  <p><%= sec.content %></p>
+                </div>
+              <% }); %>
+            <% } %>
+          </div>
+        </div>
+        <div class="propertyBookingBtnDiv">
+          <h5 class="price"><%= yacht.price %></h5>
+          <div class="propertyBookingBtn filledBtn">Book Now</div>
+        </div>
+        <div class="propertyBookingForm">
+          <form action="/contact" class="formDiv" method="get">
+            <input type="hidden" name="yacht" value="<%= yacht.title %>">
+            <h4 class="title">Book Now</h4>
+            <ul>
+              <li>Capacity: <%= yacht.capacity ? yacht.capacity + ' PAX' : 'VIP' %></li>
+              <li>Type: <%= yacht.category === 'vip' ? 'VIP Luxury' : 'Standard' %></li>
+              <li>Size: <%= yacht.lengthFt ? yacht.lengthFt + ' Feet' : yacht.tower %></li>
+            </ul>
+            <div class="actionDiv">
+              <p>Price Per Hour</p>
+              <p class="price"><%= yacht.price %></p>
+            </div>
+            <a href="/contact?yacht=<%= encodeURIComponent(yacht.title) %>" class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now</a>
+          </form>
+          <div class="closeform"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="FAQs" class="faqSection">
+      <div class="innerSection">
+        <h2 class="heading">FAQs</h2>
+        <ul class="faqListDiv">
+          <li class="dropList">
+            <div class="dropBox">
+              <h5 class="title">What is included in the yacht booking package?</h5>
+              <div class="dropIcon">
+                <i class="fi fi-rr-angle-small-up dropRemove"></i>
+                <i class="fi fi-rr-angle-small-down dropAdd"></i>
+              </div>
+            </div>
+            <div class="dropContent">
+              <p>The yacht booking package includes a professional crew, onboard amenities, refreshments, and optional catering and entertainment add-ons.</p>
+            </div>
+          </li>
+          <li class="dropList">
+            <div class="dropBox">
+              <h5 class="title">How many guests can the yacht accommodate?</h5>
+              <div class="dropIcon">
+                <i class="fi fi-rr-angle-small-up dropRemove"></i>
+                <i class="fi fi-rr-angle-small-down dropAdd"></i>
+              </div>
+            </div>
+            <div class="dropContent">
+              <p>This yacht accommodates up to <%= yacht.capacity || 'VIP' %> passengers comfortably.</p>
+            </div>
+          </li>
+          <li class="dropList">
+            <div class="dropBox">
+              <h5 class="title">What are the safety measures on board?</h5>
+              <div class="dropIcon">
+                <i class="fi fi-rr-angle-small-up dropRemove"></i>
+                <i class="fi fi-rr-angle-small-down dropAdd"></i>
+              </div>
+            </div>
+            <div class="dropContent">
+              <p>The yacht is equipped with life jackets, fire extinguishers, and other essential safety equipment, maintained regularly for passenger safety.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+<%- include('partials/footer') %>
+<%- include('partials/scripts') %>
