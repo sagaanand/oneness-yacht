@@ -66,12 +66,12 @@
         </div>
         <div class="propertyBookingBtnDiv">
           <h5 class="price"><%= yacht.price %></h5>
-          <div class="propertyBookingBtn filledBtn">Book Now</div>
+          <a href="/booking?yacht=<%= yacht.slug %>" class="propertyBookingBtn filledBtn" style="text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-ship"></i> Book Now</a>
         </div>
         <div class="propertyBookingForm">
-          <form action="/contact" class="formDiv" method="get">
-            <input type="hidden" name="yacht" value="<%= yacht.title %>">
-            <h4 class="title">Book Now</h4>
+          <form action="/booking" class="formDiv" method="get">
+            <input type="hidden" name="yacht" value="<%= yacht.slug %>">
+            <h4 class="title">Book <%= yacht.title %></h4>
             <ul>
               <li>Capacity: <%= yacht.capacity ? yacht.capacity + ' PAX' : 'VIP' %></li>
               <li>Type: <%= yacht.category === 'vip' ? 'VIP Luxury' : 'Standard' %></li>
@@ -81,7 +81,8 @@
               <p>Price Per Hour</p>
               <p class="price"><%= yacht.price %></p>
             </div>
-            <a href="/contact?yacht=<%= encodeURIComponent(yacht.title) %>" class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now</a>
+            <a href="/booking?yacht=<%= yacht.slug %>" class="outlinedBtn mdBtn" style="background: linear-gradient(135deg, #d4af37, #b89428); color: #000; font-weight: 700; border: none; text-align: center; margin-bottom: 8px; text-decoration: none;">Launch Booking Engine</a>
+            <a href="/contact?yacht=<%= encodeURIComponent(yacht.title) %>" class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue; text-align: center; text-decoration: none;">Enquire Via Message</a>
           </form>
           <div class="closeform"></div>
         </div>

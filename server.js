@@ -38,11 +38,26 @@ try {
   console.error('Failed to load data/yachts.json:', err.message);
 }
 
+// Helper to parse numeric hourly price from string (e.g. "14,000 AED" -> 14000)
+const parsePrice = (priceStr) => {
+  if (!priceStr) return 0;
+  const match = priceStr.toString().replace(/,/g, '').match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
 // Logging helper for incoming inquiries
 const logInquiry = (inquiry) => {
   const logFile = path.join(__dirname, 'inquiries.log');
   const line = `[${new Date().toISOString()}] ${JSON.stringify(inquiry)}\n`;
   fs.appendFileSync(logFile, line);
+};
+
+// Logging helper for charter bookings
+const logBooking = (booking) => {
+  const logFile = path.join(__dirname, 'bookings.log');
+  const line = `[${new Date().toISOString()}] ${JSON.stringify(booking)}\n`;
+  fs.appendFileSync(logFile, line);
+  logInquiry({ ...booking, type: 'Yacht Charter Booking' });
 };
 
 // ============================================================================
@@ -109,6 +124,22 @@ app.get(['/contact', '/contact.html'], (req, res) => {
   });
 });
 
+// 8b. Dedicated Yacht Booking Engine
+app.get(['/booking', '/book-now', '/booking.html'], (req, res) => {
+  const selectedSlug = (req.query.yacht || '').toLowerCase().replace(/\.html$/, '');
+  const yachtsWithPrice = yachts.map(y => ({
+    ...y,
+    numericPrice: parsePrice(y.price)
+  }));
+  res.render('booking', {
+    activeNav: 'booking',
+    yachts: yachtsWithPrice,
+    selectedSlug,
+    defaultGuests: req.query.guests || '10',
+    defaultDate: req.query.date || ''
+  });
+});
+
 // 9. Blogs
 app.get(['/blogs', '/blogs.html'], (req, res) => {
   res.render('blogs', {
@@ -161,6 +192,94 @@ subDirs.forEach((folder) => {
 // ============================================================================
 // API ENDPOINTS
 // ============================================================================
+
+// API: Get yachts list with parsed numeric pricing
+app.get('/api/yachts', (req, res) => {
+  const list = yachts.map(y => ({
+    slug: y.slug,
+    title: y.title,
+    tower: y.tower,
+    lengthFt: y.lengthFt,
+    capacity: parseInt(y.capacity, 10) || 20,
+    price: y.price,
+    numericPrice: parsePrice(y.price),
+    category: y.category || 'vip',
+    image: (y.images && y.images[0]) || '/assets/images/home/01.jpg'
+  }));
+  res.json({ success: true, count: list.length, yachts: list });
+});
+
+// API: Process Yacht Charter Booking
+app.post('/api/bookings', (req, res) => {
+  const {
+    destination,
+    date,
+    timeSlot,
+    duration,
+    guests,
+    yachtSlug,
+    yachtName,
+    addOns,
+    guestName,
+    guestEmail,
+    guestPhone,
+    notes,
+    basePrice,
+    addOnsTotal,
+    vatAmount,
+    grandTotal
+  } = req.body;
+
+  if (!guestName || !guestPhone) {
+    return res.status(400).json({ success: false, message: 'Guest name and phone/WhatsApp number are required.' });
+  }
+
+  const bookingRef = 'ONY-' + Date.now().toString().slice(-6);
+  const bookingRecord = {
+    bookingRef,
+    timestamp: new Date().toISOString(),
+    destination: destination || 'Dubai Marina, UAE',
+    date: date || new Date().toISOString().split('T')[0],
+    timeSlot: timeSlot || 'Sunset Golden Hour',
+    durationHours: parseInt(duration, 10) || 3,
+    guests: parseInt(guests, 10) || 10,
+    yacht: {
+      slug: yachtSlug || '',
+      name: yachtName || 'Luxury Yacht'
+    },
+    addOns: Array.isArray(addOns) ? addOns : [],
+    pricing: {
+      currency: 'AED',
+      basePrice: parseFloat(basePrice) || 0,
+      addOnsTotal: parseFloat(addOnsTotal) || 0,
+      vatAmount: parseFloat(vatAmount) || 0,
+      grandTotal: parseFloat(grandTotal) || 0
+    },
+    guest: {
+      name: guestName,
+      email: guestEmail || '',
+      phone: guestPhone,
+      notes: notes || ''
+    },
+    status: 'Confirmed - Pending Concierge Handover',
+    ip: req.ip
+  };
+
+  try {
+    logBooking(bookingRecord);
+    console.log(`[BOOKING ENGINE] New reservation confirmed: ${bookingRef} for ${guestName} (${yachtName})`);
+
+    return res.json({
+      success: true,
+      bookingRef,
+      message: 'Your luxury yacht charter reservation has been confirmed with Oneness Yachts.',
+      booking: bookingRecord
+    });
+  } catch (err) {
+    console.error('Failed to log booking:', err);
+    return res.status(500).json({ success: false, message: 'Server error processing booking.' });
+  }
+});
 
 app.post(['/api/inquire', '/api/contact', '/contact.html', '/contact'], (req, res) => {
   const { name, phone, email, yacht, date, guests, message, notes } = req.body;

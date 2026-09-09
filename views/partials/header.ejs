@@ -28,6 +28,9 @@
               <li class="navMenu">
                 <a href="/contact" class="mainMenu <%= (typeof activeNav !== 'undefined' && activeNav === 'contact') ? 'activeMenu' : '' %>">Contact Us</a>
               </li>
+              <li class="navMenu">
+                <a href="/booking" class="mainMenu <%= (typeof activeNav !== 'undefined' && activeNav === 'booking') ? 'activeMenu' : '' %>" style="color: #d4af37; font-weight: 700;"><i class="fa-solid fa-anchor" style="margin-right: 4px;"></i> Book Yacht</a>
+              </li>
             </ul>
           </nav>
           <div class="menuIcon">
@@ -45,9 +48,13 @@
               </g>
             </svg>
           </div>
-          <nav class="actionNavbar">
+          <nav class="actionNavbar" style="display: flex; align-items: center; gap: 10px;">
+            <a href="/booking" class="navAction lgBtn" style="background: linear-gradient(135deg, #d4af37, #aa7c11); color: #000; font-weight: 700; border: none; padding: 10px 18px; border-radius: 25px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 15px rgba(212,175,55,0.3);">
+              <i class="fa-solid fa-ship" style="font-size: 15px;"></i>
+              Book Yacht
+            </a>
             <a href="https://wa.me/971585441134" class="navAction lgBtn" target="_blank">
-              <i class="fab fa-whatsapp" style="font-size: 40px; color: green; margin-right: 8px;"></i>
+              <i class="fab fa-whatsapp" style="font-size: 32px; color: green; margin-right: 6px;"></i>
               Chat Now
             </a>
           </nav>
