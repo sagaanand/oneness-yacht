@@ -46,6 +46,7 @@ const mainPages = [
   'VIP-yacht-rental',
   'standard-yachts',
   'dubai-packages',
+  'miami-packages',
   'amenities',
   'blogs',
   'about',

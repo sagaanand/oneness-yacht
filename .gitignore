@@ -20,7 +20,6 @@ Files/form-core/google-sheet/
 # Large Meeting Recordings & Session Dumps
 Files/2025-06-10*
 Files/2025-06-11*
-Files/*.html
 Files/cPanel*
 *.mp4
 *.m4a
