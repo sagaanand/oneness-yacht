@@ -6,11 +6,13 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 const { securityHeaders } = require('./src/middleware/security');
 const { optionalCustomerAuth } = require('./src/middleware/customerAuth');
-const { requireAdminAuth } = require('./src/middleware/adminAuth');
+const { requireAdminAuth, clearAdminSessionCookie } = require('./src/middleware/adminAuth');
+const adminAuthService = require('./src/services/adminAuthService');
 
 // Middleware
 app.use(securityHeaders);
@@ -292,8 +294,13 @@ app.get('/checkin/:token', async (req, res) => {
 });
 
 // Admin Login Page (no auth required)
-app.get('/admin/login', (req, res) => {
-  if (req.cookies && req.cookies.ony_admin_session) return res.redirect('/admin');
+app.get('/admin/login', async (req, res) => {
+  const token = req.cookies && req.cookies.ony_admin_session;
+  if (token) {
+    const adminUser = await adminAuthService.validateSession(token);
+    if (adminUser) return res.redirect('/admin');
+    clearAdminSessionCookie(res);
+  }
   res.render('admin/login', { error: req.query.error || null });
 });
 

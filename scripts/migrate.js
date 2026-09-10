@@ -1,8 +1,4 @@
-/**
- * Enterprise Database Migration & Seeding Runner
- * Executes sql/001_initial_schema.sql and sql/002_seed_data.sql against PostgreSQL.
- */
-
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { Client } = require('pg');
@@ -16,7 +12,10 @@ async function runMigration() {
     process.exit(1);
   }
 
-  const client = new Client({ connectionString: databaseUrl });
+  const client = new Client({
+    connectionString: databaseUrl,
+    ssl: databaseUrl.includes('neon.tech') || databaseUrl.includes('sslmode=require') ? { rejectUnauthorized: false } : undefined
+  });
 
   try {
     console.log('[MIGRATE] Connecting to PostgreSQL database...');

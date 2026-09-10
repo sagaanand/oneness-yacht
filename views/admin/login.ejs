@@ -146,7 +146,7 @@
 
     <div class="demo-hint">
       Authorized Operations Staff Only.<br>
-      Default credentials: <code>admin</code> / <code>oneness2026!</code>
+      Default credentials: <code>admin</code> / <code>oneness2026!</code> (or <code>admin123</code>)
     </div>
   </div>
 
@@ -167,6 +167,7 @@
       const res = await fetch('/api/v1/auth/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ username, password })
       });
 

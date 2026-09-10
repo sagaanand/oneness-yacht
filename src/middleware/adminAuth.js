@@ -27,6 +27,9 @@ function requireAdminAuth(allowedRoles = ['SUPER_ADMIN', 'OPERATIONS', 'CONCIERG
 
     if (cookieToken) {
       adminUser = await adminAuthService.validateSession(cookieToken);
+      if (!adminUser) {
+        clearAdminSessionCookie(res);
+      }
     }
 
     if (!adminUser && apiKey) {
@@ -68,19 +71,23 @@ function requireAdminAuth(allowedRoles = ['SUPER_ADMIN', 'OPERATIONS', 'CONCIERG
  * Set admin session cookie
  */
 function setAdminSessionCookie(res, sessionToken) {
+  const isSecure = process.env.COOKIE_SECURE === 'true' || 
+    (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false' && Boolean(res.req && res.req.secure));
   res.cookie(ADMIN_COOKIE_NAME, sessionToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict', // Stricter for admin
+    secure: isSecure,
+    sameSite: 'lax',
     maxAge: 8 * 60 * 60 * 1000 // 8 hours
   });
 }
 
 function clearAdminSessionCookie(res) {
+  const isSecure = process.env.COOKIE_SECURE === 'true' || 
+    (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false' && Boolean(res.req && res.req.secure));
   res.clearCookie(ADMIN_COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    secure: isSecure,
+    sameSite: 'lax'
   });
 }
 

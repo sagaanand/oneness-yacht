@@ -98,7 +98,7 @@ ON CONFLICT (yacht_id, day_of_week) DO NOTHING;
 -- 11. Seed demo yachts into DB if empty
 INSERT INTO yachts (slug, title, tower_label, length_ft, capacity_day, cabins, category, booking_mode,
   default_berth, base_hourly_rate, min_charter_hours, max_charter_hours, active, marina,
-  description, short_description, speed_knots, cabins,
+  description, short_description, speed_knots,
   features_json, amenities_json, whats_included_json, images_json, specs_json)
 SELECT
   'dolce-vita-105-ft',
@@ -109,7 +109,7 @@ SELECT
   9000.00, 2, 12, TRUE, 'Dubai Marina',
   'The Dolce Vita is the crown jewel of the Oneness fleet — a 105-foot superyacht that defines private luxury on the water. Designed for intimate gatherings and landmark celebrations, she features expansive sun decks, a master suite, and four beautifully appointed cabins.',
   'Flagship 105ft superyacht. Perfect for intimate celebrations and VIP gatherings.',
-  22, 4,
+  22,
   '["Flybridge Sun Deck","Jacuzzi","Cinema System","Full Bar","Professional Sound System"]'::jsonb,
   '["Master Suite","4 Guest Cabins","Chef''s Galley","Salon","Sundeck Lounge"]'::jsonb,
   '["Captain & Crew","Fuel","Welcome Drinks","Towels & Linens","Life Jackets","Safety Equipment"]'::jsonb,
