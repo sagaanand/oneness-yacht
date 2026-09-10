@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof yachtId !== 'undefined' ? 'Edit Yacht' : 'New Yacht' %> — Oneness Yachts Operations</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #07111c;
+      --gold: #c9a66b;
+      --card-bg: #0d1a29;
+      --border: rgba(255, 255, 255, 0.08);
+      --muted: #71808c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060e18;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+    .admin-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .back-link:hover { color: var(--gold); }
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+    .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+    .input, select, textarea {
+      width: 100%;
+      background: #071220;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a66b, #9a7633);
+      color: #040912;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('nav-header', { activeTab: 'yachts', adminUser: adminUser }) %>
+
+  <div class="admin-container">
+    <a href="/admin/yachts" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Back to Fleet
+    </a>
+
+    <h1 style="font-family: Georgia, serif; font-size: 30px; color: #fff; margin-bottom: 24px;" id="pageHeading">
+      <%= typeof yachtId !== 'undefined' ? 'Edit Yacht Vessel' : 'Add New Yacht to Fleet' %>
+    </h1>
+
+    <div class="form-card">
+      <form id="yachtForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="label">Vessel Title / Name</label>
+            <input type="text" id="title" class="input" placeholder="e.g. Dolce Vita 105 ft" required>
+          </div>
+
+          <div class="form-group">
+            <label class="label">URL Slug</label>
+            <input type="text" id="slug" class="input" placeholder="e.g. dolce-vita-105-ft" required>
+          </div>
+
+          <div class="form-group">
+            <label class="label">Length (Feet)</label>
+            <input type="number" id="length_ft" class="input" placeholder="105" required>
+          </div>
+
+          <div class="form-group">
+            <label class="label">Day Capacity (Guests)</label>
+            <input type="number" id="capacity_day" class="input" placeholder="12" required>
+          </div>
+
+          <div class="form-group">
+            <label class="label">Base Hourly Rate (AED)</label>
+            <input type="number" id="base_hourly_rate" class="input" placeholder="9000" required>
+          </div>
+
+          <div class="form-group">
+            <label class="label">Booking Mode</label>
+            <select id="booking_mode">
+              <option value="INSTANT_BOOK">INSTANT BOOK (Real-time)</option>
+              <option value="REQUEST_TO_BOOK">REQUEST TO BOOK (Concierge Review)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="label">Minimum Charter Hours</label>
+            <input type="number" id="min_charter_hours" class="input" value="2">
+          </div>
+
+          <div class="form-group">
+            <label class="label">Marina & Default Berth</label>
+            <input type="text" id="default_berth" class="input" placeholder="Dubai Marina, Berth 4">
+          </div>
+
+          <div class="form-group">
+            <label class="label">Turnaround Buffer Before (Minutes)</label>
+            <input type="number" id="default_buffer_before_mins" class="input" value="15">
+          </div>
+
+          <div class="form-group">
+            <label class="label">Turnaround Buffer After (Minutes)</label>
+            <input type="number" id="default_buffer_after_mins" class="input" value="30">
+          </div>
+
+          <div class="form-group full">
+            <label class="label">Short Description / Subtitle</label>
+            <input type="text" id="short_description" class="input" placeholder="Ultra-luxury Italian tri-deck superyacht with jacuzzi and flybridge.">
+          </div>
+
+          <div class="form-group full">
+            <label class="label">Primary Image URLs (comma-separated)</label>
+            <input type="text" id="images_input" class="input" placeholder="/assets/images/home/01.jpg, /assets/images/home/02.jpg">
+          </div>
+
+          <div class="form-group full">
+            <label class="label">Full Vessel Description & Overview</label>
+            <textarea id="description" rows="5" placeholder="Detailed vessel profile, salon amenities, dining facilities, and crew composition..."></textarea>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button type="submit" id="saveBtn" class="btn-gold">
+            <i class="fa-solid fa-floppy-disk"></i> Save Vessel
+          </button>
+          <a href="/admin/yachts" class="btn-gold" style="background: rgba(255,255,255,0.08); color: #fff;">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+  const yachtId = '<%= typeof yachtId !== "undefined" ? yachtId : "" %>';
+
+  // Auto slug generation from title
+  document.getElementById('title').addEventListener('input', (e) => {
+    if (!yachtId) {
+      document.getElementById('slug').value = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+  });
+
+  // If editing, load yacht data
+  async function loadYachtData() {
+    if (!yachtId) return;
+    try {
+      const res = await fetch(`/api/v1/yachts/${yachtId}`);
+      const data = await res.json();
+      if (data.success && data.yacht) {
+        const y = data.yacht;
+        document.getElementById('title').value = y.title || '';
+        document.getElementById('slug').value = y.slug || '';
+        document.getElementById('length_ft').value = y.length_ft || y.lengthFt || '';
+        document.getElementById('capacity_day').value = y.capacity_day || y.capacity || '';
+        document.getElementById('base_hourly_rate').value = y.base_hourly_rate || y.numericPrice || '';
+        document.getElementById('booking_mode').value = y.booking_mode || 'INSTANT_BOOK';
+        document.getElementById('min_charter_hours').value = y.min_charter_hours || 2;
+        document.getElementById('default_berth').value = y.default_berth || '';
+        document.getElementById('default_buffer_before_mins').value = y.default_buffer_before_mins || 15;
+        document.getElementById('default_buffer_after_mins').value = y.default_buffer_after_mins || 30;
+        document.getElementById('short_description').value = y.short_description || '';
+        document.getElementById('description').value = y.description || '';
+        
+        if (y.images && Array.isArray(y.images)) {
+          document.getElementById('images_input').value = y.images.join(', ');
+        }
+      }
+    } catch (e) { console.error(e); }
+  }
+
+  document.getElementById('yachtForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+    const rawImages = document.getElementById('images_input').value.split(',').map(s => s.trim()).filter(Boolean);
+
+    const payload = {
+      title: document.getElementById('title').value,
+      slug: document.getElementById('slug').value,
+      length_ft: parseInt(document.getElementById('length_ft').value, 10),
+      capacity_day: parseInt(document.getElementById('capacity_day').value, 10),
+      base_hourly_rate: parseFloat(document.getElementById('base_hourly_rate').value),
+      booking_mode: document.getElementById('booking_mode').value,
+      min_charter_hours: parseInt(document.getElementById('min_charter_hours').value, 10),
+      default_berth: document.getElementById('default_berth').value,
+      default_buffer_before_mins: parseInt(document.getElementById('default_buffer_before_mins').value, 10),
+      default_buffer_after_mins: parseInt(document.getElementById('default_buffer_after_mins').value, 10),
+      short_description: document.getElementById('short_description').value,
+      description: document.getElementById('description').value,
+      images_json: rawImages
+    };
+
+    try {
+      const url = yachtId ? `/api/v1/admin/yachts/${yachtId}` : '/api/v1/admin/yachts';
+      const method = yachtId ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        alert('Vessel saved successfully.');
+        window.location.href = '/admin/yachts';
+      } else {
+        alert(data.error || 'Failed to save vessel');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Vessel';
+      }
+    } catch (err) {
+      alert(err.message);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Vessel';
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', loadYachtData);
+  </script>
+
+</body>
+</html>

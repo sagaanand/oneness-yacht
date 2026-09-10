@@ -1,0 +1,133 @@
+<header class="admin-topbar">
+  <div class="admin-topbar-inner">
+    <div style="display: flex; align-items: center; gap: 24px;">
+      <a href="/admin" class="admin-logo">
+        ONENESS <span>OPERATIONS</span>
+      </a>
+      <nav class="admin-nav-links">
+        <a href="/admin" class="admin-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'operations') ? 'active' : '' %>">
+          <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        <a href="/admin/bookings" class="admin-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'bookings') ? 'active' : '' %>">
+          <i class="fa-solid fa-calendar-check"></i> Bookings
+        </a>
+        <a href="/admin/yachts" class="admin-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'yachts') ? 'active' : '' %>">
+          <i class="fa-solid fa-ship"></i> Fleet
+        </a>
+        <a href="/admin/pricing" class="admin-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'pricing') ? 'active' : '' %>">
+          <i class="fa-solid fa-tags"></i> Pricing
+        </a>
+        <a href="/admin/addons" class="admin-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'addons') ? 'active' : '' %>">
+          <i class="fa-solid fa-martini-glass-citrus"></i> Add-ons
+        </a>
+        <a href="/admin/availability" class="admin-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'availability') ? 'active' : '' %>">
+          <i class="fa-solid fa-clock"></i> Availability
+        </a>
+        <a href="/crew" target="_blank" class="admin-nav-item">
+          <i class="fa-solid fa-compass"></i> Crew View <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 2px;"></i>
+        </a>
+      </nav>
+    </div>
+
+    <div class="admin-user-menu">
+      <span style="font-size: 13px; color: #94a3b8;">
+        <i class="fa-solid fa-user-shield" style="color: #c9a66b; margin-right: 6px;"></i>
+        <%= (typeof adminUser !== 'undefined' && adminUser && adminUser.fullName) ? adminUser.fullName : 'Fleet Administrator' %>
+      </span>
+      <button onclick="handleAdminLogout()" class="admin-logout-btn">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+.admin-topbar {
+  background: #08131f;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.admin-topbar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.admin-logo {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.admin-logo span { color: #c9a66b; }
+.admin-nav-links {
+  display: flex;
+  gap: 4px;
+}
+.admin-nav-item {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.admin-nav-item:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+.admin-nav-item.active {
+  color: #c9a66b;
+  background: rgba(201,166,107,0.12);
+  font-weight: 600;
+}
+.admin-user-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.admin-logout-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.admin-logout-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+@media (max-width: 1024px) {
+  .admin-nav-links { display: none; }
+}
+</style>
+
+<script>
+async function handleAdminLogout() {
+  if (!confirm('Log out from Operations Admin?')) return;
+  try {
+    await fetch('/api/v1/auth/admin/logout', { method: 'POST' });
+    window.location.href = '/admin/login';
+  } catch (err) {
+    window.location.href = '/admin/login';
+  }
+}
+</script>

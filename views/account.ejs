@@ -1,0 +1,452 @@
+<%- include('partials/head', {
+  title: 'My Charters & Account — Oneness Yachts Dubai',
+  description: 'Manage your luxury yacht bookings, access digital boarding passes, and view charter details.'
+}) %>
+
+<%- include('partials/header', { activeNav: 'account' }) %>
+
+<style>
+.account-hero {
+  background: radial-gradient(circle at 50% 20%, #0d1e38 0%, #040912 100%);
+  padding: 140px 24px 60px;
+  color: #fff;
+  border-bottom: 1px solid rgba(201,166,107,0.2);
+}
+.account-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.profile-card {
+  background: rgba(13,27,46,0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201,166,107,0.3);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.profile-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.avatar-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a66b, #8a6829);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #040912;
+  border: 2px solid #e8d5a3;
+  box-shadow: 0 4px 20px rgba(201,166,107,0.3);
+}
+.tier-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(201,166,107,0.15);
+  color: #c9a66b;
+  border: 1px solid rgba(201,166,107,0.4);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-top: 6px;
+}
+.account-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 32px;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 20px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.tab-btn.active {
+  color: #c9a66b;
+  font-weight: 600;
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #c9a66b;
+}
+.charter-card {
+  background: #081324;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.charter-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201,166,107,0.4);
+}
+.charter-card-header {
+  padding: 20px 24px;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.charter-card-body {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 240px 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .charter-card-body {
+    grid-template-columns: 1fr;
+  }
+}
+.yacht-thumbnail {
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.status-confirmed {
+  background: rgba(16,185,129,0.15);
+  color: #34d399;
+  border: 1px solid rgba(16,185,129,0.3);
+}
+.status-pending {
+  background: rgba(245,158,11,0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,0.3);
+}
+.status-completed {
+  background: rgba(148,163,184,0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(148,163,184,0.3);
+}
+.btn-gold {
+  background: linear-gradient(135deg, #c9a66b, #9a7633);
+  color: #040912;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s ease;
+  border: none;
+}
+.btn-gold:hover {
+  opacity: 0.9;
+}
+.btn-outline-light {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.btn-outline-light:hover {
+  border-color: #c9a66b;
+  color: #c9a66b;
+}
+</style>
+
+<div class="account-hero">
+  <div class="account-container">
+    <div id="authStatusBanner"></div>
+
+    <div class="profile-card" id="profileCard" style="display: none;">
+      <div class="profile-meta">
+        <div class="avatar-badge" id="userInitial">OY</div>
+        <div>
+          <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 32px; margin: 0; color: #f9f5ee;" id="userName">Distinguished Guest</h2>
+          <div style="color: #94a3b8; font-size: 14px; margin-top: 4px;" id="userContact">guest@onenessyachts.com</div>
+          <span class="tier-tag" id="userTier">VIP Black Tier</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="/book" class="btn-gold"><i class="fa-solid fa-anchor"></i> Book New Charter</a>
+        <button onclick="handleLogout()" class="btn-outline-light"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</button>
+      </div>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="account-tabs">
+      <button class="tab-btn active" onclick="switchTab('upcoming')">Upcoming Charters (<span id="upcomingCount">0</span>)</button>
+      <button class="tab-btn" onclick="switchTab('past')">Past Charters (<span id="pastCount">0</span>)</button>
+      <button class="tab-btn" onclick="switchTab('concierge')">VIP Concierge & Preferences</button>
+    </div>
+
+    <!-- Tab Content: Upcoming -->
+    <div id="tab-upcoming">
+      <div id="upcomingList">
+        <div style="text-align: center; padding: 60px 20px; color: #94a3b8;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: #c9a66b; margin-bottom: 16px;"></i>
+          <p>Retrieving your luxury charters...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Past -->
+    <div id="tab-past" style="display: none;">
+      <div id="pastList">
+        <div style="text-align: center; padding: 60px 20px; color: #94a3b8;">
+          <p>No past charters recorded yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Concierge -->
+    <div id="tab-concierge" style="display: none;">
+      <div style="background: #081324; border: 1px solid rgba(201,166,107,0.2); border-radius: 16px; padding: 32px;">
+        <h3 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: #c9a66b; margin-bottom: 12px;">Dedicated Charter Concierge</h3>
+        <p style="color: #94a3b8; line-height: 1.6; margin-bottom: 24px;">
+          As an esteemed guest of Oneness Yachts Dubai, you have access to 24/7 dedicated private concierge services for bespoke catering, helicopter transfers, luxury car escort, and tailored maritime itineraries.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+          <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+            <div style="color: #c9a66b; font-size: 20px; margin-bottom: 8px;"><i class="fab fa-whatsapp"></i> Direct WhatsApp</div>
+            <div style="font-weight: 600; font-size: 16px;">+971 58 544 1134</div>
+            <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Instant response within 5 minutes</div>
+          </div>
+          <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+            <div style="color: #c9a66b; font-size: 20px; margin-bottom: 8px;"><i class="fa-solid fa-envelope"></i> Concierge Desk</div>
+            <div style="font-weight: 600; font-size: 16px;">charter@onenessyachts.com</div>
+            <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">For bespoke event documentation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+let allBookings = [];
+
+async function initAccount() {
+  try {
+    const res = await fetch('/api/v1/auth/me');
+    const data = await res.json();
+
+    if (!data.success || !data.customer) {
+      document.getElementById('authStatusBanner').innerHTML = `
+        <div style="background: rgba(201,166,107,0.1); border: 1px solid rgba(201,166,107,0.4); border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 30px;">
+          <h3 style="color: #c9a66b; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-bottom: 8px;">Please Sign In to Access Your Charters</h3>
+          <p style="color: #94a3b8; margin-bottom: 16px;">Sign in via instant SMS/Email OTP or Google to view your reservations and boarding passes.</p>
+          <a href="/auth?returnTo=/account" class="btn-gold"><i class="fa-solid fa-lock"></i> Sign In / Register</a>
+        </div>
+      `;
+      document.getElementById('upcomingList').innerHTML = `
+        <div style="text-align: center; padding: 40px 20px; color: #94a3b8;">
+          <p>Please log in to display your upcoming voyages.</p>
+        </div>
+      `;
+      return;
+    }
+
+    currentUser = data.customer;
+    renderProfile(currentUser);
+    loadBookings();
+  } catch (err) {
+    console.error('Account init failed:', err);
+  }
+}
+
+function renderProfile(user) {
+  document.getElementById('profileCard').style.display = 'flex';
+  const name = user.fullName || user.full_name || 'Esteemed Guest';
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userContact').textContent = user.email || user.phone || '';
+  document.getElementById('userTier').textContent = (user.vipTier || user.vip_tier || 'VIP') + ' Tier Member';
+  
+  const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+  document.getElementById('userInitial').textContent = initials || 'OY';
+}
+
+async function loadBookings() {
+  try {
+    const res = await fetch('/api/v1/customer/bookings');
+    const data = await res.json();
+    if (data.success && Array.isArray(data.bookings)) {
+      allBookings = data.bookings;
+      renderBookings();
+    } else {
+      document.getElementById('upcomingList').innerHTML = renderEmptyState();
+    }
+  } catch (e) {
+    document.getElementById('upcomingList').innerHTML = renderEmptyState();
+  }
+}
+
+function renderBookings() {
+  const now = new Date();
+  const upcoming = allBookings.filter(b => new Date(b.end_time || b.start_time) >= now);
+  const past = allBookings.filter(b => new Date(b.end_time || b.start_time) < now);
+
+  document.getElementById('upcomingCount').textContent = upcoming.length;
+  document.getElementById('pastCount').textContent = past.length;
+
+  // Render Upcoming
+  if (upcoming.length === 0) {
+    document.getElementById('upcomingList').innerHTML = renderEmptyState();
+  } else {
+    document.getElementById('upcomingList').innerHTML = upcoming.map(b => renderCharterCard(b)).join('');
+  }
+
+  // Render Past
+  if (past.length === 0) {
+    document.getElementById('pastList').innerHTML = `
+      <div style="text-align: center; padding: 40px 20px; color: #94a3b8;">
+        <p>No completed past voyages found.</p>
+      </div>
+    `;
+  } else {
+    document.getElementById('pastList').innerHTML = past.map(b => renderCharterCard(b, true)).join('');
+  }
+}
+
+function renderCharterCard(b, isPast = false) {
+  const start = new Date(b.start_time);
+  const end = new Date(b.end_time);
+  const dateStr = start.toLocaleDateString('en-AE', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const timeStr = `${start.toLocaleTimeString('en-AE', { hour: '2-digit', minute: '2-digit' })} – ${end.toLocaleTimeString('en-AE', { hour: '2-digit', minute: '2-digit' })}`;
+
+  let img = '/assets/images/home/01.jpg';
+  if (b.images_json) {
+    try {
+      const arr = typeof b.images_json === 'string' ? JSON.parse(b.images_json) : b.images_json;
+      if (arr && arr[0]) img = arr[0];
+    } catch {}
+  }
+
+  const statusClass = b.booking_status === 'CONFIRMED' ? 'status-confirmed' :
+                      b.booking_status === 'PENDING_PAYMENT' ? 'status-pending' : 'status-completed';
+
+  const boardingPassUrl = b.boarding_access_token ? `/my-charter/${b.boarding_access_token}` : '#';
+
+  return `
+    <div class="charter-card">
+      <div class="charter-card-header">
+        <div>
+          <span style="font-family: monospace; font-size: 14px; color: #c9a66b; font-weight: 700;">#${b.booking_ref}</span>
+          <span style="color: #64748b; margin: 0 8px;">•</span>
+          <span style="color: #cbd5e1; font-size: 14px;">${dateStr}</span>
+        </div>
+        <div>
+          <span class="status-pill ${statusClass}">
+            <i class="fa-solid fa-circle" style="font-size: 8px;"></i>
+            ${b.booking_status.replace('_', ' ')}
+          </span>
+        </div>
+      </div>
+      <div class="charter-card-body">
+        <div>
+          <img src="${img}" alt="${b.yacht_title || 'Yacht'}" class="yacht-thumbnail">
+        </div>
+        <div>
+          <h3 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; color: #f8fafc; margin-bottom: 6px;">
+            ${b.yacht_title || 'Private Luxury Yacht'}
+          </h3>
+          <div style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;">
+            <i class="fa-regular fa-clock" style="color: #c9a66b; margin-right: 6px;"></i> ${timeStr}
+          </div>
+          <div style="display: flex; gap: 16px; font-size: 13px; color: #cbd5e1;">
+            <span><i class="fa-solid fa-users" style="color: #c9a66b; margin-right: 4px;"></i> ${b.guest_count || 10} Guests</span>
+            <span><i class="fa-solid fa-receipt" style="color: #c9a66b; margin-right: 4px;"></i> ${parseFloat(b.total_price || 0).toLocaleString()} AED</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; min-width: 160px;">
+          ${b.boarding_access_token ? `
+            <a href="${boardingPassUrl}" class="btn-gold" style="font-size: 13px; justify-content: center;">
+              <i class="fa-solid fa-qrcode"></i> Digital Pass
+            </a>
+          ` : ''}
+          <a href="/yachts/${b.yacht_slug || ''}" class="btn-outline-light" style="font-size: 13px; justify-content: center;">
+            <i class="fa-solid fa-ship"></i> Vessel Info
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderEmptyState() {
+  return `
+    <div style="background: #081324; border: 1px dashed rgba(255,255,255,0.15); border-radius: 16px; padding: 48px 24px; text-align: center;">
+      <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(201,166,107,0.1); color: #c9a66b; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px;">
+        <i class="fa-solid fa-ship"></i>
+      </div>
+      <h3 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; color: #f8fafc; margin-bottom: 8px;">No Upcoming Charters</h3>
+      <p style="color: #94a3b8; font-size: 14px; max-width: 440px; margin: 0 auto 20px;">Your private maritime voyage awaits. Explore our world-class fleet in Dubai Marina.</p>
+      <a href="/yachts" class="btn-gold"><i class="fa-solid fa-compass"></i> Explore The Fleet</a>
+    </div>
+  `;
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  document.getElementById('tab-upcoming').style.display = tabId === 'upcoming' ? 'block' : 'none';
+  document.getElementById('tab-past').style.display = tabId === 'past' ? 'block' : 'none';
+  document.getElementById('tab-concierge').style.display = tabId === 'concierge' ? 'block' : 'none';
+}
+
+async function handleLogout() {
+  if (!confirm('Are you sure you want to sign out?')) return;
+  try {
+    await fetch('/api/v1/auth/logout', { method: 'POST' });
+    window.location.href = '/';
+  } catch (err) {
+    window.location.reload();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initAccount);
+</script>
+
+<%- include('partials/footer') %>

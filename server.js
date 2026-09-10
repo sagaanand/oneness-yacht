@@ -3,17 +3,24 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const { securityHeaders } = require('./src/middleware/security');
+const { optionalCustomerAuth } = require('./src/middleware/customerAuth');
+const { requireAdminAuth } = require('./src/middleware/adminAuth');
 
 // Middleware
 app.use(securityHeaders);
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Customer session middleware — sets req.customer on all routes
+app.use(optionalCustomerAuth);
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ success: false, message: 'Invalid JSON payload format.' });
@@ -82,11 +89,14 @@ app.get(['/', '/index', '/index.html'], (req, res) => {
 });
 
 // 2. VIP Yacht Rental
-app.get(['/VIP-yacht-rental', '/VIP-yacht-rental.html', '/fleet', '/fleet.html', '/yachts'], (req, res) => {
-  res.render('vip-yacht-rental', {
-    activeNav: 'vip',
-    yachts
-  });
+// New luxury fleet listing page
+app.get(['/yachts', '/fleet'], (req, res) => {
+  res.render('yachts', { activeNav: 'yachts' });
+});
+
+// Legacy VIP/fleet routes → redirect to new luxury fleet
+app.get(['/VIP-yacht-rental', '/VIP-yacht-rental.html', '/fleet.html'], (req, res) => {
+  res.redirect(301, '/yachts');
 });
 
 // 3. Standard Yachts
@@ -97,8 +107,8 @@ app.get(['/standard-yachts', '/standard-yachts.html'], (req, res) => {
   });
 });
 
-// 4. Dubai Packages
-app.get(['/dubai-packages', '/dubai-packages.html', '/packages'], (req, res) => {
+// 4. Dubai Packages & Experiences
+app.get(['/dubai-packages', '/dubai-packages.html', '/packages', '/experiences'], (req, res) => {
   res.render('dubai-packages', {
     activeNav: 'dubai-packages'
   });
@@ -133,19 +143,55 @@ app.get(['/contact', '/contact.html'], (req, res) => {
   });
 });
 
-// 8b. Dedicated Yacht Booking Engine
-app.get(['/booking', '/book-now', '/booking.html'], (req, res) => {
-  const selectedSlug = (req.query.yacht || '').toLowerCase().replace(/\.html$/, '');
-  const yachtsWithPrice = yachts.map(y => ({
-    ...y,
-    numericPrice: parsePrice(y.price)
-  }));
-  res.render('booking', {
-    activeNav: 'booking',
-    yachts: yachtsWithPrice,
-    selectedSlug,
-    defaultGuests: req.query.guests || '10',
-    defaultDate: req.query.date || ''
+// NEW luxury booking wizard
+app.get(['/book', '/book-now'], (req, res) => {
+  res.render('book', { activeNav: 'booking' });
+});
+
+// Legacy /booking → redirect to new wizard
+app.get(['/booking', '/booking.html'], (req, res) => {
+  const q = new URLSearchParams(req.query).toString();
+  res.redirect(301, `/book${q ? '?' + q : ''}`);
+});
+
+// Auth pages
+app.get(['/auth', '/signin', '/login'], (req, res) => {
+  if (req.customer) return res.redirect(req.query.returnTo || '/account');
+  res.render('auth', { activeNav: '' });
+});
+app.get('/auth/google/callback', async (req, res) => {
+  // OAuth callback — exchange code and set session cookie
+  const customerAuthService = require('./src/services/customerAuthService');
+  const { setSessionCookie } = require('./src/middleware/customerAuth');
+  try {
+    // In production: exchange code for tokens from Google, extract user info
+    // For now, redirect to auth page if not configured
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return res.redirect('/auth?error=google_not_configured');
+    }
+    // TODO: Exchange code for Google profile via googleapis
+    res.redirect('/auth?error=google_callback_not_fully_implemented');
+  } catch (err) {
+    res.redirect('/auth?error=oauth_failed');
+  }
+});
+
+// Customer Account
+app.get('/account', async (req, res) => {
+  res.render('account', { customer: req.customer || null, activeNav: 'account' });
+});
+
+// Booking Confirmed
+app.get('/booking-confirmed', (req, res) => {
+  res.render('booking-confirmed', { ref: req.query.ref || '', activeNav: '' });
+});
+
+// Payment page (Stripe Elements)
+app.get('/payment', (req, res) => {
+  res.render('payment', {
+    bookingId: req.query.bookingId || '',
+    clientSecret: req.query.client_secret || '',
+    activeNav: ''
   });
 });
 
@@ -174,15 +220,31 @@ app.get(['/terms-and-conditions', '/terms-and-conditions.html'], (req, res) => {
   res.render('terms-and-conditions', { activeNav: '' });
 });
 
-// 12. Dynamic Yacht Detail Page
-app.get(['/yacht/:slug', '/yacht/:slug.html'], (req, res, next) => {
+// New luxury yacht detail — tries DB first, falls back to JSON data
+app.get(['/yachts/:slug', '/yachts/:slug.html'], async (req, res, next) => {
   const slug = req.params.slug.replace(/\.html$/, '').toLowerCase();
-  const yacht = yachts.find(y => y.slug.toLowerCase() === slug);
-
-  if (yacht) {
-    return res.render('yacht-detail', { yacht });
-  }
+  try {
+    const db = require('./src/db/connection');
+    const dbRes = await db.query('SELECT * FROM yachts WHERE slug = $1 LIMIT 1', [slug]);
+    if (dbRes.rows[0]) {
+      const y = dbRes.rows[0];
+      if (typeof y.images_json === 'string') try { y.images_json = JSON.parse(y.images_json); } catch {}
+      if (typeof y.amenities_json === 'string') try { y.amenities_json = JSON.parse(y.amenities_json); } catch {}
+      if (typeof y.whats_included_json === 'string') try { y.whats_included_json = JSON.parse(y.whats_included_json); } catch {}
+      if (typeof y.specs_json === 'string') try { y.specs_json = JSON.parse(y.specs_json); } catch {}
+      return res.render('yacht-detail', { yacht: y });
+    }
+  } catch {}
+  // Fallback to JSON data
+  const yacht = yachts.find(y => y.slug && y.slug.toLowerCase() === slug);
+  if (yacht) return res.render('yacht-detail', { yacht });
   next();
+});
+
+// Legacy /yacht/:slug → redirect to /yachts/:slug
+app.get(['/yacht/:slug', '/yacht/:slug.html'], (req, res) => {
+  const slug = req.params.slug.replace(/\.html$/, '').toLowerCase();
+  res.redirect(301, `/yachts/${slug}`);
 });
 
 // 13. Sub-directories: /packages/:slug, /services/:slug, /amenity/:slug
@@ -221,15 +283,64 @@ app.get('/checkin/:token', async (req, res) => {
   res.render('checkin-verify', { checkin, token: req.params.token });
 });
 
-// Admin Operations OS
-app.get(['/admin', '/admin/operations'], async (req, res) => {
-  const manifest = await bookingService.getTodaysManifest();
-  res.render('admin/operations', {
-    activeNav: 'admin',
-    todayCharters: manifest.todayCharters,
-    metrics: manifest.metrics,
-    nextCharter: manifest.nextCharter
-  });
+// Admin Login Page (no auth required)
+app.get('/admin/login', (req, res) => {
+  if (req.cookies && req.cookies.ony_admin_session) return res.redirect('/admin');
+  res.render('admin/login', { error: req.query.error || null });
+});
+
+// Admin Operations OS (auth required)
+app.get(['/admin', '/admin/operations'], requireAdminAuth(), async (req, res) => {
+  try {
+    const manifest = await bookingService.getTodaysManifest();
+    res.render('admin/operations', {
+      activeNav: 'admin',
+      adminUser: req.adminUser,
+      todayCharters: manifest.todayCharters,
+      metrics: manifest.metrics,
+      nextCharter: manifest.nextCharter
+    });
+  } catch (err) {
+    res.render('admin/operations', { activeNav: 'admin', adminUser: req.adminUser, todayCharters: [], metrics: {}, nextCharter: null });
+  }
+});
+
+// Admin Bookings List
+app.get('/admin/bookings', requireAdminAuth(), (req, res) => {
+  res.render('admin/bookings', { activeNav: 'admin', adminUser: req.adminUser });
+});
+
+// Admin Booking Detail
+app.get('/admin/bookings/:id', requireAdminAuth(), (req, res) => {
+  res.render('admin/booking-detail', { activeNav: 'admin', adminUser: req.adminUser, bookingId: req.params.id });
+});
+
+// Admin Yachts Management
+app.get('/admin/yachts', requireAdminAuth(), (req, res) => {
+  res.render('admin/yachts', { activeNav: 'admin', adminUser: req.adminUser });
+});
+
+app.get('/admin/yachts/new', requireAdminAuth(), (req, res) => {
+  res.render('admin/yacht-form', { activeNav: 'admin', adminUser: req.adminUser, yachtData: null });
+});
+
+app.get('/admin/yachts/:id/edit', requireAdminAuth(), (req, res) => {
+  res.render('admin/yacht-form', { activeNav: 'admin', adminUser: req.adminUser, yachtData: null, yachtId: req.params.id });
+});
+
+// Admin Pricing
+app.get('/admin/pricing', requireAdminAuth(), (req, res) => {
+  res.render('admin/pricing', { activeNav: 'admin', adminUser: req.adminUser });
+});
+
+// Admin Add-ons
+app.get('/admin/addons', requireAdminAuth(), (req, res) => {
+  res.render('admin/addons', { activeNav: 'admin', adminUser: req.adminUser });
+});
+
+// Admin Availability
+app.get('/admin/availability', requireAdminAuth(), (req, res) => {
+  res.render('admin/availability', { activeNav: 'admin', adminUser: req.adminUser });
 });
 
 // Crew Mobile Run Sheet Portal

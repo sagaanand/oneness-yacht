@@ -332,16 +332,8 @@
 </head>
 <body>
 
-  <!-- TOPBAR -->
-  <div class="adminbar">
-    <div class="logo">ONENESS <span>YACHTS</span> · OPERATIONS</div>
-    <div class="topbar-actions">
-      <a href="/" class="btn ghost"><i class="fa-solid fa-arrow-left"></i> <span>Customer View</span></a>
-      <a href="/booking" class="btn ghost"><i class="fa-solid fa-calendar-check"></i> <span>Book a Yacht</span></a>
-      <a href="/crew" class="btn ghost"><i class="fa-solid fa-compass"></i> <span>Crew Run Sheet</span></a>
-      <button class="btn" onclick="openConciergeModal()"><i class="fa-solid fa-plus"></i> New Booking</button>
-    </div>
-  </div>
+  <!-- UNIFIED ADMIN TOPBAR -->
+  <%- include('nav-header', { activeTab: 'operations', adminUser: typeof adminUser !== 'undefined' ? adminUser : null }) %>
 
   <!-- MAIN OPERATIONS BODY -->
   <div class="adminbody">

@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Charter — Oneness Yachts Dubai</title>
+  <meta name="description" content="Book your private yacht charter with Oneness Yachts Dubai. Select your yacht, date, time, and guests.">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/icon.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/luxury.css">
+  <style>
+    body { background: var(--navy-950); min-height: 100vh; }
+
+    .book-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      align-items: start;
+    }
+
+    /* LEFT: Wizard */
+    .book-main {
+      padding: 100px 60px 80px;
+      min-height: 100vh;
+      background: var(--ivory);
+    }
+
+    /* RIGHT: Sidebar Summary */
+    .book-sidebar {
+      background: var(--navy-900);
+      min-height: 100vh;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 100px 36px 60px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-yacht-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+    }
+
+    .sidebar-yacht-name {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-summary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-label { color: rgba(255,255,255,0.5); }
+    .summary-value { color: var(--white); font-weight: 500; }
+    .summary-total-row { padding-top: 16px; margin-top: 4px; border-top: 1px solid rgba(201,166,107,0.3); border-bottom: none; }
+    .summary-total-label { font-family: var(--font-serif); font-size: 16px; color: var(--gold); }
+    .summary-total-value { font-family: var(--font-serif); font-size: 24px; color: var(--white); }
+
+    /* Steps */
+    .step-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--line-dark);
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .step-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+    .step-dot.done { background: var(--navy-600); }
+
+    .step-panel { display: none; }
+    .step-panel.active { display: block; animation: slideInUp 0.35s var(--ease-out); }
+
+    .step-number {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .step-h { font-family: var(--font-serif); font-size: 36px; font-weight: 300; color: var(--navy-900); margin-bottom: 6px; }
+    .step-p { font-size: 14px; color: var(--text-muted); margin-bottom: 36px; }
+
+    /* Step actions */
+    .step-actions { display: flex; gap: 12px; margin-top: 36px; }
+
+    /* Time picker grid */
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .time-chip {
+      padding: 12px 8px;
+      border: 1px solid var(--line-dark);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--white);
+      color: var(--text-primary);
+    }
+    .time-chip:hover { border-color: var(--gold); color: var(--navy-900); background: rgba(201,166,107,0.05); }
+    .time-chip.active { background: var(--navy-900); color: var(--white); border-color: var(--navy-900); }
+    .time-chip.disabled { opacity: 0.35; cursor: not-allowed; background: var(--ivory); }
+
+    /* Duration selector */
+    .duration-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .duration-card {
+      padding: 20px 16px;
+      border: 2px solid var(--line-dark);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--white);
+    }
+    .duration-card:hover { border-color: var(--gold); }
+    .duration-card.active { border-color: var(--navy-900); background: var(--navy-900); }
+    .duration-card.active .dur-hours { color: var(--white); }
+    .duration-card.active .dur-price { color: var(--gold); }
+    .duration-card.active .dur-label { color: rgba(255,255,255,0.6); }
+    .dur-hours { font-family: var(--font-serif); font-size: 28px; font-weight: 400; color: var(--navy-900); }
+    .dur-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .dur-price { font-size: 13px; font-weight: 600; color: var(--gold-deep); }
+
+    /* Guest selector */
+    .guest-selector {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 24px;
+      border: 2px solid var(--line-dark);
+      border-radius: var(--radius-lg);
+      background: var(--white);
+      width: fit-content;
+    }
+    .guest-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--line-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--navy-900);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .guest-btn:hover { background: var(--navy-900); color: var(--white); border-color: var(--navy-900); }
+    .guest-count { font-family: var(--font-serif); font-size: 48px; font-weight: 300; color: var(--navy-900); min-width: 64px; text-align: center; }
+
+    /* OTP fields */
+    .otp-fields { display: flex; gap: 10px; justify-content: center; margin: 24px 0; }
+    .otp-input {
+      width: 52px; height: 60px;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      border: 2px solid var(--line-dark);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .otp-input:focus { border-color: var(--navy-600); }
+
+    /* Auth method buttons */
+    .auth-method-tabs { display: flex; gap: 12px; margin-bottom: 28px; }
+    .auth-tab { flex: 1; padding: 12px; border: 2px solid var(--line-dark); border-radius: var(--radius-md); text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-muted); transition: all var(--transition); }
+    .auth-tab.active { border-color: var(--navy-900); color: var(--navy-900); background: rgba(13,27,46,0.04); }
+    .auth-method { display: none; }
+    .auth-method.active { display: block; }
+
+    /* Hold banner */
+    .hold-banner-active {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+      border: 1px solid rgba(201,166,107,0.3);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 1100px) {
+      .book-layout { grid-template-columns: 1fr; }
+      .book-sidebar { display: none; }
+      .book-main { padding: 90px 24px 60px; }
+    }
+    @media (max-width: 640px) {
+      .time-grid { grid-template-columns: repeat(3, 1fr); }
+      .duration-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="lux-header scrolled" role="banner" style="background: rgba(3,8,16,0.95)">
+  <div class="header-inner">
+    <a href="/" class="header-logo">ONENESS <span>YACHTS</span></a>
+    <div style="font-size:13px; color:rgba(255,255,255,0.5)">Secure Booking</div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.5)">
+      <i class="fa-solid fa-lock" style="color:var(--gold)"></i> 256-bit SSL
+    </div>
+  </div>
+</header>
+
+<div class="book-layout">
+  <!-- LEFT: Booking Wizard -->
+  <main class="book-main" id="bookMain">
+
+    <!-- Step Navigation Dots -->
+    <div class="step-nav" id="stepNav" aria-label="Booking progress">
+      <div class="step-dot active" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+      <div class="step-dot" data-step="3"></div>
+      <div class="step-dot" data-step="4"></div>
+      <div class="step-dot" data-step="5"></div>
+      <div class="step-dot" data-step="6"></div>
+      <div class="step-dot" data-step="7"></div>
+      <div class="step-dot" data-step="8"></div>
+    </div>
+
+    <!-- STEP 1: Select Yacht (if not pre-selected) -->
+    <div class="step-panel active" id="step-1">
+      <div class="step-number">Step 1 of 8</div>
+      <h1 class="step-h">Choose Your Yacht</h1>
+      <p class="step-p">Select from our own fleet. All prices include crew, fuel, and equipment.</p>
+
+      <div id="yachtSelectGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-primary" id="step1Next" disabled>
+          Continue <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Select Date -->
+    <div class="step-panel" id="step-2">
+      <div class="step-number">Step 2 of 8</div>
+      <h2 class="step-h">Choose a Date</h2>
+      <p class="step-p">Select your charter date. Bookings available up to 12 months in advance.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="s2-date">Charter Date</label>
+        <input type="date" class="form-input form-input--large" id="s2-date" aria-label="Charter date">
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline-dark btn-sm" id="step2Back">← Back</button>
+        <button class="btn btn-primary" id="step2Next">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Select Start Time -->
+    <div class="step-panel" id="step-3">
+      <div class="step-number">Step 3 of 8</div>
+      <h2 class="step-h">Choose Start Time</h2>
+      <p class="step-p">Your charter begins at your chosen time. All times are Dubai time (GST+4).</p>
+
+      <div class="time-grid" id="timeGrid">
+        <!-- Generated by JS -->
+      </div>
+
+      <div class="form-group" style="margin-top: 20px;">
+        <label class="form-label" for="s3-custom">Or enter exact time</label>
+        <input type="time" class="form-input" id="s3-custom" min="08:00" max="22:30" step="1800" value="17:00">
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline-dark btn-sm" id="step3Back">← Back</button>
+        <button class="btn btn-primary" id="step3Next">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Duration -->
+    <div class="step-panel" id="step-4">
+      <div class="step-number">Step 4 of 8</div>
+      <h2 class="step-h">How Long?</h2>
+      <p class="step-p">Minimum <span id="minHoursLabel">2</span> hours. Pricing shown includes all crew and fuel.</p>
+
+      <div class="duration-grid" id="durationGrid"></div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline-dark btn-sm" id="step4Back">← Back</button>
+        <button class="btn btn-primary" id="step4Next" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Number of Guests -->
+    <div class="step-panel" id="step-5">
+      <div class="step-number">Step 5 of 8</div>
+      <h2 class="step-h">How Many Guests?</h2>
+      <p class="step-p" id="guestCapNote">Maximum capacity will be shown.</p>
+
+      <div class="guest-selector">
+        <button class="guest-btn" id="guestMinus" aria-label="Decrease guests">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+        <div class="guest-count" id="guestCount">6</div>
+        <button class="guest-btn" id="guestPlus" aria-label="Increase guests">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+      <div id="guestWarning" style="color: var(--status-cancelled); font-size:13px; margin-top:10px; display:none">
+        <i class="fa-solid fa-triangle-exclamation"></i> Exceeds maximum capacity.
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline-dark btn-sm" id="step5Back">← Back</button>
+        <button class="btn btn-primary" id="step5Next">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Add-ons -->
+    <div class="step-panel" id="step-6">
+      <div class="step-number">Step 6 of 8</div>
+      <h2 class="step-h">Add Experiences</h2>
+      <p class="step-p">Optional extras — all arranged by our concierge team before departure.</p>
+
+      <div class="addon-grid" id="addonPickerGrid">
+        <!-- Loaded from API -->
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline-dark btn-sm" id="step6Back">← Back</button>
+        <button class="btn btn-primary" id="step6Next">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: Review & Hold -->
+    <div class="step-panel" id="step-7">
+      <div class="step-number">Step 7 of 8</div>
+      <h2 class="step-h">Review Your Charter</h2>
+      <p class="step-p">Confirm your details. A 15-minute hold will be placed when you proceed.</p>
+
+      <div id="reviewBlock" style="background: var(--white); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Server Price -->
+      <div class="price-breakdown" id="reviewPrice">
+        <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px">Server-Authoritative Price</div>
+        <div id="priceBreakdownRows"></div>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn btn-outline-dark btn-sm" id="step7Back">← Back</button>
+        <button class="btn btn-primary" id="step7Next">
+          <i class="fa-solid fa-lock"></i> Place Hold & Login
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 8: Auth + Payment -->
+    <div class="step-panel" id="step-8">
+      <div class="step-number">Step 8 of 8</div>
+      <h2 class="step-h">Sign In to Complete</h2>
+      <p class="step-p">A 15-minute hold has been placed on your yacht. Complete payment before it expires.</p>
+
+      <!-- Hold Timer -->
+      <div class="hold-banner-active" id="holdBanner">
+        <div>
+          <div style="color: var(--gold); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px">Hold Active</div>
+          <div style="color: rgba(255,255,255,0.7); font-size:13px">Complete payment before your hold expires</div>
+        </div>
+        <div id="holdTimer" style="font-family: var(--font-serif); font-size: 40px; color: var(--white); font-weight:300">15:00</div>
+      </div>
+
+      <!-- Auth Options -->
+      <div class="auth-method-tabs" role="tablist">
+        <div class="auth-tab active" data-method="email" role="tab" aria-selected="true" id="tab-email">Email</div>
+        <div class="auth-tab" data-method="phone" role="tab" aria-selected="false" id="tab-phone">Mobile OTP</div>
+        <div class="auth-tab" data-method="google" role="tab" aria-selected="false" id="tab-google">Google</div>
+        <div class="auth-tab" data-method="apple" role="tab" aria-selected="false" id="tab-apple">Apple</div>
+      </div>
+
+      <!-- Email OTP -->
+      <div class="auth-method active" id="auth-email">
+        <div id="email-form">
+          <div class="form-group">
+            <label class="form-label" for="auth-email-input">Email Address</label>
+            <input type="email" class="form-input" id="auth-email-input" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="auth-name-input">Your Name</label>
+            <input type="text" class="form-input" id="auth-name-input" placeholder="Your full name" autocomplete="name">
+          </div>
+          <button class="btn btn-dark btn-block" id="sendEmailOtpBtn">
+            <i class="fa-solid fa-envelope"></i> Send OTP Code
+          </button>
+        </div>
+        <div id="email-otp-form" style="display:none">
+          <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px; text-align:center">
+            Enter the 6-digit code sent to <strong id="emailOtpTarget"></strong>
+          </p>
+          <div class="otp-fields" id="emailOtpFields">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 1">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 2">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 3">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 4">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 5">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 6">
+          </div>
+          <div id="dev-otp-hint" style="background:#fff8e1; border:1px solid #fce082; padding:10px 14px; border-radius:6px; font-size:13px; margin-bottom:16px; display:none">
+            <i class="fa-solid fa-flask" style="color:#d97706"></i> Dev mode: OTP = <strong id="devOtpCode"></strong>
+          </div>
+          <button class="btn btn-primary btn-block" id="verifyEmailOtpBtn">
+            <i class="fa-solid fa-check"></i> Verify & Proceed to Payment
+          </button>
+          <button class="btn btn-outline-dark btn-block btn-sm" id="resendEmailOtpBtn" style="margin-top:10px">Resend Code</button>
+        </div>
+      </div>
+
+      <!-- Phone OTP -->
+      <div class="auth-method" id="auth-phone">
+        <div id="phone-form">
+          <div class="form-group">
+            <label class="form-label" for="auth-phone-input">Mobile Number</label>
+            <div style="display:flex; gap:8px">
+              <select class="form-select" style="width:110px; flex-shrink:0" id="auth-phone-country">
+                <option value="+971" selected>🇦🇪 +971</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+91">🇮🇳 +91</option>
+                <option value="+966">🇸🇦 +966</option>
+              </select>
+              <input type="tel" class="form-input" id="auth-phone-input" placeholder="50 123 4567" inputmode="tel" autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="auth-phone-name">Your Name</label>
+            <input type="text" class="form-input" id="auth-phone-name" placeholder="Your full name" autocomplete="name">
+          </div>
+          <button class="btn btn-dark btn-block" id="sendPhoneOtpBtn">
+            <i class="fa-solid fa-mobile-screen"></i> Send OTP
+          </button>
+        </div>
+        <div id="phone-otp-form" style="display:none">
+          <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px; text-align:center">
+            Enter the code sent to <strong id="phoneOtpTarget"></strong>
+          </p>
+          <div class="otp-fields" id="phoneOtpFields">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" aria-label="OTP digit 1">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" aria-label="OTP digit 2">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" aria-label="OTP digit 3">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" aria-label="OTP digit 4">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" aria-label="OTP digit 5">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" aria-label="OTP digit 6">
+          </div>
+          <div id="dev-otp-hint-phone" style="background:#fff8e1; border:1px solid #fce082; padding:10px 14px; border-radius:6px; font-size:13px; margin-bottom:16px; display:none">
+            <i class="fa-solid fa-flask" style="color:#d97706"></i> Dev mode: OTP = <strong id="devOtpCodePhone"></strong>
+          </div>
+          <button class="btn btn-primary btn-block" id="verifyPhoneOtpBtn">
+            Verify & Proceed to Payment
+          </button>
+        </div>
+      </div>
+
+      <!-- Google -->
+      <div class="auth-method" id="auth-google">
+        <div style="text-align:center; padding: 32px 0">
+          <div style="font-size:48px; margin-bottom:20px">🔐</div>
+          <div style="font-family:var(--font-serif); font-size:22px; margin-bottom:8px">Continue with Google</div>
+          <div style="font-size:14px; color:var(--text-muted); margin-bottom:28px">You'll be redirected to Google to sign in securely.</div>
+          <button class="auth-provider-btn" id="googleSignInBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Continue with Google
+          </button>
+          <div id="googleNotConfigured" style="display:none; background: var(--status-pending-bg); border-radius: var(--radius-md); padding: 14px; font-size:13px; color: var(--status-pending); margin-top: 12px">
+            <i class="fa-solid fa-flask"></i> Google OAuth not configured. Set GOOGLE_CLIENT_ID to enable.
+          </div>
+        </div>
+      </div>
+
+      <!-- Apple -->
+      <div class="auth-method" id="auth-apple">
+        <div style="text-align:center; padding: 32px 0">
+          <div style="font-size:48px; margin-bottom:20px">🍎</div>
+          <div style="font-family:var(--font-serif); font-size:22px; margin-bottom:8px">Continue with Apple</div>
+          <div style="font-size:14px; color:var(--text-muted); margin-bottom:28px">Sign in with your Apple ID, securely.</div>
+          <button class="auth-provider-btn" id="appleSignInBtn" style="background: var(--navy-900); color: var(--white); border-color: var(--navy-900)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.14-2.18 1.27-2.16 3.8.02 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.73zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Continue with Apple
+          </button>
+          <div id="appleNotConfigured" style="display:none; background: var(--status-pending-bg); border-radius: var(--radius-md); padding: 14px; font-size:13px; color: var(--status-pending); margin-top: 12px">
+            <i class="fa-solid fa-flask"></i> Apple Sign In not configured. Set APPLE_CLIENT_ID to enable.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Error/Message -->
+    <div id="wizardError" style="display:none; background: var(--status-cancelled-bg); border-radius: var(--radius-md); padding: 14px; font-size:14px; color: var(--status-cancelled); margin-top: 16px">
+    </div>
+
+  </main>
+
+  <!-- RIGHT: Summary Sidebar -->
+  <aside class="book-sidebar" aria-label="Booking summary">
+    <div>
+      <img src="/assets/images/yacht/DOLCE VITA - 105 Ft/img11.jpg" alt="Selected yacht" class="sidebar-yacht-img" id="sidebarYachtImg" onerror="this.src='/assets/images/home/01.jpg'">
+      <div class="sidebar-yacht-name" id="sidebarYachtName">Choose a Yacht</div>
+      <div style="color:rgba(255,255,255,0.5); font-size:13px; margin-bottom:16px" id="sidebarYachtSub">—</div>
+    </div>
+
+    <div class="sidebar-summary" id="sidebarSummary">
+      <div class="summary-row">
+        <span class="summary-label">Date</span>
+        <span class="summary-value" id="sum-date">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Start Time</span>
+        <span class="summary-value" id="sum-time">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Duration</span>
+        <span class="summary-value" id="sum-duration">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Guests</span>
+        <span class="summary-value" id="sum-guests">—</span>
+      </div>
+      <div class="summary-row" id="sum-addons-row">
+        <span class="summary-label">Add-ons</span>
+        <span class="summary-value" id="sum-addons">None</span>
+      </div>
+      <div class="summary-row summary-total-row" id="sum-total-row" style="display:none">
+        <span class="summary-total-label">Total</span>
+        <span class="summary-total-value" id="sum-total">—</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto; padding-top:24px">
+      <a href="https://wa.me/971585441134" target="_blank" rel="noopener"
+        style="display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:8px">
+        <i class="fa-brands fa-whatsapp" style="color:var(--gold)"></i> Need help? WhatsApp Concierge
+      </a>
+      <div style="font-size:11px; color:rgba(255,255,255,0.25); line-height:1.6">
+        All prices include VAT. Payment processed via Stripe — secured and encrypted.
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Loading / Payment Overlay -->
+<div class="loading-overlay" id="globalLoading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">Processing...</div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ============================================================
+// BOOKING STATE
+// ============================================================
+const state = {
+  step: 1,
+  yacht: null,
+  yachtId: null,
+  yachtSlug: null,
+  yachtCapacity: 12,
+  yachtMinHours: 2,
+  yachtHourlyRate: 0,
+  date: null,
+  time: null,
+  duration: null,
+  guests: 6,
+  addons: [],
+  holdId: null,
+  holdToken: null,
+  holdExpiresAt: null,
+  pricing: null,
+  bookingId: null,
+  bookingRef: null
+};
+
+let holdTimerInterval = null;
+let allAddons = [];
+
+// ============================================================
+// INIT: Check URL params
+// ============================================================
+(async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const yachtParam = params.get('yacht');
+  const dateParam = params.get('date');
+  const timeParam = params.get('time');
+  const durParam = params.get('duration');
+  const guestParam = params.get('guests');
+
+  if (dateParam) state.date = dateParam;
+  if (timeParam) state.time = timeParam;
+  if (durParam) state.duration = parseInt(durParam);
+  if (guestParam) state.guests = parseInt(guestParam);
+
+  // Check existing session
+  try {
+    const meRes = await fetch('/api/v1/auth/me');
+    const meData = await meRes.json();
+    if (meData.success && meData.customer) {
+      state.customer = meData.customer;
+    }
+  } catch {}
+
+  if (yachtParam) {
+    await loadAndSelectYacht(yachtParam);
+  } else {
+    loadYachtSelector();
+  }
+})();
+
+// ============================================================
+// YACHT LOADER
+// ============================================================
+async function loadAndSelectYacht(slug) {
+  try {
+    let res = await fetch(`/api/v1/yachts/${slug}`);
+    if (!res.ok) res = await fetch(`/api/yachts/${slug}`);
+    const data = await res.json();
+    const y = data.yacht || data;
+    if (y && (y.id || y.slug)) {
+      selectYacht(y);
+      if (state.date) goToStep(2);
+      if (state.date && state.time) goToStep(3);
+      if (state.date && state.time && state.duration) goToStep(4);
+      if (state.date && state.time && state.duration && state.guests) goToStep(5);
+    } else {
+      loadYachtSelector();
+    }
+  } catch {
+    loadYachtSelector();
+  }
+}
+
+function selectYacht(y) {
+  state.yacht = y;
+  state.yachtId = y.id || y.slug;
+  state.yachtSlug = y.slug;
+  state.yachtCapacity = y.capacity_day || y.capacity || 12;
+  state.yachtMinHours = y.min_charter_hours || 2;
+  state.yachtHourlyRate = Number(y.base_hourly_rate || y.numericPrice || 0);
+
+  // Update sidebar
+  const imgs = Array.isArray(y.images_json) ? y.images_json : (Array.isArray(y.images) ? y.images : []);
+  const img = imgs[0] || y.image || '/assets/images/home/01.jpg';
+  document.getElementById('sidebarYachtImg').src = img;
+  document.getElementById('sidebarYachtName').textContent = y.title;
+  document.getElementById('sidebarYachtSub').textContent = `${y.length_ft || y.lengthFt} ft · Up to ${state.yachtCapacity} guests`;
+
+  // Update date min
+  const dateInput = document.getElementById('s2-date');
+  dateInput.min = new Date().toISOString().split('T')[0];
+  if (state.date) dateInput.value = state.date;
+
+  // Update duration
+  document.getElementById('minHoursLabel').textContent = state.yachtMinHours;
+
+  // Update guest max
+  if (state.guests > state.yachtCapacity) state.guests = state.yachtCapacity;
+  document.getElementById('guestCount').textContent = state.guests;
+  document.getElementById('guestCapNote').textContent = `Maximum capacity: ${state.yachtCapacity} guests`;
+
+  renderDurations();
+  renderSummary();
+}
+
+async function loadYachtSelector() {
+  const grid = document.getElementById('yachtSelectGrid');
+  try {
+    let yachts = [];
+    try {
+      const res = await fetch('/api/v1/yachts');
+      const data = await res.json();
+      if (data.success) yachts = data.yachts;
+    } catch {
+      const res = await fetch('/api/yachts');
+      const data = await res.json();
+      yachts = (data.yachts || []).filter(y => y.numericPrice > 0);
+    }
+
+    if (!yachts.length) {
+      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:24px">No yachts available.</div>';
+      return;
+    }
+
+    grid.innerHTML = yachts.map(y => {
+      const imgs = Array.isArray(y.images_json) ? y.images_json : (Array.isArray(y.images) ? y.images : []);
+      const img = imgs[0] || y.image || '/assets/images/home/01.jpg';
+      const price = Number(y.base_hourly_rate || y.numericPrice || 0).toLocaleString();
+      const cap = y.capacity_day || y.capacity || 12;
+      return `
+        <div class="yacht-select-card" data-yacht='${JSON.stringify(y).replace(/'/g, "&#39;")}' onclick="handleYachtCardClick(this)">
+          <div style="aspect-ratio:16/9; overflow:hidden; border-radius:var(--radius-md) var(--radius-md) 0 0">
+            <img src="${img}" alt="${y.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover" onerror="this.src='/assets/images/home/01.jpg'">
+          </div>
+          <div style="padding:16px">
+            <div style="font-family:var(--font-serif); font-size:18px; color:var(--navy-900); margin-bottom:4px">${y.title}</div>
+            <div style="display:flex; gap:12px; font-size:12px; color:var(--text-muted); margin-bottom:12px">
+              <span>${y.length_ft || y.lengthFt} ft</span>
+              <span>Up to ${cap} guests</span>
+            </div>
+            <div style="font-weight:700; color:var(--navy-900)">AED ${price} <span style="font-weight:400; color:var(--text-muted); font-size:12px">/ hour</span></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch {
+    grid.innerHTML = '<div style="grid-column:1/-1; color:var(--text-muted); padding:24px">Unable to load fleet.</div>';
+  }
+}
+
+function handleYachtCardClick(el) {
+  document.querySelectorAll('.yacht-select-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  try {
+    const y = JSON.parse(el.dataset.yacht.replace(/&#39;/g, "'"));
+    selectYacht(y);
+    document.getElementById('step1Next').disabled = false;
+  } catch {}
+}
+
+// ============================================================
+// STEP NAVIGATION
+// ============================================================
+function goToStep(n) {
+  state.step = n;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(`step-${n}`);
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('.step-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i + 1 === n);
+    dot.classList.toggle('done', i + 1 < n);
+  });
+  if (n === 3) renderTimeGrid();
+  if (n === 4) renderDurations();
+  if (n === 6) loadAddons();
+  if (n === 7) renderReview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Step 1 → 2
+document.getElementById('step1Next').addEventListener('click', () => {
+  if (!state.yachtId) return;
+  goToStep(2);
+});
+
+// Step 2 → 3
+document.getElementById('step2Back').addEventListener('click', () => goToStep(1));
+document.getElementById('step2Next').addEventListener('click', () => {
+  const d = document.getElementById('s2-date').value;
+  if (!d) { showError('Please select a date.'); return; }
+  state.date = d;
+  updateSummary('sum-date', formatDate(d));
+  clearError();
+  goToStep(3);
+});
+
+// Step 3 → 4
+document.getElementById('step3Back').addEventListener('click', () => goToStep(2));
+document.getElementById('step3Next').addEventListener('click', () => {
+  const selectedChip = document.querySelector('.time-chip.active');
+  const customTime = document.getElementById('s3-custom').value;
+  const time = selectedChip ? selectedChip.dataset.time : customTime;
+  if (!time) { showError('Please select a start time.'); return; }
+  state.time = time;
+  updateSummary('sum-time', formatTime(time));
+  clearError();
+  goToStep(4);
+});
+
+// Step 4 → 5
+document.getElementById('step4Back').addEventListener('click', () => goToStep(3));
+document.getElementById('step4Next').addEventListener('click', () => {
+  if (!state.duration) { showError('Please select a duration.'); return; }
+  updateSummary('sum-duration', `${state.duration} hours`);
+  clearError();
+  goToStep(5);
+});
+
+// Step 5 → 6
+document.getElementById('step5Back').addEventListener('click', () => goToStep(4));
+document.getElementById('step5Next').addEventListener('click', () => {
+  if (state.guests > state.yachtCapacity || state.guests < 1) { showError('Invalid guest count.'); return; }
+  updateSummary('sum-guests', `${state.guests} guests`);
+  clearError();
+  goToStep(6);
+});
+
+// Step 6 → 7
+document.getElementById('step6Back').addEventListener('click', () => goToStep(5));
+document.getElementById('step6Next').addEventListener('click', () => {
+  clearError();
+  goToStep(7);
+});
+
+// Step 7 → 8 (create hold)
+document.getElementById('step7Back').addEventListener('click', () => goToStep(6));
+document.getElementById('step7Next').addEventListener('click', async () => {
+  showLoader('Securing your yacht...');
+  try {
+    const startISO = new Date(`${state.date}T${state.time}:00`).toISOString();
+    const endISO = new Date(new Date(`${state.date}T${state.time}:00`).getTime() + state.duration * 3600000).toISOString();
+
+    const holdRes = await fetch('/api/v1/holds', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        yachtId: state.yachtId,
+        startTime: startISO,
+        endTime: endISO,
+        guests: state.guests,
+        source: 'WEB_BOOKING'
+      })
+    });
+    const holdData = await holdRes.json();
+
+    if (!holdData.success) {
+      hideLoader();
+      showError(holdData.error || holdData.reason || 'Could not place hold. The slot may no longer be available.');
+      return;
+    }
+
+    state.holdId = holdData.holdId;
+    state.holdToken = holdData.holdToken;
+    state.holdExpiresAt = new Date(holdData.expiresAt);
+    state.pricing = holdData.pricing || holdData.quote;
+
+    hideLoader();
+    goToStep(8);
+    startHoldTimer();
+
+    // If already authenticated, skip to payment
+    if (state.customer) {
+      createBookingAndPay();
+    }
+  } catch (err) {
+    hideLoader();
+    showError('An error occurred placing your hold. Please try again.');
+  }
+});
+
+// ============================================================
+// TIME GRID
+// ============================================================
+function renderTimeGrid() {
+  const grid = document.getElementById('timeGrid');
+  const times = [];
+  for (let h = 8; h <= 22; h++) {
+    times.push(`${String(h).padStart(2,'0')}:00`);
+    if (h < 22) times.push(`${String(h).padStart(2,'0')}:30`);
+  }
+  const selectedTime = state.time || '17:00';
+  grid.innerHTML = times.map(t => `
+    <button type="button" class="time-chip ${t === selectedTime ? 'active' : ''}" data-time="${t}" aria-pressed="${t === selectedTime}">
+      ${formatTime(t)}
+    </button>
+  `).join('');
+
+  grid.querySelectorAll('.time-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      grid.querySelectorAll('.time-chip').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+      chip.classList.add('active');
+      chip.setAttribute('aria-pressed', 'true');
+      document.getElementById('s3-custom').value = chip.dataset.time;
+    });
+  });
+
+  if (selectedTime) {
+    document.getElementById('s3-custom').value = selectedTime;
+  }
+}
+
+// ============================================================
+// DURATION CARDS
+// ============================================================
+function renderDurations() {
+  const grid = document.getElementById('durationGrid');
+  const minH = state.yachtMinHours || 2;
+  const durations = [];
+  for (let h = minH; h <= 12; h++) durations.push(h);
+
+  const rate = state.yachtHourlyRate;
+  grid.innerHTML = durations.map(h => {
+    const est = rate > 0 ? `AED ${(rate * h).toLocaleString()}` : '';
+    const isSelected = h === state.duration;
+    return `
+      <div class="duration-card ${isSelected ? 'active' : ''}" data-hours="${h}" onclick="selectDuration(this, ${h})" role="radio" aria-checked="${isSelected}" tabindex="0">
+        <div class="dur-hours">${h}</div>
+        <div class="dur-label">hour${h !== 1 ? 's' : ''}</div>
+        ${est ? `<div class="dur-price">${est}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+window.selectDuration = function(el, hours) {
+  document.querySelectorAll('.duration-card').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-checked', 'false'); });
+  el.classList.add('active');
+  el.setAttribute('aria-checked', 'true');
+  state.duration = hours;
+  document.getElementById('step4Next').disabled = false;
+};
+
+// ============================================================
+// GUEST SELECTOR
+// ============================================================
+document.getElementById('guestMinus').addEventListener('click', () => {
+  if (state.guests > 1) {
+    state.guests--;
+    document.getElementById('guestCount').textContent = state.guests;
+    document.getElementById('guestWarning').style.display = 'none';
+  }
+});
+
+document.getElementById('guestPlus').addEventListener('click', () => {
+  state.guests++;
+  document.getElementById('guestCount').textContent = state.guests;
+  if (state.guests > state.yachtCapacity) {
+    document.getElementById('guestWarning').style.display = 'block';
+  } else {
+    document.getElementById('guestWarning').style.display = 'none';
+  }
+});
+
+// ============================================================
+// ADD-ONS LOADER
+// ============================================================
+async function loadAddons() {
+  const grid = document.getElementById('addonPickerGrid');
+  if (allAddons.length) { renderAddonGrid(); return; }
+  try {
+    const res = await fetch('/api/v1/addons');
+    const data = await res.json();
+    allAddons = data.addons || [];
+    renderAddonGrid();
+  } catch {
+    grid.innerHTML = '<div style="color:var(--text-muted); font-size:14px">Add-ons unavailable.</div>';
+  }
+}
+
+function renderAddonGrid() {
+  const grid = document.getElementById('addonPickerGrid');
+  if (!allAddons.length) { grid.innerHTML = '<div style="color:var(--text-muted)">No add-ons available.</div>'; return; }
+  const iconMap = { bbq:'fa-fire', cake:'fa-cake-candles', photographer:'fa-camera', dj:'fa-music', 'jet ski':'fa-wind', flowers:'fa-seedling', decoration:'fa-star', watersports:'fa-water' };
+  grid.innerHTML = allAddons.map(a => {
+    const iconKey = Object.keys(iconMap).find(k => a.name.toLowerCase().includes(k)) || '';
+    const icon = iconKey ? iconMap[iconKey] : 'fa-circle-plus';
+    const isSelected = state.addons.some(sel => sel.id === a.id);
+    const priceLabel = a.pricing_type === 'PER_GUEST' ? `AED ${a.price} /guest` : a.pricing_type === 'PER_HOUR' ? `AED ${a.price} /hour` : `AED ${a.price}`;
+    return `
+      <div class="addon-card ${isSelected ? 'selected' : ''}" data-id="${a.id}" data-name="${a.name}" data-price="${a.price}" data-type="${a.pricing_type}" onclick="toggleAddon(this)">
+        <div class="addon-icon"><i class="fa-solid ${icon}"></i></div>
+        <div class="addon-name">${a.name}</div>
+        <div class="addon-price">${priceLabel}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.toggleAddon = function(el) {
+  const id = el.dataset.id;
+  const exists = state.addons.findIndex(a => a.id === id);
+  if (exists >= 0) {
+    state.addons.splice(exists, 1);
+    el.classList.remove('selected');
+  } else {
+    state.addons.push({ id, name: el.dataset.name, price: Number(el.dataset.price), type: el.dataset.type });
+    el.classList.add('selected');
+  }
+  updateSummary('sum-addons', state.addons.length ? state.addons.map(a => a.name).join(', ') : 'None');
+};
+
+// ============================================================
+// REVIEW
+// ============================================================
+async function renderReview() {
+  const start = new Date(`${state.date}T${state.time}:00`);
+  const end = new Date(start.getTime() + state.duration * 3600000);
+  const startISO = start.toISOString();
+  const endISO = end.toISOString();
+  const addonCodes = state.addons.map(a => a.id);
+
+  document.getElementById('reviewBlock').innerHTML = `
+    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px">
+      <div><div style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px">Yacht</div>
+        <div style="font-family:var(--font-serif); font-size:18px">${state.yacht?.title || '—'}</div></div>
+      <div><div style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px">Date</div>
+        <div style="font-weight:600">${formatDate(state.date)}</div></div>
+      <div><div style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px">Time</div>
+        <div style="font-weight:600">${formatTime(state.time)} → ${formatTime(end.toTimeString().slice(0,5))}</div></div>
+      <div><div style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px">Guests</div>
+        <div style="font-weight:600">${state.guests} guests</div></div>
+    </div>
+  `;
+
+  // Fetch server price
+  try {
+    const res = await fetch('/api/v1/pricing/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ yachtId: state.yachtId, startTime: startISO, endTime: endISO, durationHours: state.duration, guests: state.guests, addonCodes })
+    });
+    const data = await res.json();
+    const p = data.pricing;
+    state.pricing = p;
+    if (p) {
+      let rows = `
+        <div class="price-row"><span class="price-label">Yacht Charter (${p.durationHours}h @ AED ${Number(p.baseHourlyRate).toLocaleString()}/hr)</span><span class="price-value">AED ${Number(p.baseCharter).toLocaleString()}</span></div>
+        ${p.weekendSurcharge > 0 ? `<div class="price-row"><span class="price-label">Weekend Premium</span><span class="price-value">AED ${Number(p.weekendSurcharge).toLocaleString()}</span></div>` : ''}
+        ${p.sunsetSurcharge > 0 ? `<div class="price-row"><span class="price-label">Sunset Window</span><span class="price-value">AED ${Number(p.sunsetSurcharge).toLocaleString()}</span></div>` : ''}
+        ${(p.addons || []).map(a => `<div class="price-row"><span class="price-label">${a.name}</span><span class="price-value">AED ${Number(a.total).toLocaleString()}</span></div>`).join('')}
+        <div class="price-row"><span class="price-label">VAT (5%)</span><span class="price-value">AED ${Number(p.vatAmount).toLocaleString()}</span></div>
+        <div class="price-row price-row--total"><span class="price-label">Total Due</span><span class="price-value">AED ${Number(p.grandTotal).toLocaleString()}</span></div>
+      `;
+      document.getElementById('priceBreakdownRows').innerHTML = rows;
+      document.getElementById('sum-total').textContent = `AED ${Number(p.grandTotal).toLocaleString()}`;
+      document.getElementById('sum-total-row').style.display = 'flex';
+    }
+  } catch {
+    document.getElementById('priceBreakdownRows').innerHTML = '<div style="color:var(--text-muted); font-size:13px">Price will be confirmed at booking.</div>';
+  }
+}
+
+// ============================================================
+// AUTH: Email OTP
+// ============================================================
+document.querySelectorAll('.auth-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.auth-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    document.querySelectorAll('.auth-method').forEach(m => m.classList.remove('active'));
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(`auth-${tab.dataset.method}`).classList.add('active');
+  });
+});
+
+document.getElementById('sendEmailOtpBtn').addEventListener('click', async () => {
+  const email = document.getElementById('auth-email-input').value.trim();
+  if (!email || !email.includes('@')) { showError('Please enter a valid email address.'); return; }
+  const name = document.getElementById('auth-name-input').value.trim();
+
+  showLoader('Sending code...');
+  try {
+    const res = await fetch('/api/v1/auth/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: email, identifierType: 'EMAIL', name })
+    });
+    const data = await res.json();
+    hideLoader();
+
+    if (data.success) {
+      document.getElementById('email-form').style.display = 'none';
+      document.getElementById('email-otp-form').style.display = 'block';
+      document.getElementById('emailOtpTarget').textContent = email;
+      if (data.devMode && data.otp) {
+        document.getElementById('dev-otp-hint').style.display = 'block';
+        document.getElementById('devOtpCode').textContent = data.otp;
+      }
+      setupOtpInputs('emailOtpFields');
+    } else {
+      showError(data.error || 'Failed to send OTP. Try again.');
+    }
+  } catch { hideLoader(); showError('Network error. Please retry.'); }
+});
+
+document.getElementById('verifyEmailOtpBtn').addEventListener('click', async () => {
+  const code = getOtpValue('emailOtpFields');
+  if (code.length < 6) { showError('Enter all 6 digits.'); return; }
+  const email = document.getElementById('auth-email-input').value.trim();
+  const name = document.getElementById('auth-name-input').value.trim();
+  await verifyOTP('EMAIL', email, code, { name, email });
+});
+
+document.getElementById('sendPhoneOtpBtn').addEventListener('click', async () => {
+  const country = document.getElementById('auth-phone-country').value;
+  const phone = document.getElementById('auth-phone-input').value.trim();
+  if (!phone) { showError('Please enter a phone number.'); return; }
+  const full = `${country}${phone.replace(/[^0-9]/g, '')}`;
+  const name = document.getElementById('auth-phone-name').value.trim();
+
+  showLoader('Sending OTP...');
+  try {
+    const res = await fetch('/api/v1/auth/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: full, identifierType: 'PHONE', name })
+    });
+    const data = await res.json();
+    hideLoader();
+
+    if (data.success) {
+      document.getElementById('phone-form').style.display = 'none';
+      document.getElementById('phone-otp-form').style.display = 'block';
+      document.getElementById('phoneOtpTarget').textContent = full;
+      if (data.devMode && data.otp) {
+        document.getElementById('dev-otp-hint-phone').style.display = 'block';
+        document.getElementById('devOtpCodePhone').textContent = data.otp;
+      }
+      setupOtpInputs('phoneOtpFields');
+    } else {
+      showError(data.error || 'Failed to send OTP.');
+    }
+  } catch { hideLoader(); showError('Network error.'); }
+});
+
+document.getElementById('verifyPhoneOtpBtn').addEventListener('click', async () => {
+  const code = getOtpValue('phoneOtpFields');
+  const country = document.getElementById('auth-phone-country').value;
+  const phone = document.getElementById('auth-phone-input').value.trim();
+  const full = `${country}${phone.replace(/[^0-9]/g, '')}`;
+  const name = document.getElementById('auth-phone-name').value.trim();
+  await verifyOTP('PHONE', full, code, { name, phone: full });
+});
+
+document.getElementById('googleSignInBtn').addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/v1/auth/oauth-url?provider=GOOGLE&redirectAfter=' + encodeURIComponent(window.location.href));
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else { document.getElementById('googleNotConfigured').style.display = 'block'; }
+  } catch { document.getElementById('googleNotConfigured').style.display = 'block'; }
+});
+
+document.getElementById('appleSignInBtn').addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/v1/auth/oauth-url?provider=APPLE&redirectAfter=' + encodeURIComponent(window.location.href));
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else { document.getElementById('appleNotConfigured').style.display = 'block'; }
+  } catch { document.getElementById('appleNotConfigured').style.display = 'block'; }
+});
+
+async function verifyOTP(type, identifier, code, customerInfo) {
+  showLoader('Verifying...');
+  try {
+    const res = await fetch('/api/v1/auth/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier, identifierType: type, code, customerInfo })
+    });
+    const data = await res.json();
+    hideLoader();
+
+    if (data.success) {
+      state.customer = data.customer;
+      await createBookingAndPay();
+    } else {
+      showError(data.error || 'Invalid code. Please try again.');
+    }
+  } catch { hideLoader(); showError('Verification failed. Please retry.'); }
+}
+
+// ============================================================
+// BOOKING + PAYMENT
+// ============================================================
+async function createBookingAndPay() {
+  showLoader('Creating your booking...');
+  const startISO = new Date(`${state.date}T${state.time}:00`).toISOString();
+  const endISO = new Date(new Date(`${state.date}T${state.time}:00`).getTime() + state.duration * 3600000).toISOString();
+
+  try {
+    const res = await fetch('/api/v1/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        yachtId: state.yachtId,
+        startTime: startISO,
+        endTime: endISO,
+        guests: state.guests,
+        holdToken: state.holdToken,
+        addonIds: state.addons.map(a => a.id),
+        paymentMethod: 'CARD_ONLINE'
+      })
+    });
+    const bookData = await res.json();
+
+    if (!bookData.success) {
+      hideLoader();
+      showError(bookData.error || 'Booking failed. Your hold may have expired.');
+      return;
+    }
+
+    state.bookingId = bookData.bookingId;
+    state.bookingRef = bookData.bookingRef;
+
+    // Create Stripe PaymentIntent
+    const piRes = await fetch('/api/v1/payments/create-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookingId: state.bookingId })
+    });
+    const piData = await piRes.json();
+    hideLoader();
+
+    if (!piData.success) {
+      showError(piData.error || 'Payment setup failed. Please contact concierge.');
+      return;
+    }
+
+    if (piData.mode === 'DEMO') {
+      // Demo mode: show confirmation page directly (simulate payment)
+      const simulateRes = await fetch('/api/v1/payments/initiate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': `bk_${state.bookingId}` },
+        body: JSON.stringify({ bookingId: state.bookingId, paymentMethod: 'CARD_ONLINE', gateway: 'STRIPE' })
+      });
+      window.location.href = `/booking-confirmed?ref=${state.bookingRef}`;
+    } else {
+      // Real Stripe: redirect or mount payment element
+      // For full Stripe.js integration, mount Elements here
+      // For now, store client_secret and redirect
+      window.location.href = `/payment?bookingId=${state.bookingId}&client_secret=${piData.clientSecret}`;
+    }
+  } catch (err) {
+    hideLoader();
+    showError('An error occurred. Please contact concierge.');
+  }
+}
+
+// ============================================================
+// HOLD TIMER
+// ============================================================
+function startHoldTimer() {
+  if (holdTimerInterval) clearInterval(holdTimerInterval);
+  holdTimerInterval = setInterval(() => {
+    const remaining = state.holdExpiresAt - new Date();
+    if (remaining <= 0) {
+      clearInterval(holdTimerInterval);
+      document.getElementById('holdTimer').textContent = '00:00';
+      document.getElementById('holdTimer').className = 'hold-timer--urgent';
+      showError('Your hold has expired. Please start a new booking.');
+      return;
+    }
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    const timerEl = document.getElementById('holdTimer');
+    timerEl.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    if (remaining < 120000) timerEl.style.color = '#ef4444';
+    else if (remaining < 300000) timerEl.style.color = '#f59e0b';
+  }, 1000);
+}
+
+// ============================================================
+// OTP INPUT HELPERS
+// ============================================================
+function setupOtpInputs(containerId) {
+  const inputs = document.querySelectorAll(`#${containerId} .otp-input`);
+  inputs.forEach((input, i) => {
+    input.addEventListener('input', (e) => {
+      if (e.data && /[0-9]/.test(e.data) && i < inputs.length - 1) inputs[i + 1].focus();
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && i > 0) inputs[i - 1].focus();
+    });
+    input.addEventListener('paste', (e) => {
+      const pasted = e.clipboardData.getData('text').replace(/\D/g,'');
+      inputs.forEach((inp, j) => { inp.value = pasted[j] || ''; });
+      e.preventDefault();
+    });
+  });
+  inputs[0].focus();
+}
+
+function getOtpValue(containerId) {
+  return Array.from(document.querySelectorAll(`#${containerId} .otp-input`)).map(i => i.value).join('');
+}
+
+// ============================================================
+// SUMMARY HELPERS
+// ============================================================
+function updateSummary(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+function renderSummary() {
+  if (state.date) updateSummary('sum-date', formatDate(state.date));
+  if (state.time) updateSummary('sum-time', formatTime(state.time));
+  if (state.duration) updateSummary('sum-duration', `${state.duration} hours`);
+  updateSummary('sum-guests', `${state.guests} guests`);
+}
+
+// ============================================================
+// LOADER / ERROR
+// ============================================================
+function showLoader(msg) {
+  document.getElementById('globalLoading').classList.add('active');
+  document.getElementById('loadingText').textContent = msg || 'Loading...';
+}
+function hideLoader() { document.getElementById('globalLoading').classList.remove('active'); }
+function showError(msg) {
+  const el = document.getElementById('wizardError');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function clearError() { document.getElementById('wizardError').style.display = 'none'; }
+
+// ============================================================
+// FORMAT HELPERS
+// ============================================================
+function formatDate(d) {
+  if (!d) return '—';
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+function formatTime(t) {
+  if (!t) return '—';
+  const [h, m] = t.split(':');
+  const hr = parseInt(h);
+  const ampm = hr >= 12 ? 'PM' : 'AM';
+  const hr12 = hr % 12 || 12;
+  return `${hr12}:${m} ${ampm}`;
+}
+
+// Yacht select card style
+const style = document.createElement('style');
+style.textContent = `
+  .yacht-select-card {
+    border: 2px solid var(--line-dark);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--white);
+  }
+  .yacht-select-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .yacht-select-card.selected { border-color: var(--navy-900); box-shadow: 0 0 0 2px var(--navy-900); }
+`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>

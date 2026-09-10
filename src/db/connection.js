@@ -17,6 +17,9 @@ class TransactionalLocalDatabase {
       cancellation_policies: new Map(),
       add_ons: new Map(),
       customers: new Map(),
+      customer_sessions: new Map(),
+      admin_sessions: new Map(),
+      otp_codes: new Map(),
       staff_users: new Map(),
       holds: new Map(),
       bookings: new Map(),
@@ -503,6 +506,8 @@ class TransactionalLocalDatabase {
       let list = Array.from(this.tables.customers.values());
       if (/WHERE id =/i.test(text)) {
         list = list.filter(c => c.id === params[0]);
+      } else if (/WHERE email =/i.test(text)) {
+        list = list.filter(c => c.email && c.email.toLowerCase() === (params[0] || '').toLowerCase());
       } else if (/WHERE phone =/i.test(text)) {
         list = list.filter(c => c.phone === params[0]);
       }
@@ -756,6 +761,120 @@ class TransactionalLocalDatabase {
       };
       this.tables.maintenance_blocks.set(block.id, block);
       return { rows: [block] };
+    }
+
+    // 23. INSERT INTO admin_sessions
+    if (/^INSERT INTO admin_sessions/i.test(text)) {
+      const session = {
+        id: crypto.randomUUID(),
+        staff_user_id: params[0],
+        token_hash: params[1],
+        expires_at: params[2],
+        ip_address: params[3],
+        user_agent: params[4],
+        created_at: new Date().toISOString(),
+        revoked_at: null,
+        last_used_at: new Date().toISOString()
+      };
+      this.tables.admin_sessions.set(session.token_hash, session);
+      return { rows: [session] };
+    }
+
+    // 24. SELECT FROM admin_sessions
+    if (/^SELECT .* FROM admin_sessions/i.test(text)) {
+      const tokenHash = params[0];
+      const session = this.tables.admin_sessions.get(tokenHash);
+      if (session && !session.revoked_at && new Date(session.expires_at) > new Date()) {
+        const staff = this.tables.staff_users.get(session.staff_user_id) ||
+          Array.from(this.tables.staff_users.values()).find(s => s.id === session.staff_user_id);
+        return {
+          rows: [{
+            ...session,
+            username: staff ? staff.username : 'admin',
+            full_name: staff ? staff.full_name : 'Fleet Director',
+            role: staff ? staff.role : 'SUPER_ADMIN',
+            phone: staff ? staff.phone : ''
+          }]
+        };
+      }
+      return { rows: [] };
+    }
+
+    // 25. INSERT INTO customer_sessions
+    if (/^INSERT INTO customer_sessions/i.test(text)) {
+      const session = {
+        id: crypto.randomUUID(),
+        customer_id: params[0],
+        token_hash: params[1],
+        expires_at: params[2],
+        ip_address: params[3],
+        user_agent: params[4],
+        auth_provider: params[5] || 'EMAIL_OTP',
+        created_at: new Date().toISOString(),
+        revoked_at: null,
+        last_used_at: new Date().toISOString()
+      };
+      this.tables.customer_sessions.set(session.token_hash, session);
+      return { rows: [session] };
+    }
+
+    // 26. SELECT FROM customer_sessions
+    if (/^SELECT .* FROM customer_sessions/i.test(text)) {
+      const tokenHash = params[0];
+      const session = this.tables.customer_sessions.get(tokenHash);
+      if (session && !session.revoked_at && new Date(session.expires_at) > new Date()) {
+        const cust = this.tables.customers.get(session.customer_id) ||
+          Array.from(this.tables.customers.values()).find(c => c.id === session.customer_id);
+        return {
+          rows: [{
+            ...session,
+            full_name: cust ? cust.full_name : 'Guest',
+            email: cust ? cust.email : null,
+            phone: cust ? cust.phone : null,
+            vip_tier: cust ? cust.vip_tier : 'VIP'
+          }]
+        };
+      }
+      return { rows: [] };
+    }
+
+    // 27. INSERT INTO otp_codes
+    if (/^INSERT INTO otp_codes/i.test(text)) {
+      const otp = {
+        id: crypto.randomUUID(),
+        identifier: params[0],
+        identifier_type: params[1],
+        code_hash: params[2],
+        expires_at: params[3],
+        attempts: 0,
+        used_at: null,
+        created_at: new Date().toISOString()
+      };
+      this.tables.otp_codes.set(otp.id, otp);
+      return { rows: [otp] };
+    }
+
+    // 28. SELECT FROM otp_codes
+    if (/^SELECT .* FROM otp_codes/i.test(text)) {
+      const identifier = params[0];
+      const type = params[1];
+      const otps = Array.from(this.tables.otp_codes.values())
+        .filter(o => o.identifier === identifier && o.identifier_type === type && !o.used_at && new Date(o.expires_at) > new Date());
+      otps.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      return { rows: otps };
+    }
+
+    // 29. UPDATE staff_users
+    if (/^UPDATE staff_users SET/i.test(text)) {
+      const id = params[params.length - 1];
+      const staff = this.tables.staff_users.get(id) ||
+        Array.from(this.tables.staff_users.values()).find(s => s.id === id);
+      if (staff) {
+        if (/password_hash\s*=\s*\$1/.test(text)) staff.password_hash = params[0];
+        if (/password_salt\s*=\s*\$2/.test(text)) staff.password_salt = params[1];
+        return { rows: [staff] };
+      }
+      return { rows: [] };
     }
 
     // Fallback default response

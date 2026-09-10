@@ -1,0 +1,209 @@
+<%- include('partials/head', {
+  title: 'Charter Confirmed — Oneness Yachts Dubai',
+  description: 'Your private yacht charter has been confirmed. View your booking details and access your digital boarding pass.'
+}) %>
+
+<%- include('partials/header', { activeNav: '' }) %>
+
+<style>
+.confirmed-hero {
+  background: radial-gradient(circle at 50% 20%, #0d1e38 0%, #040912 100%);
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 140px 24px 80px;
+  color: #fff;
+}
+.confirmed-card {
+  max-width: 680px;
+  width: 100%;
+  background: rgba(13,27,46,0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(201,166,107,0.4);
+  border-radius: 24px;
+  padding: 48px 36px;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+.confirmed-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #a8843f, #e8d5a3, #c9a66b);
+}
+.success-icon-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(16,185,129,0.12);
+  border: 2px solid rgba(16,185,129,0.4);
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  margin: 0 auto 28px;
+  box-shadow: 0 0 30px rgba(16,185,129,0.25);
+  animation: pulseSuccess 2s infinite;
+}
+@keyframes pulseSuccess {
+  0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(16,185,129,0); }
+  100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
+.ref-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,166,107,0.15);
+  border: 1px solid rgba(201,166,107,0.4);
+  padding: 8px 20px;
+  border-radius: 24px;
+  color: #e8d5a3;
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+.instructions-box {
+  background: rgba(4,9,18,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: left;
+  margin: 28px 0;
+}
+.step-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.step-row:last-child {
+  margin-bottom: 0;
+}
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #c9a66b;
+  color: #040912;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.btn-gold {
+  background: linear-gradient(135deg, #c9a66b, #9a7633);
+  color: #040912;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  transition: opacity 0.2s;
+  border: none;
+}
+.btn-gold:hover { opacity: 0.92; }
+.btn-outline {
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 14px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+.btn-outline:hover {
+  border-color: #c9a66b;
+  color: #c9a66b;
+}
+</style>
+
+<div class="confirmed-hero">
+  <div class="confirmed-card">
+    <div class="success-icon-wrap">
+      <i class="fa-solid fa-check"></i>
+    </div>
+
+    <div class="ref-badge">
+      <i class="fa-solid fa-ticket"></i>
+      BOOKING REF: <span id="bookingRef"><%= ref || 'ONY-CONFIRMED' %></span>
+    </div>
+
+    <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 38px; color: #f9f5ee; margin-bottom: 12px;">
+      Your Charter is Confirmed
+    </h1>
+
+    <p style="color: #94a3b8; font-size: 16px; line-height: 1.6; max-width: 520px; margin: 0 auto 20px;">
+      Welcome aboard. Your private luxury yacht reservation with Oneness Yachts Dubai is securely locked. Our master crew and concierge team have received your itinerary.
+    </p>
+
+    <!-- Operational Instructions -->
+    <div class="instructions-box">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div>
+          <div style="font-weight: 600; color: #f8fafc; font-size: 14px;">Arrival & Boarding Gate</div>
+          <div style="color: #94a3b8; font-size: 13px;">Dubai Marina Walk, Marina Gate Pontoon. Please arrive 15 minutes prior to your charter departure.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div>
+          <div style="font-weight: 600; color: #f8fafc; font-size: 14px;">Digital Boarding Pass</div>
+          <div style="color: #94a3b8; font-size: 13px;">Present your contactless QR pass to the yacht first mate for seamless check-in.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div>
+          <div style="font-weight: 600; color: #f8fafc; font-size: 14px;">Guest Requirements</div>
+          <div style="color: #94a3b8; font-size: 13px;">All guests must bring valid Emirates ID or passport as mandated by UAE Coast Guard regulations.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 28px;">
+      <a href="/account" class="btn-gold" id="boardingPassLink">
+        <i class="fa-solid fa-qrcode"></i> View Boarding Pass
+      </a>
+      <a href="https://wa.me/971585441134?text=Hello%20Oneness%20Yachts%2C%20I%20have%20confirmed%20booking%20<%= ref %>" target="_blank" class="btn-outline" style="background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.4); color: #4ade80;">
+        <i class="fab fa-whatsapp"></i> Chat with Concierge
+      </a>
+      <a href="/yachts" class="btn-outline">
+        <i class="fa-solid fa-compass"></i> Explore Fleet
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Check URL params for token or ref
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+if (token) {
+  const bpLink = document.getElementById('boardingPassLink');
+  if (bpLink) {
+    bpLink.href = `/my-charter/${token}`;
+  }
+}
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookings Management — Oneness Yachts Operations</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #07111c;
+      --navy2: #08131f;
+      --gold: #c9a66b;
+      --gold-light: #e8d5a3;
+      --muted: #71808c;
+      --border: rgba(255, 255, 255, 0.08);
+      --card-bg: #0d1a29;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060e18;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+    .admin-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .kicker {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .page-title {
+      font-family: Georgia, serif;
+      font-size: 32px;
+      color: #fff;
+    }
+    .stats-ribbon {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .stat-card .val {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 4px;
+    }
+    .stat-card .lbl {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .search-input {
+      flex: 1;
+      min-width: 240px;
+      background: #071220;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--gold);
+    }
+    .filter-select {
+      background: #071220;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    th {
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #cbd5e1;
+    }
+    tr:hover td {
+      background: rgba(255,255,255,0.015);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-confirmed { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-pending { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-ready { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-completed { background: rgba(148,163,184,0.15); color: #94a3b8; border: 1px solid rgba(148,163,184,0.3); }
+    .badge-cancelled { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a66b, #9a7633);
+      color: #040912;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-sm-action {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .btn-sm-action:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('nav-header', { activeTab: 'bookings', adminUser: adminUser }) %>
+
+  <div class="admin-container">
+    <div class="page-header">
+      <div>
+        <div class="kicker">Operational Manifest</div>
+        <h1 class="page-title">Charter Bookings</h1>
+      </div>
+      <div>
+        <a href="/book" target="_blank" class="btn-gold">
+          <i class="fa-solid fa-plus"></i> New Concierge Booking
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats Ribbon -->
+    <div class="stats-ribbon">
+      <div class="stat-card">
+        <div class="lbl">Total Bookings</div>
+        <div class="val" id="statTotal">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Confirmed / Active</div>
+        <div class="val" style="color: #34d399;" id="statConfirmed">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Pending Checkout</div>
+        <div class="val" style="color: #fbbf24;" id="statPending">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Total Revenue (AED)</div>
+        <div class="val" style="color: var(--gold);" id="statRevenue">--</div>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search reference, guest name, email, or vessel...">
+      <select id="statusFilter" class="filter-select">
+        <option value="">All Statuses</option>
+        <option value="CONFIRMED">CONFIRMED</option>
+        <option value="PENDING_PAYMENT">PENDING_PAYMENT</option>
+        <option value="READY">READY</option>
+        <option value="DEPARTED">DEPARTED</option>
+        <option value="COMPLETED">COMPLETED</option>
+        <option value="CANCELLED">CANCELLED</option>
+      </select>
+      <button onclick="loadBookings()" class="btn-gold" style="padding: 10px 16px;">
+        <i class="fa-solid fa-filter"></i> Apply Filters
+      </button>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Guest / Contact</th>
+            <th>Yacht</th>
+            <th>Schedule</th>
+            <th>PAX</th>
+            <th>Total (AED)</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTableBody">
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 48px; color: #94a3b8;">
+              <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; color: var(--gold); margin-bottom: 12px;"></i>
+              <p>Loading bookings ledger...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 13px; color: #94a3b8;">
+      <div id="pageInfo">Showing 0 of 0 bookings</div>
+      <div style="display: flex; gap: 8px;">
+        <button id="prevBtn" onclick="changePage(-1)" class="btn-sm-action"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+        <button id="nextBtn" onclick="changePage(1)" class="btn-sm-action">Next <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  let currentPage = 1;
+  const limit = 20;
+
+  async function loadBookings() {
+    const search = document.getElementById('searchInput').value.trim();
+    const status = document.getElementById('statusFilter').value;
+
+    const url = `/api/v1/admin/bookings/list?page=${currentPage}&limit=${limit}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.success) {
+        renderTable(data.bookings, data.total);
+      }
+    } catch (err) {
+      console.error('Failed to load bookings:', err);
+    }
+  }
+
+  function renderTable(bookings, total) {
+    const tbody = document.getElementById('bookingsTableBody');
+    if (!bookings || bookings.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 48px; color: #94a3b8;">
+            No bookings found matching your criteria.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    let totalRev = 0;
+    let confirmedCount = 0;
+    let pendingCount = 0;
+
+    tbody.innerHTML = bookings.map(b => {
+      const start = new Date(b.start_time);
+      const dateStr = start.toLocaleDateString('en-AE', { day: 'numeric', month: 'short', year: 'numeric' });
+      const timeStr = start.toLocaleTimeString('en-AE', { hour: '2-digit', minute: '2-digit' });
+      const price = parseFloat(b.total_price || 0);
+      
+      totalRev += price;
+      if (b.booking_status === 'CONFIRMED' || b.booking_status === 'READY') confirmedCount++;
+      if (b.booking_status === 'PENDING_PAYMENT') pendingCount++;
+
+      const statusBadge = getStatusBadge(b.booking_status);
+      const payBadge = b.payment_status === 'PAID' ? '<span class="badge badge-confirmed">PAID</span>' :
+                       b.payment_status === 'REFUNDED' ? '<span class="badge badge-cancelled">REFUNDED</span>' :
+                       '<span class="badge badge-pending">UNPAID</span>';
+
+      return `
+        <tr>
+          <td>
+            <a href="/admin/bookings/${b.id}" style="color: var(--gold); font-family: monospace; font-weight: 700; text-decoration: none;">
+              #${b.booking_ref}
+            </a>
+          </td>
+          <td>
+            <div style="font-weight: 600; color: #f8fafc;">${b.customer_name || 'Guest'}</div>
+            <div style="font-size: 11px; color: #94a3b8;">${b.customer_phone || b.customer_email || '—'}</div>
+          </td>
+          <td>
+            <div style="font-weight: 500; color: #f1f5f9;">${b.yacht_title || 'Yacht'}</div>
+          </td>
+          <td>
+            <div>${dateStr}</div>
+            <div style="font-size: 11px; color: #94a3b8;">${timeStr}</div>
+          </td>
+          <td>${b.guest_count || 10}</td>
+          <td style="font-weight: 600; color: #fff;">${price.toLocaleString()} AED</td>
+          <td>${statusBadge}</td>
+          <td>${payBadge}</td>
+          <td>
+            <a href="/admin/bookings/${b.id}" class="btn-sm-action">
+              <i class="fa-solid fa-eye"></i> Details
+            </a>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    document.getElementById('statTotal').textContent = total || bookings.length;
+    document.getElementById('statConfirmed').textContent = confirmedCount;
+    document.getElementById('statPending').textContent = pendingCount;
+    document.getElementById('statRevenue').textContent = totalRev.toLocaleString();
+
+    document.getElementById('pageInfo').textContent = `Showing ${bookings.length} of ${total} bookings (Page ${currentPage})`;
+  }
+
+  function getStatusBadge(status) {
+    switch (status) {
+      case 'CONFIRMED': return '<span class="badge badge-confirmed"><i class="fa-solid fa-circle-check"></i> CONFIRMED</span>';
+      case 'PENDING_PAYMENT': return '<span class="badge badge-pending"><i class="fa-solid fa-clock"></i> PENDING</span>';
+      case 'READY': return '<span class="badge badge-ready"><i class="fa-solid fa-anchor"></i> READY</span>';
+      case 'COMPLETED': return '<span class="badge badge-completed"><i class="fa-solid fa-flag-checkered"></i> COMPLETED</span>';
+      case 'CANCELLED': return '<span class="badge badge-cancelled"><i class="fa-solid fa-ban"></i> CANCELLED</span>';
+      default: return `<span class="badge">${status}</span>`;
+    }
+  }
+
+  function changePage(delta) {
+    if (currentPage + delta > 0) {
+      currentPage += delta;
+      loadBookings();
+    }
+  }
+
+  document.getElementById('searchInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') loadBookings();
+  });
+
+  document.addEventListener('DOMContentLoaded', loadBookings);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Detail — Oneness Yachts Operations</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #07111c;
+      --gold: #c9a66b;
+      --card-bg: #0d1a29;
+      --border: rgba(255, 255, 255, 0.08);
+      --muted: #71808c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060e18;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+    .admin-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .back-link:hover { color: var(--gold); }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+    }
+    @media (max-width: 960px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 14px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--muted); }
+    .info-value { color: #f8fafc; font-weight: 500; }
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a66b, #9a7633);
+      color: #040912;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .btn-danger {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #f87171;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.25); }
+    .timeline-item {
+      position: relative;
+      padding-left: 24px;
+      padding-bottom: 16px;
+      border-left: 2px solid rgba(201,166,107,0.3);
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('nav-header', { activeTab: 'bookings', adminUser: adminUser }) %>
+
+  <div class="admin-container">
+    <a href="/admin/bookings" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Back to Bookings Ledger
+    </a>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <span style="font-family: monospace; font-size: 14px; color: var(--gold); font-weight: 700;">#<span id="headerRef">...</span></span>
+        <h1 style="font-family: Georgia, serif; font-size: 32px; color: #fff; margin-top: 4px;" id="headerTitle">Charter Details</h1>
+      </div>
+      <div id="headerBadges"></div>
+    </div>
+
+    <div class="detail-grid">
+      <!-- Main Content Column -->
+      <div>
+        <!-- Vessel & Voyage Card -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-ship" style="color: var(--gold);"></i> Vessel & Voyage Schedule</div>
+          <div class="info-row">
+            <span class="info-label">Charter Vessel</span>
+            <span class="info-value" id="infoYacht">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Start Time / Departure</span>
+            <span class="info-value" id="infoStartTime">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">End Time / Return</span>
+            <span class="info-value" id="infoEndTime">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Berth / Location</span>
+            <span class="info-value" id="infoBerth">Dubai Marina</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Guest Count</span>
+            <span class="info-value" id="infoGuests">— PAX</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Assigned Captain</span>
+            <span class="info-value" id="infoCaptain">Unassigned</span>
+          </div>
+        </div>
+
+        <!-- Guest PII Card -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-user-shield" style="color: var(--gold);"></i> Client Profile & PII (Confidential)</div>
+          <div class="info-row">
+            <span class="info-label">Full Name</span>
+            <span class="info-value" id="clientName">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email Address</span>
+            <span class="info-value" id="clientEmail">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Phone / WhatsApp</span>
+            <span class="info-value" id="clientPhone">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Special Inquiries / Notes</span>
+            <span class="info-value" id="clientNotes" style="font-style: italic;">None provided</span>
+          </div>
+        </div>
+
+        <!-- Financial & Payment Card -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-receipt" style="color: var(--gold);"></i> Financial Audit & Settlements</div>
+          <div class="info-row">
+            <span class="info-label">Charter Rate (Subtotal)</span>
+            <span class="info-value" id="finSubtotal">— AED</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">UAE VAT (5%)</span>
+            <span class="info-value" id="finVat">— AED</span>
+          </div>
+          <div class="info-row" style="font-size: 16px; font-weight: 700;">
+            <span class="info-label" style="color: #fff;">Grand Total</span>
+            <span class="info-value" style="color: var(--gold);" id="finTotal">— AED</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Payment Status</span>
+            <span class="info-value" id="finPayStatus">—</span>
+          </div>
+        </div>
+
+        <!-- Operational Timeline -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-clock-rotate-left" style="color: var(--gold);"></i> Milestone Audit Log</div>
+          <div id="timelineContainer" style="margin-top: 16px;">
+            <p style="color: var(--muted); font-size: 13px;">No milestone events recorded yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Operations Actions -->
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-sliders" style="color: var(--gold);"></i> Operational Controls</div>
+          
+          <div style="margin-bottom: 18px;">
+            <label style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px;">Assign Fleet Captain</label>
+            <input type="text" id="assignCaptainInput" placeholder="e.g. Captain Ahmed Al-Maktoum" style="width: 100%; background: #071220; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 10px; color: #fff; font-size: 13px; margin-bottom: 8px;">
+            <button onclick="assignCaptain()" class="btn-gold"><i class="fa-solid fa-user-check"></i> Assign Captain</button>
+          </div>
+
+          <div style="margin-bottom: 18px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
+            <label style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px;">Update Voyage State</label>
+            <select id="stateSelect" style="width: 100%; background: #071220; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 10px; color: #fff; font-size: 13px; margin-bottom: 8px;">
+              <option value="CONFIRMED">CONFIRMED</option>
+              <option value="READY">READY (Crew Boarded)</option>
+              <option value="DEPARTED">DEPARTED (At Sea)</option>
+              <option value="COMPLETED">COMPLETED</option>
+            </select>
+            <button onclick="updateState()" class="btn-gold"><i class="fa-solid fa-arrows-rotate"></i> Update State</button>
+          </div>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
+            <label style="font-size: 12px; color: #f87171; display: block; margin-bottom: 6px;">Cancellation & Refund</label>
+            <button onclick="cancelBooking()" class="btn-danger"><i class="fa-solid fa-ban"></i> Cancel & Calculate Refund</button>
+          </div>
+        </div>
+
+        <!-- Boarding Pass Link Box -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-qrcode" style="color: var(--gold);"></i> Client Digital Pass</div>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+            View the client-facing digital pass as seen by the guest.
+          </p>
+          <a id="boardingPassLink" href="#" target="_blank" class="btn-gold" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Boarding Pass
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const bookingId = '<%= bookingId %>';
+  let currentBooking = null;
+
+  async function loadDetail() {
+    try {
+      const res = await fetch(`/api/v1/admin/bookings/detail/${bookingId}`);
+      const data = await res.json();
+      if (data.success) {
+        currentBooking = data.booking;
+        renderDetail(data.booking, data.events, data.payments);
+      }
+    } catch (err) {
+      console.error('Failed to load booking detail:', err);
+    }
+  }
+
+  function renderDetail(b, events, payments) {
+    document.getElementById('headerRef').textContent = b.booking_ref;
+    document.getElementById('headerTitle').textContent = `${b.yacht_title || 'Charter'} — #${b.booking_ref}`;
+    
+    document.getElementById('infoYacht').textContent = b.yacht_title || 'Yacht';
+    document.getElementById('infoStartTime').textContent = new Date(b.start_time).toLocaleString('en-AE');
+    document.getElementById('infoEndTime').textContent = new Date(b.end_time).toLocaleString('en-AE');
+    document.getElementById('infoBerth').textContent = b.berth_assigned || 'Dubai Marina, Berth 4';
+    document.getElementById('infoGuests').textContent = `${b.guest_count || 10} PAX`;
+    document.getElementById('infoCaptain').textContent = b.captain_name || 'Unassigned';
+
+    document.getElementById('clientName').textContent = b.full_name || 'Guest';
+    document.getElementById('clientEmail').textContent = b.email || '—';
+    document.getElementById('clientPhone').textContent = b.phone || '—';
+
+    const total = parseFloat(b.total_price || 0);
+    const vat = total - (total / 1.05);
+    const subtotal = total - vat;
+
+    document.getElementById('finSubtotal').textContent = Math.round(subtotal).toLocaleString() + ' AED';
+    document.getElementById('finVat').textContent = Math.round(vat).toLocaleString() + ' AED';
+    document.getElementById('finTotal').textContent = total.toLocaleString() + ' AED';
+    document.getElementById('finPayStatus').textContent = b.payment_status;
+
+    if (b.boarding_access_token) {
+      document.getElementById('boardingPassLink').href = `/my-charter/${b.boarding_access_token}`;
+    }
+
+    // Render Timeline
+    if (events && events.length > 0) {
+      document.getElementById('timelineContainer').innerHTML = events.map(e => `
+        <div class="timeline-item">
+          <div style="font-weight: 600; color: #fff; font-size: 13px;">${e.event_type}</div>
+          <div style="font-size: 12px; color: var(--muted);">${new Date(e.created_at).toLocaleString('en-AE')} • by ${e.triggered_by_role || 'SYSTEM'}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  async function assignCaptain() {
+    const captainName = document.getElementById('assignCaptainInput').value.trim();
+    if (!captainName) return alert('Enter captain name');
+    try {
+      const res = await fetch(`/api/v1/admin/bookings/${currentBooking.id}/crew`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ captainId: captainName, role: 'CAPTAIN' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Captain assigned successfully.');
+        loadDetail();
+      } else {
+        alert(data.error || 'Failed to assign captain');
+      }
+    } catch (e) { alert(e.message); }
+  }
+
+  async function updateState() {
+    const status = document.getElementById('stateSelect').value;
+    try {
+      const res = await fetch(`/api/v1/admin/bookings/${currentBooking.id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Charter status updated.');
+        loadDetail();
+      } else {
+        alert(data.error || 'Failed to update status');
+      }
+    } catch (e) { alert(e.message); }
+  }
+
+  async function cancelBooking() {
+    if (!confirm('Are you sure you want to cancel this booking and calculate refund according to maritime policy?')) return;
+    try {
+      const res = await fetch(`/api/v1/admin/bookings/${currentBooking.id}/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Admin Cancelled' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Booking cancelled. Refund eligible: ${data.refundAmount || 0} AED (${data.refundPercentage || 0}%).`);
+        loadDetail();
+      } else {
+        alert(data.error || 'Failed to cancel');
+      }
+    } catch (e) { alert(e.message); }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadDetail);
+  </script>
+
+</body>
+</html>

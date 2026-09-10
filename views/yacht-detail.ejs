@@ -1,137 +1,639 @@
-<%- include('partials/head', { 
-  title: yacht.title + ' — Oneness Luxury Yacht Charter Dubai',
-  description: yacht.overview ? yacht.overview.slice(0, 160) : 'Explore luxury yacht charter in Dubai with Oneness Yachts.',
-  activeNav: yacht.category === 'vip' ? 'vip' : 'standard'
-}) %>
-<%- include('partials/header', { activeNav: yacht.category === 'vip' ? 'vip' : 'standard' }) %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= yacht ? yacht.title + ' — Oneness Yachts Dubai' : 'Yacht Detail — Oneness Yachts' %></title>
+  <meta name="description" content="<%= yacht ? (yacht.short_description || yacht.title + ' — Private yacht charter in Dubai. Book exclusively with Oneness Yachts.') : '' %>">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/icon.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/luxury.css">
+  <style>
+    body { background: var(--ivory); }
 
-    <section class="mediaDiv">
-      <div id="media" class="mediaWrapper">
-        <% yacht.images.forEach(function(img) { %>
-          <div class="mediaFile">
-            <img src="<%= img %>" alt="<%= yacht.title %>">
-          </div>
-        <% }); %>
-      </div>
-      <div class="arrowDiv">
-        <a class="arrow leftArrow" onclick="sideScrollCards('media','mediaFile','prev',1);"><i
-            class="fi fi-rr-angle-double-left"></i></a>
-        <a class="arrow rightArrow" onclick="sideScrollCards('media','mediaFile','next',1);"><i
-            class="fi fi-rr-angle-double-right"></i></a>
-      </div>
-      <div class="popupClose">
-        <i class="fi fi-rr-cross"></i>
-      </div>
-    </section>
+    /* Image Gallery */
+    .gallery-hero {
+      position: relative;
+      height: 65vh;
+      min-height: 480px;
+      background: var(--navy-900);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .gallery-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease-out);
+    }
+    .gallery-hero:hover img { transform: scale(1.02); }
+    .gallery-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7,15,28,0.5) 0%, transparent 50%);
+    }
+    .gallery-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 10px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--navy-900);
+      transition: all var(--transition);
+    }
+    .gallery-btn:hover { background: var(--white); }
 
-    <section class="propertyDetails">
-      <div class="innerSection">
-        <div class="contentDiv">
-          <div class="titleDiv">
-            <h1 class="title"><%= yacht.title %></h1>
-            <p class="tower"><%= yacht.tower %></p>
-          </div>
-          <div class="content">
-            <% if (yacht.specs && yacht.specs.length > 0) { %>
-            <div class="list">
-              <h2 class="title">Specification</h2>
-              <div class="amenities">
-                <ul>
-                  <% yacht.specs.forEach(function(spec) { %>
-                    <li><%= spec %></li>
-                  <% }); %>
-                </ul>
+    .gallery-thumbs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .gallery-thumbs::-webkit-scrollbar { display: none; }
+    .gallery-thumb {
+      flex-shrink: 0;
+      width: 100px;
+      height: 70px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+    .gallery-thumb.active { border-color: var(--gold); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    .lightbox.open { opacity: 1; visibility: visible; }
+    .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: var(--radius-md); }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      color: var(--white);
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background var(--transition);
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    /* Page Layout */
+    .yacht-page { display: grid; grid-template-columns: 1fr 380px; gap: 48px; padding: 48px 0 80px; align-items: start; }
+    .yacht-main {}
+    .yacht-sidebar { position: sticky; top: 88px; }
+
+    /* Info Blocks */
+    .info-block { background: var(--white); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow-sm); }
+    .info-block-title { font-family: var(--font-serif); font-size: 22px; font-weight: 400; color: var(--navy-900); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line-dark); }
+
+    .specs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .spec-row { display: flex; gap: 10px; align-items: flex-start; }
+    .spec-row-icon { width: 32px; height: 32px; background: rgba(201,166,107,0.1); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 13px; flex-shrink: 0; }
+    .spec-row-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+    .spec-row-value { font-size: 15px; font-weight: 600; color: var(--navy-900); }
+
+    .amenities-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .amenity-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); }
+    .amenity-item i { color: var(--gold); width: 16px; }
+
+    .included-list { display: grid; gap: 10px; }
+    .included-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-secondary); }
+    .included-item i { color: #22c55e; width: 16px; }
+
+    /* Booking Card */
+    .booking-card { background: var(--white); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-lg); }
+    .booking-card-yacht { font-family: var(--font-serif); font-size: 24px; font-weight: 400; color: var(--navy-900); margin-bottom: 4px; }
+    .booking-card-price { font-size: 15px; color: var(--text-muted); margin-bottom: 24px; }
+    .booking-card-price strong { color: var(--navy-900); font-size: 18px; }
+
+    .bc-field { margin-bottom: 16px; }
+    .bc-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; display: block; }
+
+    .avail-result { padding: 16px; border-radius: var(--radius-md); margin-bottom: 16px; font-size: 14px; font-weight: 500; display: none; }
+    .avail-result.success { background: var(--status-confirmed-bg); color: var(--status-confirmed); display: block; }
+    .avail-result.error { background: var(--status-cancelled-bg); color: var(--status-cancelled); display: block; }
+
+    .price-preview { background: var(--ivory); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px; display: none; }
+    .price-preview.visible { display: block; }
+
+    @media (max-width: 1000px) {
+      .yacht-page { grid-template-columns: 1fr; }
+      .yacht-sidebar { position: static; }
+    }
+    @media (max-width: 640px) {
+      .specs-grid, .amenities-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="lux-header scrolled" role="banner">
+  <div class="header-inner">
+    <a href="/" class="header-logo">ONENESS <span>YACHTS</span></a>
+    <nav class="header-nav">
+      <a href="/yachts" class="active">Yachts</a>
+      <a href="/experiences">Experiences</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="/account" class="header-login" id="headerLoginBtn">Sign In</a>
+      <a href="/yachts" class="btn btn-primary btn-book-header">Book a Yacht</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<% const y = yacht; %>
+<% const imgs = Array.isArray(y.images_json) ? y.images_json : (Array.isArray(y.images) ? y.images : []); %>
+<% const mainImg = imgs[0] || '/assets/images/home/01.jpg'; %>
+<% const price = Number(y.base_hourly_rate || y.numericPrice || 0).toLocaleString(); %>
+<% const isInstant = y.booking_mode !== 'CONCIERGE_QUOTE'; %>
+<% const slug = y.slug || ''; %>
+<% const yachtId = y.id || slug; %>
+
+<!-- Gallery Hero -->
+<div style="margin-top:80px">
+  <div class="gallery-hero" id="galleryHero">
+    <img src="<%= mainImg %>" alt="<%= y.title %>" id="heroImg" fetchpriority="high" onerror="this.src='/assets/images/home/01.jpg'">
+    <div class="gallery-hero-overlay"></div>
+    <button class="gallery-btn" id="openLightboxBtn" aria-label="View all photos">
+      <i class="fa-solid fa-images"></i> View Gallery (<%= imgs.length %>)
+    </button>
+  </div>
+
+  <% if (imgs.length > 1) { %>
+  <div class="container">
+    <div class="gallery-thumbs" id="galleryThumbs">
+      <% imgs.forEach(function(img, i) { %>
+      <div class="gallery-thumb <%= i === 0 ? 'active' : '' %>" data-idx="<%= i %>" data-src="<%= img %>">
+        <img src="<%= img %>" alt="<%= y.title %> interior <%= i + 1 %>" loading="lazy" onerror="this.src='/assets/images/home/01.jpg'">
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Photo gallery" hidden>
+  <img src="" alt="" id="lightboxImg">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<!-- Main Content -->
+<main>
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav style="padding: 16px 0; font-size: 13px; color: var(--text-muted);" aria-label="Breadcrumb">
+      <a href="/yachts" style="color:var(--gold)">Fleet</a>
+      <span style="margin: 0 8px">·</span>
+      <span><%= y.title %></span>
+    </nav>
+
+    <div class="yacht-page">
+      <!-- LEFT: Main Content -->
+      <div class="yacht-main">
+        <!-- Title + Specs Summary -->
+        <div class="info-block">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:16px">
+            <div>
+              <h1 class="t-h1" style="margin-bottom:8px"><%= y.title %></h1>
+              <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px">
+                <div class="spec-item"><i class="fa-solid fa-ruler-horizontal"></i> <%= y.length_ft || y.lengthFt %> FT</div>
+                <div class="spec-item"><i class="fa-solid fa-users"></i> Up to <%= y.capacity_day || y.capacity %> Guests</div>
+                <% if (y.cabins) { %><div class="spec-item"><i class="fa-solid fa-door-open"></i> <%= y.cabins %> Cabins</div><% } %>
+                <% if (y.speed_knots) { %><div class="spec-item"><i class="fa-solid fa-gauge-high"></i> <%= y.speed_knots %> Knots</div><% } %>
+                <div class="spec-item"><i class="fa-solid fa-location-dot"></i> <%= y.marina || 'Dubai Marina' %></div>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px">
+                <span style="font-family: var(--font-serif); font-size:26px; color: var(--navy-900)">AED <%= price %></span>
+                <span style="color: var(--text-muted); font-size:14px">/ hour</span>
+                <% if (!isInstant) { %><span class="badge badge--held">By Request</span><% } else { %><span class="badge badge--confirmed">Instant Book</span><% } %>
               </div>
             </div>
-            <% } %>
-
-            <% if (yacht.overview) { %>
-            <div class="list">
-              <h2 class="title">Overview</h2>
-              <% yacht.overview.split('\n\n').forEach(function(para) { %>
-                <p><%= para %></p>
-              <% }); %>
-            </div>
-            <% } %>
-
-            <% if (yacht.extraSections && yacht.extraSections.length > 0) { %>
-              <% yacht.extraSections.forEach(function(sec) { %>
-                <div class="list">
-                  <h2 class="title"><%= sec.title %></h2>
-                  <p><%= sec.content %></p>
-                </div>
-              <% }); %>
-            <% } %>
           </div>
         </div>
-        <div class="propertyBookingBtnDiv">
-          <h5 class="price"><%= yacht.price %></h5>
-          <a href="/booking?yacht=<%= yacht.slug %>" class="propertyBookingBtn filledBtn" style="text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-ship"></i> Book Now</a>
+
+        <!-- Description -->
+        <% const desc = y.description || y.overview || ''; %>
+        <% if (desc) { %>
+        <div class="info-block">
+          <h2 class="info-block-title">About the <%= y.title %></h2>
+          <p style="font-size:15px; line-height:1.8; color: var(--text-secondary)"><%= desc %></p>
         </div>
-        <div class="propertyBookingForm">
-          <form action="/booking" class="formDiv" method="get">
-            <input type="hidden" name="yacht" value="<%= yacht.slug %>">
-            <h4 class="title">Book <%= yacht.title %></h4>
-            <ul>
-              <li>Capacity: <%= yacht.capacity ? yacht.capacity + ' PAX' : 'VIP' %></li>
-              <li>Type: <%= yacht.category === 'vip' ? 'VIP Luxury' : 'Standard' %></li>
-              <li>Size: <%= yacht.lengthFt ? yacht.lengthFt + ' Feet' : yacht.tower %></li>
-            </ul>
-            <div class="actionDiv">
-              <p>Price Per Hour</p>
-              <p class="price"><%= yacht.price %></p>
+        <% } %>
+
+        <!-- Specifications -->
+        <div class="info-block">
+          <h2 class="info-block-title">Specifications</h2>
+          <div class="specs-grid">
+            <div class="spec-row">
+              <div class="spec-row-icon"><i class="fa-solid fa-ruler-horizontal"></i></div>
+              <div><div class="spec-row-label">Length</div><div class="spec-row-value"><%= y.length_ft || y.lengthFt %> ft</div></div>
             </div>
-            <a href="/booking?yacht=<%= yacht.slug %>" class="outlinedBtn mdBtn" style="background: linear-gradient(135deg, #d4af37, #b89428); color: #000; font-weight: 700; border: none; text-align: center; margin-bottom: 8px; text-decoration: none;">Launch Booking Engine</a>
-            <a href="/contact?yacht=<%= encodeURIComponent(yacht.title) %>" class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue; text-align: center; text-decoration: none;">Enquire Via Message</a>
-          </form>
-          <div class="closeform"></div>
+            <div class="spec-row">
+              <div class="spec-row-icon"><i class="fa-solid fa-users"></i></div>
+              <div><div class="spec-row-label">Day Capacity</div><div class="spec-row-value"><%= y.capacity_day || y.capacity %> guests</div></div>
+            </div>
+            <% if (y.cabins) { %>
+            <div class="spec-row">
+              <div class="spec-row-icon"><i class="fa-solid fa-door-open"></i></div>
+              <div><div class="spec-row-label">Cabins</div><div class="spec-row-value"><%= y.cabins %></div></div>
+            </div>
+            <% } %>
+            <% if (y.speed_knots) { %>
+            <div class="spec-row">
+              <div class="spec-row-icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <div><div class="spec-row-label">Max Speed</div><div class="spec-row-value"><%= y.speed_knots %> knots</div></div>
+            </div>
+            <% } %>
+            <div class="spec-row">
+              <div class="spec-row-icon"><i class="fa-solid fa-clock"></i></div>
+              <div><div class="spec-row-label">Minimum Charter</div><div class="spec-row-value"><%= y.min_charter_hours || 2 %> hours</div></div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div><div class="spec-row-label">Marina</div><div class="spec-row-value"><%= y.marina || y.default_berth || 'Dubai Marina' %></div></div>
+            </div>
+          </div>
+
+          <!-- JSON specs -->
+          <% const specs = y.specs_json || (typeof y.specs === 'object' ? y.specs : null); %>
+          <% if (specs && Object.keys(specs).length > 0) { %>
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line-dark);">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+              <% Object.entries(specs).forEach(function([k, v]) { if (v) { %>
+              <div style="display:flex; gap:8px; font-size:13px; color: var(--text-secondary);">
+                <span style="text-transform:capitalize; color:var(--text-muted); min-width:80px"><%= k %>:</span>
+                <span style="font-weight:500"><%= v %></span>
+              </div>
+              <% }}); %>
+            </div>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- What's Included -->
+        <div class="info-block">
+          <h2 class="info-block-title">What's Included</h2>
+          <%
+            let included = [];
+            try { included = Array.isArray(y.whats_included_json) ? y.whats_included_json : JSON.parse(y.whats_included_json || '[]'); } catch(e) {}
+            if (!included.length) included = ['Captain & Professional Crew', 'Fuel', 'Welcome Drinks', 'Towels & Linens', 'Safety Equipment', 'Life Jackets'];
+          %>
+          <div class="included-list">
+            <% included.forEach(function(item) { %>
+            <div class="included-item"><i class="fa-solid fa-check-circle"></i> <%= item %></div>
+            <% }); %>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <%
+          let amenities = [];
+          try { amenities = Array.isArray(y.amenities_json) ? y.amenities_json : JSON.parse(y.amenities_json || '[]'); } catch(e) {}
+        %>
+        <% if (amenities.length) { %>
+        <div class="info-block">
+          <h2 class="info-block-title">Amenities</h2>
+          <div class="amenities-list">
+            <% amenities.forEach(function(item) { %>
+            <div class="amenity-item"><i class="fa-solid fa-circle-dot"></i> <%= item %></div>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Optional Experiences (Add-ons preview) -->
+        <div class="info-block" id="addonsPreview">
+          <h2 class="info-block-title">Optional Experiences</h2>
+          <div id="addonsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+            <!-- Loaded from API -->
+            <div style="height:80px; background: var(--ivory); border-radius: var(--radius-md); animation: shimmer 1.5s infinite;"></div>
+            <div style="height:80px; background: var(--ivory); border-radius: var(--radius-md); animation: shimmer 1.5s infinite;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Sticky Booking Card -->
+      <div class="yacht-sidebar">
+        <div class="booking-card" id="bookingCard">
+          <div class="booking-card-yacht"><%= y.title %></div>
+          <div class="booking-card-price">From <strong>AED <%= price %></strong> / hour</div>
+
+          <div class="bc-field">
+            <label class="bc-label" for="bc-date">Date</label>
+            <input type="date" class="form-input" id="bc-date" min="<%= new Date().toISOString().split('T')[0] %>" aria-label="Charter date">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="bc-field">
+              <label class="bc-label" for="bc-time">Start Time</label>
+              <input type="time" class="form-input" id="bc-time" value="17:00" min="08:00" max="22:30" aria-label="Start time">
+            </div>
+            <div class="bc-field">
+              <label class="bc-label" for="bc-duration">Duration</label>
+              <select class="form-select" id="bc-duration" aria-label="Duration">
+                <% const minH = y.min_charter_hours || 2; %>
+                <% for (let h = minH; h <= 12; h++) { %>
+                <option value="<%= h %>" <%= h === 3 ? 'selected' : '' %>><%= h %> hours</option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+
+          <div class="bc-field">
+            <label class="bc-label" for="bc-guests">Guests</label>
+            <select class="form-select" id="bc-guests" aria-label="Number of guests">
+              <% const cap = y.capacity_day || y.capacity || 12; %>
+              <% for (let g = 1; g <= cap; g++) { %>
+              <option value="<%= g %>" <%= g === 6 ? 'selected' : '' %>><%= g %> <%= g === 1 ? 'Guest' : 'Guests' %></option>
+              <% } %>
+            </select>
+          </div>
+
+          <!-- Availability Result -->
+          <div class="avail-result" id="availResult" role="alert"></div>
+
+          <!-- Price Preview -->
+          <div class="price-preview" id="pricePreview">
+            <div style="font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px">Price Estimate</div>
+            <div id="priceRows"></div>
+          </div>
+
+          <button class="btn btn-primary btn-block" id="checkAvailBtn" style="margin-bottom: 12px;" aria-label="Check availability">
+            <i class="fa-solid fa-calendar-check"></i> Check Availability
+          </button>
+
+          <a href="#" class="btn btn-dark btn-block" id="proceedBookBtn" style="display:none;" aria-label="Proceed to booking">
+            Reserve Your Charter →
+          </a>
+
+          <% if (!isInstant) { %>
+          <div style="margin-top: 12px;">
+            <a href="/contact?yacht=<%= slug %>" class="btn btn-outline-dark btn-block">
+              Request Concierge Quote
+            </a>
+          </div>
+          <% } %>
+
+          <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:12px; line-height:1.5">
+            <i class="fa-solid fa-shield-halved" style="color:var(--gold)"></i>
+            Your slot is held for 15 minutes while you complete booking.
+          </p>
+        </div>
+
+        <!-- Concierge CTA -->
+        <div style="background: var(--navy-900); border-radius: var(--radius-lg); padding: 24px; margin-top: 16px; text-align: center;">
+          <div style="color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Need Help?</div>
+          <div style="font-family: var(--font-serif); font-size: 18px; color: var(--white); margin-bottom: 4px;">Talk to Concierge</div>
+          <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 16px;">Available 7 days · 8am to midnight</div>
+          <a href="https://wa.me/971585441134?text=Hello, I'm interested in chartering <%= encodeURIComponent(y.title) %>" target="_blank" rel="noopener"
+            class="btn btn-outline btn-block btn-sm" style="border-color: rgba(255,255,255,0.3)">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp Concierge
+          </a>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</main>
 
-    <section id="FAQs" class="faqSection">
-      <div class="innerSection">
-        <h2 class="heading">FAQs</h2>
-        <ul class="faqListDiv">
-          <li class="dropList">
-            <div class="dropBox">
-              <h5 class="title">What is included in the yacht booking package?</h5>
-              <div class="dropIcon">
-                <i class="fi fi-rr-angle-small-up dropRemove"></i>
-                <i class="fi fi-rr-angle-small-down dropAdd"></i>
-              </div>
-            </div>
-            <div class="dropContent">
-              <p>The yacht booking package includes a professional crew, onboard amenities, refreshments, and optional catering and entertainment add-ons.</p>
-            </div>
-          </li>
-          <li class="dropList">
-            <div class="dropBox">
-              <h5 class="title">How many guests can the yacht accommodate?</h5>
-              <div class="dropIcon">
-                <i class="fi fi-rr-angle-small-up dropRemove"></i>
-                <i class="fi fi-rr-angle-small-down dropAdd"></i>
-              </div>
-            </div>
-            <div class="dropContent">
-              <p>This yacht accommodates up to <%= yacht.capacity || 'VIP' %> passengers comfortably.</p>
-            </div>
-          </li>
-          <li class="dropList">
-            <div class="dropBox">
-              <h5 class="title">What are the safety measures on board?</h5>
-              <div class="dropIcon">
-                <i class="fi fi-rr-angle-small-up dropRemove"></i>
-                <i class="fi fi-rr-angle-small-down dropAdd"></i>
-              </div>
-            </div>
-            <div class="dropContent">
-              <p>The yacht is equipped with life jackets, fire extinguishers, and other essential safety equipment, maintained regularly for passenger safety.</p>
-            </div>
-          </li>
-        </ul>
+<!-- Footer -->
+<footer class="lux-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.07); padding-top:28px">
+      <span>© 2026 Oneness Yachts LLC.</span>
+      <a href="/yachts" style="color:var(--gold)">← Back to Fleet</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+const YACHT_ID = '<%= yachtId %>';
+const YACHT_SLUG = '<%= slug %>';
+const YACHT_TITLE = '<%= y.title %>';
+const YACHT_MIN_HOURS = <%= y.min_charter_hours || 2 %>;
+const YACHT_CAPACITY = <%= y.capacity_day || y.capacity || 12 %>;
+const IS_INSTANT = <%= isInstant ? 'true' : 'false' %>;
+const GALLERY_IMGS = <%- JSON.stringify(imgs) %>;
+
+let currentLightboxIdx = 0;
+
+// ============================================================
+// GALLERY
+// ============================================================
+const heroImg = document.getElementById('heroImg');
+const galleryThumbs = document.querySelectorAll('.gallery-thumb');
+
+galleryThumbs.forEach(thumb => {
+  thumb.addEventListener('click', () => {
+    const idx = parseInt(thumb.dataset.idx);
+    heroImg.src = thumb.dataset.src;
+    galleryThumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    currentLightboxIdx = idx;
+  });
+});
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+
+function openLightbox(idx) {
+  currentLightboxIdx = idx;
+  lightboxImg.src = GALLERY_IMGS[idx] || GALLERY_IMGS[0];
+  lightbox.hidden = false;
+  setTimeout(() => lightbox.classList.add('open'), 10);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  setTimeout(() => { lightbox.hidden = true; document.body.style.overflow = ''; }, 300);
+}
+
+function navLightbox(dir) {
+  currentLightboxIdx = (currentLightboxIdx + dir + GALLERY_IMGS.length) % GALLERY_IMGS.length;
+  lightboxImg.src = GALLERY_IMGS[currentLightboxIdx];
+}
+
+document.getElementById('openLightboxBtn').addEventListener('click', () => openLightbox(currentLightboxIdx));
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+document.getElementById('lightboxPrev').addEventListener('click', () => navLightbox(-1));
+document.getElementById('lightboxNext').addEventListener('click', () => navLightbox(1));
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+
+// ============================================================
+// AVAILABILITY CHECK
+// ============================================================
+const checkBtn = document.getElementById('checkAvailBtn');
+const proceedBtn = document.getElementById('proceedBookBtn');
+const availResult = document.getElementById('availResult');
+const pricePreview = document.getElementById('pricePreview');
+const priceRows = document.getElementById('priceRows');
+
+// Set min date to today
+const dateInput = document.getElementById('bc-date');
+const today = new Date().toISOString().split('T')[0];
+dateInput.value = today;
+dateInput.min = today;
+
+checkBtn.addEventListener('click', async () => {
+  const date = dateInput.value;
+  const time = document.getElementById('bc-time').value;
+  const duration = parseInt(document.getElementById('bc-duration').value);
+  const guests = parseInt(document.getElementById('bc-guests').value);
+
+  if (!date || !time) {
+    showResult('error', 'Please select a date and start time.');
+    return;
+  }
+
+  checkBtn.disabled = true;
+  checkBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Checking availability...';
+  availResult.className = 'avail-result';
+  availResult.style.display = 'none';
+  pricePreview.classList.remove('visible');
+  proceedBtn.style.display = 'none';
+
+  try {
+    const startISO = new Date(`${date}T${time}:00`).toISOString();
+    const endISO = new Date(new Date(`${date}T${time}:00`).getTime() + duration * 3600000).toISOString();
+
+    // Check availability
+    const availRes = await fetch(`/api/v1/availability/check?yachtId=${encodeURIComponent(YACHT_ID)}&startTime=${encodeURIComponent(startISO)}&endTime=${encodeURIComponent(endISO)}&guests=${guests}`);
+    const avail = await availRes.json();
+
+    if (!avail.available) {
+      showResult('error', avail.reason || 'This time slot is not available. Please choose another time.');
+      return;
+    }
+
+    // Get pricing quote
+    const priceRes = await fetch('/api/v1/pricing/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ yachtId: YACHT_ID, startTime: startISO, endTime: endISO, durationHours: duration, guests, addonCodes: [] })
+    });
+    const priceData = await priceRes.json();
+    const p = priceData.pricing;
+
+    if (p) {
+      priceRows.innerHTML = `
+        <div class="price-row"><span class="price-label">Yacht Charter (${p.durationHours}h)</span><span class="price-value">AED ${Number(p.baseCharter).toLocaleString()}</span></div>
+        ${p.weekendSurcharge > 0 ? `<div class="price-row"><span class="price-label">Weekend Premium</span><span class="price-value">AED ${Number(p.weekendSurcharge).toLocaleString()}</span></div>` : ''}
+        ${p.sunsetSurcharge > 0 ? `<div class="price-row"><span class="price-label">Sunset Window</span><span class="price-value">AED ${Number(p.sunsetSurcharge).toLocaleString()}</span></div>` : ''}
+        <div class="price-row"><span class="price-label">VAT (5%)</span><span class="price-value">AED ${Number(p.vatAmount).toLocaleString()}</span></div>
+        <div class="price-row price-row--total"><span class="price-label">Total</span><span class="price-value">AED ${Number(p.grandTotal).toLocaleString()}</span></div>
+      `;
+      pricePreview.classList.add('visible');
+    }
+
+    showResult('success', '✓ This time slot is available.');
+
+    if (IS_INSTANT) {
+      proceedBtn.href = `/book?yacht=${YACHT_SLUG}&date=${date}&time=${encodeURIComponent(time)}&duration=${duration}&guests=${guests}`;
+      proceedBtn.style.display = 'flex';
+    }
+  } catch (err) {
+    showResult('error', 'Unable to check availability. Please try again.');
+  } finally {
+    checkBtn.disabled = false;
+    checkBtn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Check Availability';
+  }
+});
+
+function showResult(type, msg) {
+  availResult.className = `avail-result ${type}`;
+  availResult.textContent = msg;
+  availResult.style.display = 'block';
+}
+
+// ============================================================
+// LOAD ADD-ONS
+// ============================================================
+async function loadAddons() {
+  try {
+    const res = await fetch('/api/v1/addons');
+    const data = await res.json();
+    const addons = (data.addons || []).slice(0, 6);
+    const grid = document.getElementById('addonsGrid');
+    if (!addons.length) { document.getElementById('addonsPreview').style.display = 'none'; return; }
+    grid.innerHTML = addons.map(a => `
+      <div style="display:flex; align-items:center; gap:12px; padding:12px; background:var(--ivory); border-radius:var(--radius-md)">
+        <div style="width:36px; height:36px; background:rgba(201,166,107,0.1); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:14px; flex-shrink:0">
+          <i class="fa-solid ${a.icon || 'fa-star'}"></i>
+        </div>
+        <div>
+          <div style="font-size:13px; font-weight:600; color:var(--navy-900)">${a.name}</div>
+          <div style="font-size:12px; color:var(--text-muted)">AED ${Number(a.price).toLocaleString()} ${a.pricing_type === 'PER_GUEST' ? '/guest' : a.pricing_type === 'PER_HOUR' ? '/hour' : ''}</div>
+        </div>
       </div>
-    </section>
+    `).join('');
+  } catch { document.getElementById('addonsPreview').style.display = 'none'; }
+}
 
-<%- include('partials/footer') %>
-<%- include('partials/scripts') %>
+loadAddons();
+</script>
+</body>
+</html>

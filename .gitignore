@@ -27,3 +27,4 @@ Files/cPanel*
 # OS Files
 .DS_Store
 Thumbs.db
+.neon

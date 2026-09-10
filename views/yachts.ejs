@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Fleet — Oneness Yachts Dubai</title>
+  <meta name="description" content="Browse Oneness Yachts' private fleet — from 55ft sport yachts to 177ft megayachts. All vessels available for exclusive charter in Dubai Marina.">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/icon.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/luxury.css">
+  <style>
+    .fleet-hero {
+      height: 50vh;
+      min-height: 360px;
+      background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-700) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .fleet-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/assets/images/yacht/DOLCE VITA - 105 Ft/img17.jpg') center/cover;
+      opacity: 0.2;
+    }
+    .fleet-hero .container { position: relative; z-index: 1; }
+    .fleet-hero-title { font-family: var(--font-serif); font-size: clamp(40px, 6vw, 72px); font-weight: 300; color: var(--white); margin-bottom: 8px; }
+    .fleet-hero-sub { font-size: 16px; color: rgba(255,255,255,0.6); }
+
+    .filters-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--line-dark);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .filters-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .filter-chip {
+      padding: 8px 16px;
+      border: 1px solid var(--line-dark);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .filter-chip:hover, .filter-chip.active {
+      border-color: var(--navy-900);
+      background: var(--navy-900);
+      color: var(--white);
+    }
+
+    .fleet-section { padding: 64px 0 120px; }
+    .fleet-count {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+    }
+    .fleet-count span { font-weight: 600; color: var(--text-primary); }
+
+    .yacht-grid-fleet {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    @media (max-width: 1100px) { .yacht-grid-fleet { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .yacht-grid-fleet { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="lux-header scrolled" id="siteHeader" role="banner">
+  <div class="header-inner">
+    <a href="/" class="header-logo">ONENESS <span>YACHTS</span></a>
+    <nav class="header-nav">
+      <a href="/yachts" class="active">Yachts</a>
+      <a href="/experiences">Experiences</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="/account" class="header-login" id="headerLoginBtn">Sign In</a>
+      <a href="/yachts" class="btn btn-primary btn-book-header">Book a Yacht</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- Fleet Hero -->
+<section class="fleet-hero" aria-label="Fleet header">
+  <div class="container">
+    <div class="hero-label">Dubai Marina · Own Fleet</div>
+    <h1 class="fleet-hero-title">Our Fleet</h1>
+    <p class="fleet-hero-sub">Choose from our own fleet of luxury yachts — all maintained, crewed, and ready for your exclusive charter.</p>
+  </div>
+</section>
+
+<!-- Filters -->
+<div class="filters-bar" id="filtersBar">
+  <div class="container">
+    <div class="filters-inner">
+      <span class="filter-label">Filter</span>
+      <button class="filter-chip active" data-filter="all" id="filter-all">All Yachts</button>
+      <button class="filter-chip" data-filter="small" id="filter-small">Under 80ft</button>
+      <button class="filter-chip" data-filter="mid" id="filter-mid">80 – 110ft</button>
+      <button class="filter-chip" data-filter="large" id="filter-large">110ft+</button>
+      <button class="filter-chip" data-filter="instant" id="filter-instant">Instant Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fleet Grid -->
+<section class="fleet-section" aria-label="Yacht fleet">
+  <div class="container">
+    <div class="fleet-count" id="fleetCount">Loading yachts...</div>
+    <div class="yacht-grid-fleet" id="yachtGrid">
+      <!-- Populated by JS -->
+      <div class="yacht-card-skeleton"></div>
+      <div class="yacht-card-skeleton"></div>
+      <div class="yacht-card-skeleton"></div>
+      <div class="yacht-card-skeleton"></div>
+      <div class="yacht-card-skeleton"></div>
+      <div class="yacht-card-skeleton"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state hidden" id="emptyState">
+      <div class="empty-state-icon"><i class="fa-solid fa-anchor"></i></div>
+      <div class="empty-state-title">No Yachts Found</div>
+      <div class="empty-state-sub">Try adjusting your filters.</div>
+      <button class="btn btn-outline-dark mt-3" onclick="setFilter('all')">Clear Filter</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="lux-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.07); padding-top:28px; justify-content:space-between">
+      <span>© 2026 Oneness Yachts LLC. Dubai, UAE.</span>
+      <a href="/contact" style="color:var(--gold)">Contact Concierge</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+let allYachts = [];
+let currentFilter = 'all';
+
+// Build yacht card HTML
+function buildYachtCard(y) {
+  const images = Array.isArray(y.images_json) ? y.images_json : (Array.isArray(y.images) ? y.images : []);
+  const img = images[0] || y.image || '/assets/images/home/01.jpg';
+  const price = Number(y.base_hourly_rate || y.numericPrice || 0).toLocaleString();
+  const isInstant = y.booking_mode !== 'CONCIERGE_QUOTE';
+  const slug = y.slug || '';
+  const detailUrl = slug ? (y.id ? `/yachts/${slug}` : `/yacht/${slug}`) : '#';
+  const bookUrl = slug ? (y.id ? `/book?yacht=${slug}` : `/booking?yacht=${slug}`) : '/yachts';
+  const title = y.title || 'Luxury Yacht';
+  const length = y.length_ft || y.lengthFt || '–';
+  const capacity = y.capacity_day || y.capacity || '–';
+  const cabins = y.cabins || 0;
+
+  return `
+    <article class="yacht-card" data-length="${length}" data-mode="${isInstant ? 'instant' : 'concierge'}">
+      <a href="${detailUrl}" class="yacht-card__image" aria-label="View ${title} details">
+        <img src="${img}" alt="${title} — ${length}ft private yacht Dubai" loading="lazy"
+          onerror="this.src='/assets/images/home/01.jpg'">
+        <div class="yacht-card__badge" style="${isInstant ? '' : 'background:var(--navy-700);color:var(--gold)'}">
+          ${isInstant ? 'Instant Book' : 'By Request'}
+        </div>
+      </a>
+      <div class="yacht-card__body">
+        <h3 class="yacht-card__name">${title}</h3>
+        <div class="yacht-card__specs">
+          <div class="spec-item"><i class="fa-solid fa-ruler-horizontal"></i> ${length} FT</div>
+          <div class="spec-item"><i class="fa-solid fa-users"></i> Up to ${capacity}</div>
+          ${cabins ? `<div class="spec-item"><i class="fa-solid fa-door-open"></i> ${cabins} Cabins</div>` : ''}
+        </div>
+        <div class="yacht-card__price">
+          AED ${price} <span>/ hour</span>
+        </div>
+        <div class="yacht-card__actions">
+          <a href="${detailUrl}" class="btn btn-outline-dark btn-sm">View Details</a>
+          ${isInstant
+            ? `<a href="${bookUrl}" class="btn btn-primary btn-sm">Book Now</a>`
+            : `<a href="/contact?yacht=${slug}" class="btn btn-dark btn-sm">Get Quote</a>`
+          }
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function applyFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.filter === filter);
+  });
+
+  let filtered = allYachts;
+  if (filter === 'small') filtered = allYachts.filter(y => parseInt(y.length_ft || y.lengthFt) < 80);
+  else if (filter === 'mid') filtered = allYachts.filter(y => { const l = parseInt(y.length_ft || y.lengthFt); return l >= 80 && l <= 110; });
+  else if (filter === 'large') filtered = allYachts.filter(y => parseInt(y.length_ft || y.lengthFt) > 110);
+  else if (filter === 'instant') filtered = allYachts.filter(y => y.booking_mode !== 'CONCIERGE_QUOTE');
+
+  const grid = document.getElementById('yachtGrid');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('fleetCount');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    count.innerHTML = 'No yachts match this filter.';
+  } else {
+    empty.classList.add('hidden');
+    grid.innerHTML = filtered.map(buildYachtCard).join('');
+    count.innerHTML = `<span>${filtered.length}</span> yacht${filtered.length !== 1 ? 's' : ''} available`;
+  }
+}
+
+window.setFilter = applyFilter;
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => applyFilter(chip.dataset.filter));
+});
+
+async function loadYachts() {
+  try {
+    // Try DB-backed API first
+    const res = await fetch('/api/v1/yachts');
+    const data = await res.json();
+    if (data.success && data.yachts.length > 0) {
+      allYachts = data.yachts;
+    } else {
+      throw new Error('Empty DB');
+    }
+  } catch {
+    // Fallback to JSON data
+    try {
+      const res = await fetch('/api/yachts');
+      const data = await res.json();
+      allYachts = (data.yachts || []).filter(y => y.numericPrice > 0);
+    } catch {
+      allYachts = [];
+    }
+  }
+
+  applyFilter(currentFilter);
+}
+
+// Check session
+async function checkSession() {
+  try {
+    const res = await fetch('/api/v1/auth/me');
+    const data = await res.json();
+    if (data.success && data.customer) {
+      const btn = document.getElementById('headerLoginBtn');
+      if (btn) { btn.textContent = data.customer.name.split(' ')[0]; btn.href = '/account'; }
+    }
+  } catch {}
+}
+
+loadYachts();
+checkSession();
+</script>
+</body>
+</html>

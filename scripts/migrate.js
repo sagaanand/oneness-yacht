@@ -32,7 +32,16 @@ async function runMigration() {
       console.log('[MIGRATE] Schema DDL applied successfully (15 tables, indexes, constraints).');
     }
 
-    // 2. Run Seed Data if requested
+    // 2. Run Migration 003 (Auth, Sessions, Enhancements)
+    const migration003Path = path.join(__dirname, '..', 'sql', '003_auth_and_enhancements.sql');
+    if (fs.existsSync(migration003Path)) {
+      console.log('[MIGRATE] Applying schema updates from sql/003_auth_and_enhancements.sql...');
+      const mig003Sql = fs.readFileSync(migration003Path, 'utf8');
+      await client.query(mig003Sql);
+      console.log('[MIGRATE] Migration 003 applied successfully.');
+    }
+
+    // 3. Run Seed Data if requested
     const shouldSeed = process.argv.includes('--seed') || process.env.SEED_DB === 'true';
     if (shouldSeed) {
       const seedPath = path.join(__dirname, '..', 'sql', '002_seed_data.sql');

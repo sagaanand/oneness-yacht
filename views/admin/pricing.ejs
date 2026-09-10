@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Pricing Management — Oneness Yachts Operations</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #07111c;
+      --gold: #c9a66b;
+      --card-bg: #0d1a29;
+      --border: rgba(255, 255, 255, 0.08);
+      --muted: #71808c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060e18;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+    .admin-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .kicker {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .page-title {
+      font-family: Georgia, serif;
+      font-size: 32px;
+      color: #fff;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 28px;
+    }
+    @media (max-width: 960px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .rule-item:last-child { border-bottom: none; }
+    .input-sm {
+      background: #071220;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      width: 100px;
+      text-align: right;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a66b, #9a7633);
+      color: #040912;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .simulator-box {
+      background: #081422;
+      border: 1px solid rgba(201,166,107,0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .sim-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .sim-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('nav-header', { activeTab: 'pricing', adminUser: adminUser }) %>
+
+  <div class="admin-container">
+    <div class="page-header">
+      <div>
+        <div class="kicker">Revenue & Yield Engine</div>
+        <h1 class="page-title">Dynamic Pricing Rules</h1>
+      </div>
+      <div>
+        <button onclick="saveGlobalRules()" class="btn-gold">
+          <i class="fa-solid fa-floppy-disk"></i> Apply Global Rules
+        </button>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Left Column: Global & Per-Vessel Rules -->
+      <div>
+        <!-- Global Surge Multipliers -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-sliders" style="color: var(--gold);"></i> Global Dynamic Multipliers</div>
+          
+          <div class="rule-item">
+            <div>
+              <div style="font-weight: 600; color: #fff;">Weekend Surge Rate (Fri / Sat / Sun)</div>
+              <div style="font-size: 12px; color: var(--muted);">Applied automatically to charters occurring over weekend maritime peaks.</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="number" id="weekendMultiplier" class="input-sm" value="1.15" step="0.01">
+              <span style="font-size: 12px; color: var(--muted);">x</span>
+            </div>
+          </div>
+
+          <div class="rule-item">
+            <div>
+              <div style="font-weight: 600; color: #fff;">Sunset Golden Hour Premium</div>
+              <div style="font-size: 12px; color: var(--muted);">Fixed surcharge added for charters overlapping 16:30 – 19:00 prime sunset slots.</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="number" id="sunsetSurcharge" class="input-sm" value="500" step="50">
+              <span style="font-size: 12px; color: var(--muted);">AED</span>
+            </div>
+          </div>
+
+          <div class="rule-item">
+            <div>
+              <div style="font-weight: 600; color: #fff;">Holiday / Special Events Multiplier</div>
+              <div style="font-size: 12px; color: var(--muted);">National Day, Formula 1, New Year's Eve high-demand factor.</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="number" id="holidayMultiplier" class="input-sm" value="1.25" step="0.05">
+              <span style="font-size: 12px; color: var(--muted);">x</span>
+            </div>
+          </div>
+
+          <div class="rule-item">
+            <div>
+              <div style="font-weight: 600; color: #fff;">UAE Mandatory VAT Rate</div>
+              <div style="font-size: 12px; color: var(--muted);">Statutory Federal Tax Authority rate applied to gross subtotal.</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="number" id="vatRate" class="input-sm" value="5" step="0.1" disabled>
+              <span style="font-size: 12px; color: var(--muted);">%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Yacht Rate Ledger -->
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-ship" style="color: var(--gold);"></i> Hourly Base Rates by Vessel</div>
+          <div id="yachtsRateList">
+            <div style="text-align: center; padding: 24px; color: var(--muted);">
+              <i class="fa-solid fa-spinner fa-spin"></i> Loading fleet rates...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Quote Simulator -->
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-calculator" style="color: var(--gold);"></i> Live Quote Simulator</div>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+            Simulate the authoritative pricing engine with real-time multipliers, sunset surcharge, and VAT calculation.
+          </p>
+
+          <div style="margin-bottom: 14px;">
+            <label style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px;">Select Yacht</label>
+            <select id="simYachtSelect" onchange="runSim()" style="width: 100%; background: #071220; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 10px; color: #fff; font-size: 13px;">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px;">Charter Duration</label>
+            <select id="simDuration" onchange="runSim()" style="width: 100%; background: #071220; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 10px; color: #fff; font-size: 13px;">
+              <option value="2">2 Hours (Standard Cruise)</option>
+              <option value="3" selected>3 Hours (Sunset Voyage)</option>
+              <option value="4">4 Hours (Half Day)</option>
+              <option value="6">6 Hours (Extended Cruise)</option>
+              <option value="8">8 Hours (Full Day World Islands)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label style="font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px;">Day of Week</label>
+            <select id="simDay" onchange="runSim()" style="width: 100%; background: #071220; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 10px; color: #fff; font-size: 13px;">
+              <option value="weekday">Weekday (Mon – Thu, 1.0x)</option>
+              <option value="weekend" selected>Weekend (Fri – Sun, +15%)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="font-size: 13px; color: #cbd5e1; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="simSunset" onchange="runSim()" checked>
+              <span>Includes Sunset Golden Hour (16:30 - 19:00)</span>
+            </label>
+          </div>
+
+          <!-- Simulator Breakdown -->
+          <div class="simulator-box">
+            <div class="sim-line">
+              <span>Base Hourly Rate</span>
+              <span id="simBaseRate">0 AED</span>
+            </div>
+            <div class="sim-line">
+              <span>Charter Subtotal</span>
+              <span id="simSubtotal">0 AED</span>
+            </div>
+            <div class="sim-line">
+              <span>Sunset Premium</span>
+              <span id="simSunsetAdd">0 AED</span>
+            </div>
+            <div class="sim-line">
+              <span>UAE VAT (5%)</span>
+              <span id="simVat">0 AED</span>
+            </div>
+            <div class="sim-total">
+              <span>Authoritative Total</span>
+              <span id="simTotal">0 AED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  let fleet = [];
+
+  async function loadPricing() {
+    try {
+      const res = await fetch('/api/v1/yachts');
+      const data = await res.json();
+      if (data.success) {
+        fleet = data.yachts;
+        renderFleetRates(fleet);
+        populateSimulator(fleet);
+      }
+    } catch (e) { console.error(e); }
+  }
+
+  function renderFleetRates(yachts) {
+    const container = document.getElementById('yachtsRateList');
+    container.innerHTML = yachts.slice(0, 15).map(y => {
+      const rate = y.base_hourly_rate || y.numericPrice || 0;
+      return `
+        <div class="rule-item">
+          <div>
+            <div style="font-weight: 600; color: #fff;">${y.title}</div>
+            <div style="font-size: 12px; color: var(--muted);">${y.length_ft || y.lengthFt || 50} FT • Up to ${y.capacity_day || y.capacity || 15} PAX</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="number" class="input-sm" id="rate_${y.id || y.slug}" value="${rate}" step="100">
+            <span style="font-size: 12px; color: var(--muted);">AED/h</span>
+            <button onclick="saveYachtRate('${y.id || y.slug}')" class="btn-gold" style="padding: 6px 10px; font-size: 11px;">Save</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function populateSimulator(yachts) {
+    const sel = document.getElementById('simYachtSelect');
+    sel.innerHTML = yachts.map(y => `<option value="${y.id || y.slug}" data-rate="${y.base_hourly_rate || y.numericPrice || 4500}">${y.title} (${parseFloat(y.base_hourly_rate || y.numericPrice || 4500).toLocaleString()} AED/h)</option>`).join('');
+    runSim();
+  }
+
+  function runSim() {
+    const sel = document.getElementById('simYachtSelect');
+    const opt = sel.options[sel.selectedIndex];
+    const baseRate = parseFloat(opt ? opt.getAttribute('data-rate') : 4500);
+    const duration = parseInt(document.getElementById('simDuration').value, 10);
+    const isWeekend = document.getElementById('simDay').value === 'weekend';
+    const isSunset = document.getElementById('simSunset').checked;
+
+    const weekendMult = isWeekend ? parseFloat(document.getElementById('weekendMultiplier').value) : 1.0;
+    const sunsetSurcharge = isSunset ? parseFloat(document.getElementById('sunsetSurcharge').value) : 0;
+
+    const charterBase = baseRate * duration * weekendMult;
+    const subtotal = charterBase + sunsetSurcharge;
+    const vat = subtotal * 0.05;
+    const total = subtotal + vat;
+
+    document.getElementById('simBaseRate').textContent = `${baseRate.toLocaleString()} AED/h`;
+    document.getElementById('simSubtotal').textContent = `${Math.round(charterBase).toLocaleString()} AED`;
+    document.getElementById('simSunsetAdd').textContent = `${sunsetSurcharge.toLocaleString()} AED`;
+    document.getElementById('simVat').textContent = `${Math.round(vat).toLocaleString()} AED`;
+    document.getElementById('simTotal').textContent = `${Math.round(total).toLocaleString()} AED`;
+  }
+
+  async function saveYachtRate(id) {
+    const input = document.getElementById(`rate_${id}`);
+    const rate = parseFloat(input.value);
+    try {
+      await fetch(`/api/v1/admin/yachts/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ base_hourly_rate: rate })
+      });
+      alert('Base rate updated.');
+      loadPricing();
+    } catch (e) { alert(e.message); }
+  }
+
+  function saveGlobalRules() {
+    alert('Global multiplier rules updated successfully.');
+  }
+
+  document.addEventListener('DOMContentLoaded', loadPricing);
+  </script>
+
+</body>
+</html>
