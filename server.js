@@ -232,6 +232,14 @@ app.get(['/yachts/:slug', '/yachts/:slug.html'], async (req, res, next) => {
       if (typeof y.amenities_json === 'string') try { y.amenities_json = JSON.parse(y.amenities_json); } catch {}
       if (typeof y.whats_included_json === 'string') try { y.whats_included_json = JSON.parse(y.whats_included_json); } catch {}
       if (typeof y.specs_json === 'string') try { y.specs_json = JSON.parse(y.specs_json); } catch {}
+
+      const jsonMatch = yachts.find(item => item.slug && item.slug.toLowerCase() === slug);
+      y.images = (Array.isArray(y.images_json) && y.images_json.length) ? y.images_json : (jsonMatch ? jsonMatch.images : ['/assets/images/home/01.jpg']);
+      y.specs = (Array.isArray(y.specs_json) && y.specs_json.length) ? y.specs_json : (jsonMatch ? jsonMatch.specs : []);
+      y.price = y.base_hourly_rate ? `${parseFloat(y.base_hourly_rate).toLocaleString()} AED / hour` : (jsonMatch ? jsonMatch.price : 'Inquire');
+      y.capacity = y.capacity_day || (jsonMatch ? jsonMatch.capacity : 20);
+      y.lengthFt = y.length_ft || (jsonMatch ? jsonMatch.lengthFt : 60);
+      y.overview = y.description || (jsonMatch ? jsonMatch.overview : '');
       return res.render('yacht-detail', { yacht: y });
     }
   } catch {}

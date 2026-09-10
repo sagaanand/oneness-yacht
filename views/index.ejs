@@ -1,645 +1,921 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oneness Yachts — Private Luxury Yacht Charters Dubai</title>
-  <meta name="description" content="Exclusive private yacht charters in Dubai. Own-fleet luxury vessels — Dolce Vita, Sunseeker, Benetti & more. Book instantly or via concierge. From AED 4,800/hour.">
-  <meta name="canonical" content="https://onenessyacht.com/">
-  <meta property="og:title" content="Oneness Yachts — Private Luxury Yacht Charters Dubai">
-  <meta property="og:description" content="Private time on the water. Luxury yacht charters in Dubai, designed around your occasion.">
-  <meta property="og:image" content="/assets/images/yacht/DOLCE VITA - 105 Ft/img11.jpg">
-  <meta property="og:type" content="website">
-  <link rel="icon" type="image/svg+xml" href="/assets/images/icon.svg">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/assets/css/luxury.css">
-</head>
-<body>
+<%- include('partials/head', { title: 'Oneness Yachts — Luxury Yacht Charter Dubai', description: 'Discover the finest private yacht hire in Dubai with Oneness Yachts. Ideal for bachelor parties, birthdays, corporate events & yacht rental. Call +971 585441134', activeNav: 'home' }) %>
+<%- include('partials/header', { activeNav: 'home' }) %>
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
-<header class="lux-header transparent" id="siteHeader" role="banner">
-  <div class="header-inner">
-    <a href="/" class="header-logo" aria-label="Oneness Yachts Home">
-      ONENESS <span>YACHTS</span>
-    </a>
+<!--wall Section -->
+        <section id="wallSections">
 
-    <nav class="header-nav" aria-label="Main navigation">
-      <a href="/yachts" id="nav-yachts">Yachts</a>
-      <a href="/experiences" id="nav-exp">Experiences</a>
-      <a href="/about" id="nav-about">About</a>
-      <a href="/contact" id="nav-contact">Contact</a>
-    </nav>
+            <div class="text-slider-wrapper">
+                <div class="text-slider" data-aos="fade-up" data-aos-duration="2000">
+                    <div class="text-slide">
+                        <h2 class="title"> Sail into Romance <br> and Adventure</h2>
+                        <div class="btnDiv">
+                            <a href="/contact"
+                                class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
+                            <a href="/packages/sail-into-romance-adventure" class="outlinedBtn white lgBtn">Explore</a>
+                        </div>
+                    </div>
+                    <div class="text-slide">
+                        <h2 class="title"> Golden Luxury <br>Awaits</h2>
+                        <div class="btnDiv">
+                            <a href="/contact"
+                                class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
+                            <a href="/yacht/ak-royalty-136-ft" class="outlinedBtn white lgBtn">Explore</a>
+                        </div>
+                    </div>
+                    <div class="text-slide">
+                        <h2 class="title">110 Feet of <br>Exquisite Luxury
+                        </h2>
+                        <div class="btnDiv">
+                            <a href="/contact"
+                                class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
+                            <a href="/yacht/bennetti-110-ft" class="outlinedBtn white lgBtn">Explore</a>
+                        </div>
+                    </div>
+                    <div class="text-slide">
+                        <h2 class="title">
+                            Paradise on the <br>Open Waters
+                        </h2>
+                        <div class="btnDiv">
+                            <a href="/contact"
+                                class="outlinedBtn white lgBtn" style="background-color: aliceblue; color: black;">Reserve </a>
+                            <a href="/yacht/santorini-superyacht-115-ft"
+                                class="outlinedBtn white lgBtn">Explore</a>
+                        </div>
+                    </div>
 
-    <div class="header-actions">
-      <a href="/account" class="header-login" id="headerLoginBtn">
-        <span id="headerLoginLabel">Sign In</span>
-      </a>
-      <a href="/yachts" class="btn btn-primary btn-book-header" id="headerBookBtn">
-        Book a Yacht
-      </a>
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-    </div>
-  </div>
-</header>
+                </div>
+            </div>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation" hidden>
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-  <div class="mobile-menu-panel">
-    <div class="mobile-menu-header">
-      <span class="header-logo">ONENESS <span>YACHTS</span></span>
-      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-    <nav class="mobile-nav">
-      <a href="/yachts">Yachts</a>
-      <a href="/experiences">Experiences</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
-      <a href="/account">My Account</a>
-    </nav>
-    <div class="mobile-menu-footer">
-      <a href="/yachts" class="btn btn-primary btn-block">Book a Yacht</a>
-    </div>
-  </div>
-</div>
+            <div class="slider-control" style="display: flex;">
+                <div class="prev"><button type="button" aria-label="Previous Slide">
+                        <i class="fa-solid fa-chevron-left" style="color: #ffffff; font-size: 16px; line-height: 48px; text-align: center; display: block;"></i>
+                    </button></div>
+                <div class="next"><button type="button" aria-label="Next Slide">
+                        <i class="fa-solid fa-chevron-right" style="color: #ffffff; font-size: 16px; line-height: 48px; text-align: center; display: block;"></i>
+                    </button></div>
+            </div>
 
-<!-- ============================================================
-     HERO
-     ============================================================ -->
-<section class="hero" id="hero" aria-label="Hero">
-  <div class="hero-bg">
-    <img
-      src="/assets/images/yacht/DOLCE VITA - 105 Ft/img11.jpg"
-      alt="Dolce Vita 105ft superyacht in Dubai Marina"
-      fetchpriority="high"
-      onerror="this.src='/assets/images/home/01.jpg'"
-    >
-  </div>
-  <div class="hero-overlay"></div>
+            <div class="blocks">
+                <div class="block-1"></div>
+                <div class="block-2"></div>
 
-  <div class="container">
-    <div class="hero-content">
-      <div class="hero-label" aria-hidden="true">Dubai Marina · Own Fleet</div>
-      <h1 class="hero-title">
-        Private Time.<br>
-        <em>On the Water.</em>
-      </h1>
-      <p class="hero-sub">
-        Luxury private yacht charters in Dubai — designed around your time, your guests, and your occasion.
-      </p>
-      <div class="hero-actions">
-        <a href="/yachts" class="btn btn-primary btn-lg" id="heroBookBtn">
-          <i class="fa-solid fa-anchor"></i>
-          Book Your Yacht
-        </a>
-        <a href="/yachts" class="btn btn-outline btn-lg">
-          Explore the Fleet
-        </a>
-      </div>
-    </div>
-  </div>
+            </div>
 
-  <div class="hero-scroll-hint" aria-hidden="true">
-    <i class="fa-solid fa-chevron-down"></i>
-    <span>Scroll</span>
-  </div>
-</section>
+            <div class="overlay"></div>
 
-<!-- ============================================================
-     FLEET PREVIEW
-     ============================================================ -->
-<section class="section section--ivory" id="fleet" aria-labelledby="fleet-heading">
-  <div class="container">
-    <div class="section-header section-header--center reveal">
-      <span class="section-label">Our Fleet</span>
-      <h2 class="section-title" id="fleet-heading">Select Your Vessel</h2>
-      <div class="gold-divider gold-divider--center"></div>
-      <p class="section-sub" style="margin: 0 auto">
-        Every yacht in our own fleet is maintained to the highest maritime standard, crewed by professionals, and ready for your exclusive charter.
-      </p>
-    </div>
+            <div class="image-slider">
+                <div class="image-slide" id="one"
+                    style="background-image: url(/assets/images/home/val.jpg) ; background-size: cover;">
+                </div>
+                <div class="image-slide" id="two"
+                    style="background-image: url(/assets/images/home/01.jpg) ; background-size: cover;">
+                </div>
+                <div class="image-slide" id="three"
+                    style="background-image: url(/assets/images/home/02.jpg); background-size: cover;">
+                </div>
 
-    <div class="yacht-grid" id="fleetGrid">
-      <!-- Dynamically populated from API -->
-      <div class="yacht-card-skeleton"></div>
-      <div class="yacht-card-skeleton"></div>
-      <div class="yacht-card-skeleton"></div>
-    </div>
+                <div class="image-slide" id="four"
+                    style="background-image: url(/assets/images/home/03.jpg); background-size: cover;">
+                </div>
 
-    <div class="text-center mt-6 reveal">
-      <a href="/yachts" class="btn btn-outline-dark btn-lg">
-        View All Yachts
-        <i class="fa-solid fa-arrow-right"></i>
-      </a>
-    </div>
-  </div>
-</section>
 
-<!-- ============================================================
-     PILLARS
-     ============================================================ -->
-<section class="section section--dark" id="about-pillars" aria-labelledby="pillars-heading">
-  <div class="container">
-    <div class="section-header section-header--center reveal">
-      <span class="section-label">The Oneness Experience</span>
-      <h2 class="section-title section-title--white" id="pillars-heading">
-        Why Choose Oneness
-      </h2>
-      <div class="gold-divider gold-divider--center"></div>
-    </div>
+            </div>
+        </section>
+        <section class="textSlider">
+            <div class="textSliderWrapper" style="--text-slider-speed:30">
+                <div class="textDiv">
+                    <p>luxury yacht</p>
+                    <p>yacht charter</p>
+                    <p>sailing experience</p>
+                    <p>private yacht</p>
+                    <p>yacht rental</p>
+                    <p>yacht services</p>
+                    <p>onboard amenities</p>
+                    <p>yacht cruising</p>
+                    <p>water sports</p>
+                </div>
+            </div>
+        </section>
+        <section id="yachtType" class="categoryCardSection">
+            <div class="innerSection">
+                <span class="text">Power At Play</span>
+                <div class="tabMenuNavContainer">
+                    <nav class="tabMenuNav">
+                        <div onclick="tabBar('#yachtType', 0, event)" class="tabMenu activeTabMenu">VIP Yachts
+                        </div>
+                        <div onclick="tabBar('#yachtType', 1, event)" class="tabMenu"> Standard Yachts</div>
+                    </nav>
+                </div>
+                <div id="bannerSlider" class="tabBarWrapper">
+                    <div class="tabBarSlide">
+                        <div class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/ak-royalty/img16.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">AK Royalty - 136 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 50 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>14,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-    <div class="pillars-grid reveal">
-      <div class="pillar-card">
-        <div class="pillar-icon"><i class="fa-solid fa-anchor"></i></div>
-        <h3 class="pillar-title">Own Fleet</h3>
-        <p class="pillar-desc">
-          Every vessel belongs to Oneness. No brokers, no third-party owners. Direct accountability for quality, safety, and experience.
-        </p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <h3 class="pillar-title">Instant Booking</h3>
-        <p class="pillar-desc">
-          Reserve in minutes with our real-time availability engine. Your slot is held for 15 minutes while you complete payment.
-        </p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-icon"><i class="fa-solid fa-star"></i></div>
-        <h3 class="pillar-title">Full Concierge</h3>
-        <p class="pillar-desc">
-          From birthday setups to private chefs — every detail is handled by our concierge team before you step onboard.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+                                <div class="btnDiv">
+                                    <a href="/yacht/ak-royalty-136-ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/santorini-yacht/img12.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">Santorini Superyacht - 115 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 50 pax</span></p>
+                                <p class="price">Price Per Hour: <span>13,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
+                                <div class="btnDiv">
+                                    <a href="/yacht/santorini-superyacht-115-ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/BENETTI - 110 Ft/img48.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">BENETTI - 110 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 50 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>5,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-<!-- ============================================================
-     OCCASIONS / EXPERIENCES
-     ============================================================ -->
-<section class="section section--cream" id="experiences" aria-labelledby="exp-heading">
-  <div class="container">
-    <div class="section-header section-header--center reveal">
-      <span class="section-label">Experiences</span>
-      <h2 class="section-title" id="exp-heading">Any Occasion, Perfected</h2>
-      <div class="gold-divider gold-divider--center"></div>
-    </div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/bennetti-110-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/BURKUT - 177 Ft/img77.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">BURKUT - 177 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 20 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>25,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-    <div class="experiences-grid reveal">
-      <div class="exp-card" style="background-image: url('/assets/images/yacht/DOLCE VITA - 105 Ft/img21.jpg')">
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <h3 class="exp-title">Birthdays &amp; Celebrations</h3>
-          <p class="exp-sub">Private cake, decoration, and champagne service</p>
-          <a href="/yachts?occasion=birthday" class="btn btn-outline btn-sm">Reserve Now</a>
-        </div>
-      </div>
-      <div class="exp-card" style="background-image: url('/assets/images/yacht/DOLCE VITA - 105 Ft/img29.jpg')">
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <h3 class="exp-title">Sunset Cruises</h3>
-          <p class="exp-sub">Golden hour on the Arabian Gulf</p>
-          <a href="/yachts?occasion=sunset" class="btn btn-outline btn-sm">Reserve Now</a>
-        </div>
-      </div>
-      <div class="exp-card" style="background-image: url('/assets/images/yacht/BENETTI - 110 Ft/img48.jpg')">
-        <div class="exp-overlay"></div>
-        <div class="exp-content">
-          <h3 class="exp-title">Corporate Events</h3>
-          <p class="exp-sub">Client entertainment and team experiences</p>
-          <a href="/yachts?occasion=corporate" class="btn btn-outline btn-sm">Reserve Now</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+                                <div class="btnDiv">
+                                    <a href="/yacht/burkut-177-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/DOLCE VITA - 105 Ft/img29.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">DOLCE VITA - 105 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 25 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>9,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-<!-- ============================================================
-     QUICK BOOKING STRIP
-     ============================================================ -->
-<section class="quick-book-strip" id="quickBook" aria-label="Quick booking">
-  <div class="container">
-    <div class="quick-book-inner reveal">
-      <div class="quick-book-text">
-        <span class="section-label" style="margin-bottom: 8px; display: block;">Start Here</span>
-        <h2 class="t-h3" style="color: var(--white)">Ready to Book?</h2>
-        <p style="color: rgba(255,255,255,0.6); font-size: 15px; margin-top: 8px;">
-          Choose your yacht, date and time. Done in under 3 minutes.
-        </p>
-      </div>
-      <a href="/yachts" class="btn btn-primary btn-lg">
-        <i class="fa-solid fa-anchor"></i>
-        Book a Yacht
-      </a>
-    </div>
-  </div>
-</section>
+                                <div class="btnDiv">
+                                    <a href="/yacht/dolce-vita-105-ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/Eye Yacht - 108 Ft/04.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">Eye Yacht - 108 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 20 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>7,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<footer class="lux-footer" role="contentinfo">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="footer-logo">ONENESS <span>YACHTS</span></div>
-        <p class="footer-desc">
-          Dubai's premier private yacht charter company. Own fleet. Direct accountability. Unforgettable experiences.
-        </p>
-        <div class="footer-contact">
-          <a href="https://wa.me/971585441134" target="_blank" rel="noopener">
-            <i class="fa-brands fa-whatsapp"></i> +971 585 441 134
-          </a>
-          <a href="mailto:info@onenessyacht.com">
-            <i class="fa-solid fa-envelope"></i> info@onenessyacht.com
-          </a>
-          <a href="#" target="_blank" rel="noopener">
-            <i class="fa-solid fa-location-dot"></i> Dubai Marina Yacht Club
-          </a>
-        </div>
-      </div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/eye-yacht-108-ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div href="" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/F1 Sunseeker 131 - 131 Ft/img1101.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">Sunseeker - 131 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 12 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>15,000 AED</span></p> 
 
-      <div class="footer-col">
-        <div class="footer-col-title">Fleet</div>
-        <a href="/yachts">All Yachts</a>
-        <a href="/yachts?category=vip">VIP Fleet</a>
-        <a href="/yachts?size=large">Superyachts</a>
-        <a href="/yachts?size=sport">Sport Yachts</a>
-      </div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/sunseeker-131-ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="#"
+                                        data-message="Hi, I’m interested in renting the Lamborghini Yacht. Could you kindly provide me with more details?"
+                                        class="whatsapp-link filledBtn mdBtn" target="_blank">Book Now <img
+                                            src="/assets/images/home/icon/whatsapp.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/HAIGAN - 90 Ft/img7.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">Haigan - 90 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 20 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>4,000 AED</span></p> 
 
-      <div class="footer-col">
-        <div class="footer-col-title">Experiences</div>
-        <a href="/yachts?occasion=birthday">Birthdays</a>
-        <a href="/yachts?occasion=sunset">Sunset Cruises</a>
-        <a href="/yachts?occasion=corporate">Corporate</a>
-        <a href="/yachts?occasion=wedding">Weddings</a>
-      </div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/haigan-90-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="#"
+                                        data-message="Hi, I’m interested in renting the Lamborghini Yacht. Could you kindly provide me with more details?"
+                                        class="whatsapp-link filledBtn mdBtn" target="_blank">Book Now <img
+                                            src="/assets/images/home/icon/whatsapp.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/Fairline Liberty - 80 Ft/01.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">Fairline Liberty - 80 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 25 PAX</span></p>
+                                <p class="price">Price Per Hour: <span> 1,500 AED</span></p> 
 
-      <div class="footer-col">
-        <div class="footer-col-title">Company</div>
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact</a>
-        <a href="/privacy-policy">Privacy Policy</a>
-        <a href="/terms-and-conditions">Terms</a>
-      </div>
-    </div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/fairline-liberty-80-Ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="#"
+                                        data-message="Hi, I’m interested in renting the Lamborghini Yacht. Could you kindly provide me with more details?"
+                                        class="whatsapp-link filledBtn mdBtn" target="_blank">Book Now <img
+                                            src="/assets/images/home/icon/whatsapp.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="tabBarSlide">
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/Big Daddy - 90 Ft/63632537.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">BIGDADDY - 90 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 50 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>1,500 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-    <div class="footer-bottom">
-      <span>© 2026 Oneness Yachts LLC. All rights reserved. Dubai, UAE.</span>
-      <span>Licensed Charter Operator · Dubai Maritime City Authority</span>
-    </div>
-  </div>
-</footer>
+                                <div class="btnDiv">
+                                    <a href="/yacht/bigdaddy-90-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/CARMEN - 90 Ft/1.jpg" alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">CARMEN - 90 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 40 PAX</span></p>
+                                <p class="price">Price Per Hour: <span>2,800 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-<!-- Loading overlay -->
-<div class="loading-overlay" id="globalLoading" aria-live="polite">
-  <div class="loading-spinner" role="status" aria-label="Loading"></div>
-  <div class="loading-text" id="loadingText">Loading...</div>
-</div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/carmen-90-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/Majesty - 88 Ft/2631412.jpg " alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">MAJESTY - 88 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 45 pax</span></p>
+                                <p class="price">Price Per Hour: <span>1,300 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-<!-- Toast container -->
-<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+                                <div class="btnDiv">
+                                    <a href="/yacht/majesty-88-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/Al Shaali - 72 Ft/21ddc9b8-8f67-4dee-a98b-4b04cf62ee26.webp "
+                                    alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">AL SHALI - 72 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 30 pax</span></p>
+                                <p class="price">Price Per Hour: <span>1,400 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-<style>
-/* Mobile Menu */
-.mobile-menu { position: fixed; inset: 0; z-index: 300; display: none; }
-.mobile-menu[hidden] { display: none !important; }
-.mobile-menu.open { display: block; }
-.mobile-menu-overlay { position: absolute; inset: 0; background: rgba(7,15,28,0.7); }
-.mobile-menu-panel {
-  position: absolute;
-  top: 0; right: 0;
-  width: min(360px, 90vw);
-  height: 100%;
-  background: var(--navy-900);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  animation: slideInRight 0.3s var(--ease-out);
-}
-@keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
-}
-.mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
-.mobile-menu-close {
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 50%; background: rgba(255,255,255,0.1);
-  color: var(--white); font-size: 18px;
-}
-.mobile-nav { flex: 1; }
-.mobile-nav a {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.8);
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  transition: color var(--transition);
-}
-.mobile-nav a:hover { color: var(--gold); }
-.mobile-menu-footer { margin-top: 32px; }
+                                <div class="btnDiv">
+                                    <a href="/yacht/alshali-72-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/Azimut S8 - 80 Ft/01.jpg " alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">AZUMATH S8 - 80 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 35 pax</span></p>
+                                <p class="price">Price Per Hour: <span>1,900 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-/* Pillars */
-.pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-.pillar-card {
-  text-align: center;
-  padding: 40px 28px;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.03);
-  transition: background var(--transition);
-}
-.pillar-card:hover { background: rgba(255,255,255,0.06); }
-.pillar-icon {
-  font-size: 32px;
-  color: var(--gold);
-  margin-bottom: 20px;
-}
-.pillar-title {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--white);
-  margin-bottom: 12px;
-}
-.pillar-desc {
-  font-size: 14px;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.7;
-}
+                                <div class="btnDiv">
+                                    <a href="/yacht/azumath-80-ft.html" target="_blank" class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div href="/" class="bannerCard">
+                            <div class="imageDiv">
+                                <img src="/assets/images/yacht/MAJESTY HAMDAN - 88 Ft/img5.jpg " alt="">
+                                <span class="arrow"><i class="fi fi-rr-arrow-small-right"></i></span>
+                            </div>
+                            <div class="content">
+                                <h5 class="title">HAMDAN MAJESTY - 88 <span>Ft</span></h5>
+                                <p class="capacity">Capacity: <span>up to 45 pax</span></p>
+                                <p class="price">Price Per Hour: <span>2,000 AED</span></p>
+                                <!-- <p class="price">Price full day: <span>Not Available</span></p> -->
 
-/* Experiences Grid */
-.experiences-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.exp-card {
-  position: relative;
-  aspect-ratio: 3/4;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--navy-800);
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
-  cursor: pointer;
-  transition: transform var(--transition);
-}
-.exp-card:hover { transform: scale(1.02); }
-.exp-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(7,15,28,0.85) 0%, rgba(7,15,28,0.1) 60%);
-}
-.exp-content {
-  position: relative;
-  z-index: 1;
-  padding: 24px;
-}
-.exp-title {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--white);
-  margin-bottom: 6px;
-}
-.exp-sub {
-  font-size: 13px;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: 16px;
-}
+                                <div class="btnDiv">
+                                    <a href="/yacht/hamdan-majesty-88-ft.html" target="_blank"
+                                        class="outlinedBtn mdBtn">View
+                                        Details</a>
+                                    <a href="/contact"
+                                        class="outlinedBtn mdBtn" style="background-color:#244fad; color: aliceblue;">Enquire Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-/* Quick Book Strip */
-.quick-book-strip {
-  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
-  padding: 80px 0;
-  border-top: 1px solid rgba(201,166,107,0.2);
-  border-bottom: 1px solid rgba(201,166,107,0.2);
-}
-.quick-book-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-}
+            </div>
+        </section>
+        <section class="contentSection" data-aos="fade-up" data-aos-duration="1000">
+            <div class="innerSection">
+                <div class="content">
+                    <h2 class="title">Discover the Essence of Luxury Sailing</h2>
+                    <p>At Oneness, we are dedicated to providing unforgettable yacht booking experiences in Dubai. Our
+                        passion for luxury sailing, combined with a commitment to exceptional service, ensures every
+                        journey is tailor-made to your desires. Whether it's a relaxing getaway or an adventurous
+                        cruise, our expert team is here to create the perfect experience for you. Join us as we navigate
+                        the azure waters and unlock the beauty of the sea.</p>
+                    <ul class="milestones">
+                        <li>
+                            <p class="value">5K+</p>
+                            <p class="text">Customers
 
-/* Yacht card skeletons */
-.yacht-card-skeleton {
-  height: 440px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(90deg, #e8ecef 25%, #f0f3f5 50%, #e8ecef 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+                            </p>
+                        </li>
+                        <li>
+                            <p class="value">16 Yr+</p>
+                            <p class="text">Experience
+                            </p>
+                        </li>
 
-@media (max-width: 900px) {
-  .pillars-grid, .experiences-grid { grid-template-columns: 1fr; gap: 20px; }
-  .quick-book-inner { flex-direction: column; text-align: center; }
-  .exp-card { aspect-ratio: 16/9; }
-}
-@media (max-width: 640px) {
-  .quick-book-inner .btn { width: 100%; justify-content: center; }
-}
-</style>
+                        <li>
+                            <p class="value">3+</p>
+                            <p class="text">Locations
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="btnDiv">
+                        <a href="/about" class="filledBtn xlBtn">More About Us</a>
+                        <a href="/contact" class="textBtn xlBtn">Contact Us</a>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="label">
+                        since 2008
+                    </div>
+                    <img src="/assets/images/home/4.jpg" alt="">
+                </div>
+            </div>
+        </section>
+        <section class="highlighRibbonBanner" data-aos="fade-up" data-aos-duration="1000">
+            <div class="innerSection">
+                <ul class="specialities">
+                    <li>
+                        <img src="/assets/images/home/icon/crown (1).png" alt="">
+                        <h5 class="caption">Premium Yacht Choices </h5>
+                        <p>Find the perfect yacht for your style and occasion.
+                        </p>
+                    </li>
+                    <li>
+                        <img src="/assets/images/home/icon/captain.png" alt="">
+                        <h5 class="caption">Professional Crew </h5>
+                        <p>Relax while our skilled crew makes everything easy. </p>
+                    </li>
+                    <li>
+                        <img src="/assets/images/home/icon/feather.png" alt="">
+                        <h5 class="caption">Total Comfort </h5>
+                        <p>Enjoy top-quality amenities and a cozy vibe. </p>
+                    </li>
+                    <li>
+                        <img src="/assets/images/home/icon/discount (1).png" alt="">
+                        <h5 class="caption">Custom Packages </h5>
+                        <p>Make it special with a trip designed around what you love. </p>
+                    </li>
+                </ul>
+            </div>
+            </div>
+        </section>
+
+
+        <section class="ondemandServiceSection">
+            <div class="innerSection">
+                <div class="titleDiv">
+                    <p class="label">On Demand Services</p>
+                    <h2 class="title">Indulge in Unmatched Comfort and Luxury at Sea
+                    </h2>
+                    <p>Enjoy personalised experiences with our curated services, including private chefs, DJs, and
+                        stunning decorations, ensuring every detail is tailored to your perfect voyage.
+                    </p>
+                </div>
+                <div class="cardDiv">
+                    <a href="/services/private-chef-yacht-experience.html" class="card">
+                        <div class="media"><img src="/assets/images/home/Image-2.jpg" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Chef</h5>
+                        </div>
+                    </a>
+                    <a href="/services/yacht-catering.html" class="card">
+                        <div class="media"><img src="/assets/images/home/IMAGE-1.jpg" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Yacht Catering</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/live-bbq-private-chef.html" class="card">
+                        <div class="media"><img src="/assets/images/home/Image-4.jpg" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Live BBQ</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-dj.html" class="card">
+                        <div class="media"><img src="/assets/images/home/Image-3.jpg" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private DJ</h5>
+                        </div>
+                    </a>
+                    <!-- 
+                    <a href="/services/luxury-video-photoshoot.html" class="card">
+                        <div class="media"><img src="/assets/images/home/4.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Luxury Video and Photoshoot</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-artist-singers.html" class="card">
+                        <div class="media"><img src="/assets/images/home/5.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Artist Singers</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-saxophone-artist.html" class="card">
+                        <div class="media"><img src="/assets/images/home/6.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Saxophone Artist</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-dancers.html" class="card">
+                        <div class="media"><img src="/assets/images/home/7.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Dancers</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-bartender.html" class="card">
+                        <div class="media"><img src="/assets/images/home/8.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Bartender</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-magician.html" class="card">
+                        <div class="media"><img src="/assets/images/home/9.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Magician</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-massage-therapists.html" class="card">
+                        <div class="media"><img src="/assets/images/home/10.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Professional Massage Therapists</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/hospitality-crew.html" class="card">
+                        <div class="media"><img src="/assets/images/home/11.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Professional Hospitality Crew</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-tour-guide.html" class="card">
+                        <div class="media"><img src="/assets/images/home/12.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Tour Guide</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/private-hostesses.html" class="card">
+                        <div class="media"><img src="/assets/images/home/13.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Private Hostesses</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/live-seafood-bbq-private-chef-page.html" class="card">
+                        <div class="media"><img src="/assets/images/home/14.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Live Seafood BBQ and Private Chef</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/sushi-menus-private-chef.html" class="card">
+                        <div class="media"><img src="/assets/images/home/15.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Sushi Menus and a Private Chef</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/vegetarian-menus-private-chef.html" class="card">
+                        <div class="media"><img src="/assets/images/home/16.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Vegetarian Menus Crafted by a Private Chef</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/premium-alcoholic-drinks.html" class="card">
+                        <div class="media"><img src="/assets/images/home/17.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Premium Alcoholic Drinks</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/exclusive-champagnes.html" class="card">
+                        <div class="media"><img src="/assets/images/home/18.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Exclusive Champagnes</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/open-bar.html" class="card">
+                        <div class="media"><img src="/assets/images/home/19.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Open Bar</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/yacht-decorations.html" class="card">
+                        <div class="media"><img src="/assets/images/home/20.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Yacht Decorations</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/birthday-celebrations.html" class="card">
+                        <div class="media"><img src="/assets/images/home/21.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Birthday Celebrations</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/proposal-anniversary-decorations.html" class="card">
+                        <div class="media"><img src="/assets/images/home/22.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Proposal and Anniversary Decorations</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/roses-flower-decorations.html" class="card">
+                        <div class="media"><img src="/assets/images/home/23.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">Roses/Flower Decorations</h5>
+                        </div>
+                    </a>
+
+                    <a href="/services/vip-transport.html" class="card">
+                        <div class="media"><img src="/assets/images/home/24.webp" alt=""></div>
+                        <div class="content">
+                            <h5 class="title">VIP Transport</h5>
+                        </div>
+                    </a> -->
+
+                </div>
+            </div>
+        </section>
+        <section class="serviceCTASection" data-aos="fade-up" data-aos-duration="1000">
+            <div class="innerSection" style="background-image: url(/assets/images/home/7.webp);">
+                <div class="content">
+                    <p class="mainLabel">Ready to Set Sail?</p>
+                    <h2 class="title"> Set Sail for Adventure!</h2>
+                    <p>Book your yacht today for an unforgettable adventure on Dubai's stunning waters! Our team is here
+                        to help you create the perfect experience for any occasion.</p>
+                    <a href="/contact" class="outlinedBtn white xlBtn">Get in touch
+                        with us</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="reviewCarouselSection">
+
+            <div class="titleDiv">
+                <h2 class="title">What Our Clients Are Saying</h2>
+
+            </div>
+            <div class="reviewWrapper">
+                <div class="reviewSlide">
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"Wow, what an incredible experience!"</h5>
+                            <p>My wife and I booked a sunset cruise for our anniversary, and it was even better than we
+                                imagined. The crew was so attentive, the food was phenomenal, and the views of the city
+                                were just stunning. If you're looking for a memorable way to spend an evening, this is
+                                it!</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="J"><img src="" alt=""></div>
+                                <h5 class="name">James Grayson</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/5.svg" alt="Rating">
+                                <span>2 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"I didn’t think I’d ever experience something so magical on the water!"
+                            </h5>
+                            <p>We celebrated my best friend’s birthday, and the entire team at Oneness Yachts went above
+                                and beyond. They set up custom decor, had our favorite drinks ready, and even helped us
+                                take the perfect pictures. Can’t wait to go again!</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="S"><img src="" alt=""></div>
+                                <h5 class="name">Sophia Schmidt</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/4.5.svg" alt="Rating">
+                                <span>1 month ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"I’ve lived in Dubai my entire life, but I had never experienced the
+                                city from the water like this."</h5>
+                            <p>Oneness Yachts made my wife’s birthday truly special. Everything was done perfectly, and
+                                the crew was respectful and attentive. We felt like royalty for the night!</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="K"><img src="" alt=""></div>
+                                <h5 class="name">Khalifa Mansoori</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/5.svg" alt="Rating">
+                                <span>3 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"I was nervous about planning a proposal on the yacht, but the team
+                                handled everything so smoothly!"</h5>
+                            <p>They created a beautiful setup with roses and candles, and my fiancée was blown away. She
+                                said yes! Highly recommend for any special occasion.</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="F"><img src="" alt=""></div>
+                                <h5 class="name">Feranando López</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/4.5.svg" alt="Rating">
+                                <span>4 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"Booked a yacht with Oneness for a corporate event, and it was a total
+                                hit!"</h5>
+                            <p>The team made everything easy, from planning to execution. The yacht was spotless, the
+                                catering was on point, and the vibe was perfect for networking. Would definitely do this
+                                again for our next big event.</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="O"><img src="" alt=""></div>
+                                <h5 class="name">Oliver Dupont</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/5.svg" alt="Rating">
+                                <span>1 month ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"Oneness Yachts turned our family gathering into an unforgettable
+                                experience!"</h5>
+                            <p>We loved every moment, from the relaxing ambiance to the beautiful views of the city. The
+                                kids had a blast, and even the grandparents didn’t want the night to end! It was truly a
+                                night to remember.</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="L"><img src="" alt=""></div>
+                                <h5 class="name">Layla Al Nuaimi</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/4.5.svg" alt="Rating">
+                                <span>2 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"I can't believe how much fun we had on our sunset cruise!"</h5>
+                            <p>My husband and I thought it’d be just a relaxing evening, but the crew made it feel like
+                                an adventure. They set up romantic lights, music, and we even got to see dolphins! Hands
+                                down, one of the best experiences we’ve had in Dubai.</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="M"><img src="" alt=""></div>
+                                <h5 class="name">Mia Hobbs</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/5.svg" alt="Rating">
+                                <span>5 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"I organized a surprise 50th birthday party for my mother and it was
+                                simply incredible!"</h5>
+                            <p>The chef prepared a customized menu with all her favorite dishes, and the crew made sure
+                                everyone was comfortable. My mom is still raving about it. Fantastic service and
+                                experience.</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="L"><img src="" alt=""></div>
+                                <h5 class="name">Lukas Johns</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/4.5.svg" alt="Rating">
+                                <span>6 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"Had the absolute best time with my friends on a yacht for a
+                                bachelorette celebration!"</h5>
+                            <p>The crew set up beautiful decorations, had drinks ready, and even played our favorite
+                                music. We felt so taken care of and never wanted to leave! Oneness Yachts nailed it!</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="J"><img src="" alt=""></div>
+                                <h5 class="name">Jannet Thompson</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/5.svg" alt="Rating">
+                                <span>3 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review">
+                        <div class="content">
+                            <h5 class="caption">"After having such a positive experience with Oneness Yachts for a
+                                family reunion, I’d highly recommend them to anyone!"</h5>
+                            <p>Everything was arranged perfectly – from the timing to the food and even our seating
+                                preferences. The crew’s attention to detail really made the night exceptional.</p>
+                            <div class="profile">
+                                <div class="avatar" data-avatar="M"><img src="" alt=""></div>
+                                <h5 class="name">Max Rossi</h5>
+
+                            </div>
+                            <div class="rating"><img src="/assets/images/common/icons/rating/4.5.svg" alt="Rating">
+                                <span>4 months ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+<%- include('partials/footer') %>
+<%- include('partials/scripts') %>
 
 <script>
-// ============================================================
-// HEADER SCROLL BEHAVIOR
-// ============================================================
-const header = document.getElementById('siteHeader');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 60) {
-    header.classList.remove('transparent');
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-    header.classList.add('transparent');
-  }
-}, { passive: true });
+    $(document).ready(function() {
+        var sickPrimary = {
+            autoplay: true,
+            autoplaySpeed: 2400,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 1800,
+            cssEase: 'cubic-bezier(.84, 0, .08, .99)',
+            asNavFor: '.text-slider',
+            centerMode: true,
+            prevArrow: $('.prev'),
+            nextArrow: $('.next')
+        };
 
-// ============================================================
-// MOBILE MENU
-// ============================================================
-const mobileMenu = document.getElementById('mobileMenu');
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const mobileMenuClose = document.getElementById('mobileMenuClose');
-const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        var sickSecondary = {
+            autoplay: true,
+            autoplaySpeed: 2400,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 1800,
+            cssEase: 'cubic-bezier(.84, 0, .08, .99)',
+            asNavFor: '.image-slider',
+            prevArrow: $('.prev'),
+            nextArrow: $('.next')
+        };
 
-function openMobileMenu() {
-  mobileMenu.hidden = false;
-  mobileMenu.classList.add('open');
-  mobileMenuBtn.setAttribute('aria-expanded', 'true');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMobileMenu() {
-  mobileMenu.hidden = true;
-  mobileMenu.classList.remove('open');
-  mobileMenuBtn.setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
-}
-
-mobileMenuBtn.addEventListener('click', openMobileMenu);
-mobileMenuClose.addEventListener('click', closeMobileMenu);
-mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-
-// ============================================================
-// SCROLL REVEAL
-// ============================================================
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// ============================================================
-// LOAD FLEET FROM API
-// ============================================================
-async function loadFleet() {
-  const grid = document.getElementById('fleetGrid');
-  try {
-    const res = await fetch('/api/v1/yachts');
-    const data = await res.json();
-    if (!data.success || !data.yachts.length) {
-      grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-anchor"></i></div><div class="empty-state-title">Fleet Coming Soon</div></div>';
-      return;
-    }
-
-    const featured = data.yachts.slice(0, 6);
-    grid.innerHTML = featured.map(y => {
-      const images = Array.isArray(y.images_json) ? y.images_json : [];
-      const img = images[0] || '/assets/images/home/01.jpg';
-      const price = Number(y.base_hourly_rate || 0).toLocaleString();
-      const isInstant = y.booking_mode !== 'CONCIERGE_QUOTE';
-      return `
-        <article class="yacht-card" data-slug="${y.slug}">
-          <div class="yacht-card__image">
-            <img
-              src="${img}"
-              alt="${y.title} — ${y.length_ft}ft yacht Dubai"
-              loading="lazy"
-              onerror="this.src='/assets/images/home/01.jpg'"
-            >
-            ${isInstant ? '<div class="yacht-card__badge">Instant Book</div>' : '<div class="yacht-card__badge" style="background:var(--navy-700);color:var(--gold)">By Request</div>'}
-          </div>
-          <div class="yacht-card__body">
-            <h3 class="yacht-card__name">${y.title}</h3>
-            <div class="yacht-card__specs">
-              <div class="spec-item"><i class="fa-solid fa-ruler-horizontal"></i> ${y.length_ft} FT</div>
-              <div class="spec-item"><i class="fa-solid fa-users"></i> ${y.capacity_day} Guests</div>
-              ${y.cabins ? `<div class="spec-item"><i class="fa-solid fa-door-open"></i> ${y.cabins} Cabins</div>` : ''}
-            </div>
-            <div class="yacht-card__price">
-              AED ${price} <span>/ hour</span>
-            </div>
-            <div class="yacht-card__actions">
-              <a href="/yachts/${y.slug}" class="btn btn-outline-dark btn-sm">Details</a>
-              <a href="/book?yacht=${y.slug}" class="btn btn-primary btn-sm">Book Now</a>
-            </div>
-          </div>
-        </article>
-      `;
-    }).join('');
-  } catch (err) {
-    console.warn('Fleet load failed, showing JSON data yachts');
-    loadFleetFromJSON();
-  }
-}
-
-// Fallback to JSON data yachts
-async function loadFleetFromJSON() {
-  const grid = document.getElementById('fleetGrid');
-  try {
-    const res = await fetch('/api/yachts');
-    const data = await res.json();
-    if (!data.yachts || !data.yachts.length) {
-      grid.innerHTML = '';
-      return;
-    }
-    const featured = data.yachts.filter(y => y.numericPrice > 0).slice(0, 6);
-    grid.innerHTML = featured.map(y => {
-      const price = Number(y.numericPrice || 0).toLocaleString();
-      const img = y.image || '/assets/images/home/01.jpg';
-      return `
-        <article class="yacht-card">
-          <div class="yacht-card__image">
-            <img src="${img}" alt="${y.title}" loading="lazy" onerror="this.src='/assets/images/home/01.jpg'">
-            <div class="yacht-card__badge">Book Now</div>
-          </div>
-          <div class="yacht-card__body">
-            <h3 class="yacht-card__name">${y.title}</h3>
-            <div class="yacht-card__specs">
-              <div class="spec-item"><i class="fa-solid fa-ruler-horizontal"></i> ${y.lengthFt} FT</div>
-              <div class="spec-item"><i class="fa-solid fa-users"></i> ${y.capacity} Guests</div>
-            </div>
-            <div class="yacht-card__price">AED ${price} <span>/ hour</span></div>
-            <div class="yacht-card__actions">
-              <a href="/yacht/${y.slug}" class="btn btn-outline-dark btn-sm">Details</a>
-              <a href="/booking?yacht=${y.slug}" class="btn btn-primary btn-sm">Book</a>
-            </div>
-          </div>
-        </article>
-      `;
-    }).join('');
-  } catch (err) {
-    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-anchor"></i></div></div>';
-  }
-}
-
-// ============================================================
-// CHECK CUSTOMER SESSION
-// ============================================================
-async function checkSession() {
-  try {
-    const res = await fetch('/api/v1/auth/me');
-    const data = await res.json();
-    if (data.success && data.customer) {
-      document.getElementById('headerLoginLabel').textContent = data.customer.name.split(' ')[0];
-      document.getElementById('headerLoginBtn').href = '/account';
-    }
-  } catch {}
-}
-
-// ============================================================
-// TOAST HELPER
-// ============================================================
-window.showToast = function(msg, type = 'info') {
-  const container = document.getElementById('toastContainer');
-  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
-  const toast = document.createElement('div');
-  toast.className = `toast toast--${type}`;
-  toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} toast-icon"></i><span class="toast-msg">${msg}</span>`;
-  container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(8px)'; toast.style.transition = '0.3s'; setTimeout(() => toast.remove(), 300); }, 4000);
-};
-
-// Init
-loadFleet();
-checkSession();
+        if ($('.image-slider').length && $('.text-slider').length) {
+            $('.image-slider').slick(sickPrimary);
+            $('.text-slider').slick(sickSecondary);
+        }
+    });
 </script>
-</body>
 </html>
